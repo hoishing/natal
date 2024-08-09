@@ -1,6 +1,6 @@
 # Natal
 
-> create astrological Natal Chart with ease
+> create Natal Chart in SVG with ease
 
 ## Features
 
@@ -11,10 +11,12 @@
   - enhanced type safety
 - high precision astrological data with [Swiss Ephemeris]
 - timezone, latitude and longitude database from [GeoNames]
-- docstring with examples
-- test with `doctest` and pytest
+- docstrings with examples
+- test with `doctest` and `pytest`
 
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
+[GeoNames]: https://www.geonames.org
+
 
 ## Usage
 
@@ -27,30 +29,32 @@
 ```python
 from natal import Astro, Chart
 
-# create object for the natal chart info
-natal_info = Natal(
-  name = "Kelvin",
-  yr = 1976, mo = 4, day = 20,
-  hr = 18, min = 58,
+# create object for the natal chart data
+natal_data = NatalData(
+  name = "Person1",
+  yr = 1980, mo = 1, day = 1,
+  hr = 12, min = 0,
   city = "Taipei"
 )
 
 # return SVG string, optionally export to file
-svg = Chart(natal_info, output="./natal-chart.svg")
+svg = Chart(natal_data, output="./natal-chart.svg")
 
 
 ## -- retrieve natal chart properties -- ##
 # houses curp
-natal_info.houses
+natal_data.houses
 
 # aspect(angle) between planets
-natal_info.aspects
+natal_data.aspects
 
 # percentage of planet in each element(fire, earth, air, water)
-natal_info.element_percentage
+natal_data.element_percentage
 ```
 
 refer the [documentation] for chart configuration and other details
+
+[documentation]: https://hoishing.github.io/natal
 
 ## Motivation
 
