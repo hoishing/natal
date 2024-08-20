@@ -1,2 +1,1 @@
-::: natal
 ::: natal.enums
