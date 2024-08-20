@@ -63,11 +63,11 @@ Creating a natal chart is the foundation of developing astrological software. Tr
 
 ## Tech Stack
 
-- [kTemplate] for creating and manipulating XML(SVG)
+- [ptag] for creating and manipulating XML(SVG)
 - [pyswisseph] python extension to the Swiss Ephemeris
 - [mkdocs-material] for docs site generation
 
-[kTemplate]: https://github.com/hoishing/kTemplate
+[ptag]: https://github.com/hoishing/ptag
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
