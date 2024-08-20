@@ -1,14 +1,16 @@
 # Natal
 
+[![MIT-badge]][MIT-url] [![black-badge]][black-url]
+
 > create Natal Chart in SVG with ease
 
 ## Features
 
 - SVG natal chart generation in pure python
 - astrological entities in `Enum` to enhance DX
-  - better code intellisense
-  - more accurate copilot completion
-  - enhanced type safety
+    - better code intellisense
+    - more accurate copilot completion
+    - enhanced type safety
 - high precision astrological data with [Swiss Ephemeris]
 - timezone, latitude and longitude database from [GeoNames]
 - docstrings with examples
@@ -16,7 +18,6 @@
 
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [GeoNames]: https://www.geonames.org
-
 
 ## Usage
 
@@ -42,7 +43,7 @@ svg = Chart(natal_data, output="./natal-chart.svg")
 
 
 ## -- retrieve natal chart properties -- ##
-# houses curp
+# houses cusp
 natal_data.houses
 
 # aspect(angle) between planets
@@ -62,10 +63,14 @@ Creating a natal chart is the foundation of developing astrological software. Tr
 
 ## Tech Stack
 
-- [Dominate] for creating and manipulating XML(SVG)
+- [kTemplate] for creating and manipulating XML(SVG)
 - [pyswisseph] python extension to the Swiss Ephemeris
 - [mkdocs-material] for docs site generation
 
-[Dominate]: https://github.com/Knio/dominate
+[kTemplate]: https://github.com/hoishing/kTemplate
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
+[MIT-badge]: https://img.shields.io/github/license/hoishing/natal
+[MIT-url]: https://opensource.org/licenses/MIT
+[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[black-url]: https://github.com/psf/black
