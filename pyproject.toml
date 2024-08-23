@@ -13,6 +13,8 @@ packages = [{ include = "natal", from = "." }]
 python = "^3.12"
 pyswisseph = "^2.10.3.2"
 ptag = "^0.1.1"
+pydantic = "^2.8.2"
+pyyaml = "^6.0.2"
 
 [tool.poetry.group.dev]
 optional = true
@@ -22,7 +24,6 @@ ipykernel = "^6.29.5"
 mkdocs-material = "^9.5.31"
 mkdocstrings = { extras = ["python"], version = "^0.25.2" }
 pytest = "^8.3.2"
-toml = "^0.10.2"
 
 [build-system]
 requires = ["poetry-core"]

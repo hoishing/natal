@@ -1,0 +1,28 @@
+{
+    "$defs": {
+        "AspectAllowance": {
+            "description": "AspectAllowance class",
+            "properties": {
+                "conjunction": { "title": "Conjunction", "type": "integer" },
+                "opposition": { "title": "Opposition", "type": "integer" },
+                "trine": { "title": "Trine", "type": "integer" },
+                "square": { "title": "Square", "type": "integer" },
+                "sextile": { "title": "Sextile", "type": "integer" }
+            },
+            "required": [
+                "conjunction",
+                "opposition",
+                "trine",
+                "square",
+                "sextile"
+            ],
+            "title": "AspectAllowance",
+            "type": "object"
+        }
+    },
+    "description": "Config class",
+    "properties": { "aspect_allowance": { "$ref": "#/$defs/AspectAllowance" } },
+    "required": ["aspect_allowance"],
+    "title": "Config",
+    "type": "object"
+}
