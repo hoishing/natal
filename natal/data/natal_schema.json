@@ -1,0 +1,47 @@
+{
+  "$defs": {
+    "Orb": {
+      "description": "aspect orb model with default values",
+      "properties": {
+        "conjunction": {
+          "default": 8,
+          "title": "Conjunction",
+          "type": "integer"
+        },
+        "opposition": {
+          "default": 8,
+          "title": "Opposition",
+          "type": "integer"
+        },
+        "trine": {
+          "default": 6,
+          "title": "Trine",
+          "type": "integer"
+        },
+        "square": {
+          "default": 6,
+          "title": "Square",
+          "type": "integer"
+        },
+        "sextile": {
+          "default": 5,
+          "title": "Sextile",
+          "type": "integer"
+        }
+      },
+      "title": "Orb",
+      "type": "object"
+    }
+  },
+  "description": "package configuration model",
+  "properties": {
+    "orb": {
+      "$ref": "#/$defs/Orb"
+    }
+  },
+  "required": [
+    "orb"
+  ],
+  "title": "Config",
+  "type": "object"
+}

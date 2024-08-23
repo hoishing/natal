@@ -59,7 +59,16 @@ refer the [documentation] for chart configuration and other details
 
 ## Motivation
 
-Creating a natal chart is the foundation of developing astrological software. Traditionally, the Python ecosystem has focused more on the "data" side, such as the calculation of astrological entities (planet positions, house cusps, etc.) but not as much on the "visualization" side, which involves plotting the natal chart in a graphical format. Current tools are outdated, not very Pythonic, and not friendly to code completion or Copilot(as they often present data in generic types eg. str, list, dict...). Not to mention the lack docstrings, examples, and proper documentation.
+Creating a natal chart is fundamental to developing astrological software. Currently, the Python ecosystem:
+
+- Primarily focuses on the "data" aspect of astrological entities, such as calculating planet positions, house cusps, etc.
+- Lacks robust visualization tools for rendering natal charts in a graphical format
+- The available Python natal charting packages:
+    - Are outdated and not very Pythonic (often due to being ported from other languages)
+    - Are not friendly to code completion or Copilot (as they frequently use generic types like `str`, `list`, `dict`, etc.)
+    - Lack docstrings, examples, and comprehensive documentation
+
+This package aims to address the above problems, and provide a pythonic way to create natal chart.
 
 ## Tech Stack
 

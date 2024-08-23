@@ -1,8 +1,17 @@
-from enum import auto, StrEnum, IntEnum
+"""Astrological `IntEnum` for signs, modalities, elements, polarities, planets, extra points, houses, and aspects
+
+- most `IntEnum` are ⚠️ 1-indexed ⚠️ for astrological convenience
+- `auto()` starts from 1
+- polarities are -1 for negative, 1 for positive
+- aspects value are their respective degrees
+"""
+
+from enum import auto, IntEnum
+from natal.config import load_config
 
 
 class Sign(IntEnum):
-    """12 zodiac signs represented as 1-indexed IntEnum
+    """12 zodiac signs
 
     Examples:
 
@@ -87,7 +96,7 @@ class Sign(IntEnum):
 
 
 class Modality(IntEnum):
-    """3 modalities of Quadruplicity represented as 1-indexed IntEnum"""
+    """3 modalities of Quadruplicity"""
 
     cardinal = 1
     fixed = 2
@@ -103,7 +112,7 @@ class Modality(IntEnum):
 
 
 class Element(IntEnum):
-    """4 elements of Triplicity represented as 1-indexed IntEnum"""
+    """4 elements of Triplicity"""
 
     fire = 1
     earth = 2
@@ -120,24 +129,24 @@ class Element(IntEnum):
 
 
 class Polarity(IntEnum):
-    """2 polarities represented as 0-indexed IntEnum"""
+    """Polarities (-1 for negative, 1 for positive)"""
 
-    positive = 0
-    negative = 1
+    positive = 1
+    negative = -1
 
     @property
     def symbol(self) -> str:
-        return "+-"[self.value]
+        return {1: "+", -1: "-"}[self]
 
     @property
     def signs(self):
-        return [Sign(i) for i in range(self, 12, 2)]
+        return [Sign(i) for i in range(1, 13, 2)]
 
 
 class Planet(IntEnum):
-    """10 planets and luminaries represented as 1-indexed IntEnum"""
+    """10 planets"""
 
-    sun = 0
+    sun = auto()
     moon = auto()
     mercury = auto()
     venus = auto()
@@ -151,7 +160,7 @@ class Planet(IntEnum):
     @property
     def symbol(self) -> str:
         """astrological symbol of the planet"""
-        return "☉☽☿♀♂♃♄♅♆♇"[self]
+        return "☉☽☿♀♂♃♄♅♆♇"[self - 1]
 
     @property
     def swe(self) -> str:
@@ -175,10 +184,10 @@ class Planet(IntEnum):
         )[self]
 
 
-class ExtraPoints(IntEnum):
-    """Extra points in astrology represented as 0-indexed IntEnum"""
+class Extra(IntEnum):
+    """Extra point of interests in astrology"""
 
-    chiron = 0
+    chiron = auto()
     mean_node = auto()
     ascendant = auto()
     midheaven = auto()
@@ -187,11 +196,11 @@ class ExtraPoints(IntEnum):
 
     @property
     def symbol(self) -> str:
-        return "⚷ ☊ Asc MC Dsc IC".split()[self]
+        return "⚷ ☊ Asc MC Dsc IC".split()[self - 1]
 
 
 class House(IntEnum):
-    """12 houses represented as 1-indexed IntEnum"""
+    """12 houses"""
 
     one = 1
     two = 2
@@ -217,17 +226,23 @@ class House(IntEnum):
         return Sign(self).ruler
 
 
-class Aspect(StrEnum):
-    """Astrological aspects represented as StrEnum"""
+class Aspect(IntEnum):
+    """Astrological aspects"""
 
-    conj = "Conjunction"
-    opp = "Opposition"
-    tri = "Trine"
-    squ = "Square"
-    sex = "Sextile"
+    conjunction = 0
+    opposition = 180
+    trine = 120
+    square = 90
+    sextile = 60
+
+    @property
+    def symbol(self) -> str:
+        return "☌☍△□⚹"[list(Aspect).index(self)]
+
+    @property
+    def orb(self) -> float:
+        config = load_config()
+        return config.orb.__getattribute__(self.name)
 
 
-AstroEnums = (
-    Sign | Modality | Element | Polarity | Planet | ExtraPoints | House | Aspect
-)
-"""Union of all astrological entity enums"""
+Entity = Planet | Extra
