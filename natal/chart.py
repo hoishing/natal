@@ -1,15 +1,14 @@
 from math import radians, cos, sin
 from dataclasses import dataclass
-from natal.natal_data import NatalData
+from natal.natal_data import Natal
 from ptag import Tag, svg, path, circle, text, g, line
-
 
 
 @dataclass
 class Chart:
     """SVG representation of natal chart."""
 
-    natal_data: NatalData
+    natal_data: Natal
     width: int = 1000
     height: int = 1000
 
@@ -38,8 +37,14 @@ class Chart:
             '<svg height="100" width="100" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>'
 
         """
-        return svg("", height=height, width=width, viewbox=viewbox, version=version, xmlns=xmlns)
-    
+        return svg(
+            "",
+            height=height,
+            width=width,
+            viewbox=viewbox,
+            version=version,
+            xmlns=xmlns,
+        )
 
     def sector(
         center_x: int,
@@ -90,8 +95,9 @@ class Chart:
                 "Z",
             )
         )
-        return path("", d=path_data, fill=fill, stroke=stroke, stroke_width=stroke_width)
-    
+        return path(
+            "", d=path_data, fill=fill, stroke=stroke, stroke_width=stroke_width
+        )
 
     def __str__(self) -> str:
         pass
