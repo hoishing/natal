@@ -1,5 +1,251 @@
 {
   "$defs": {
+    "DarkTheme": {
+      "description": "default dark colors",
+      "properties": {
+        "red": {
+          "default": "#ef476f",
+          "title": "Red",
+          "type": "string"
+        },
+        "yellow": {
+          "default": "#ffd166",
+          "title": "Yellow",
+          "type": "string"
+        },
+        "green": {
+          "default": "#06d6a0",
+          "title": "Green",
+          "type": "string"
+        },
+        "blue": {
+          "default": "#81bce7",
+          "title": "Blue",
+          "type": "string"
+        },
+        "aqua": {
+          "default": "#118ab2",
+          "title": "Aqua",
+          "type": "string"
+        },
+        "purple": {
+          "default": "##AA96DA",
+          "title": "Purple",
+          "type": "string"
+        },
+        "orange": {
+          "default": "#FFA500",
+          "title": "Orange",
+          "type": "string"
+        },
+        "pink": {
+          "default": "#FFC0CB",
+          "title": "Pink",
+          "type": "string"
+        },
+        "brown": {
+          "default": "#AD8B73",
+          "title": "Brown",
+          "type": "string"
+        },
+        "foreground": {
+          "default": "#F7F3F0",
+          "title": "Foreground",
+          "type": "string"
+        },
+        "background": {
+          "default": "#343a40",
+          "title": "Background",
+          "type": "string"
+        }
+      },
+      "title": "DarkTheme",
+      "type": "object"
+    },
+    "Display": {
+      "description": "display the celestial bodies or not",
+      "properties": {
+        "sun": {
+          "default": true,
+          "title": "Sun",
+          "type": "boolean"
+        },
+        "moon": {
+          "default": true,
+          "title": "Moon",
+          "type": "boolean"
+        },
+        "mercury": {
+          "default": true,
+          "title": "Mercury",
+          "type": "boolean"
+        },
+        "venus": {
+          "default": true,
+          "title": "Venus",
+          "type": "boolean"
+        },
+        "mars": {
+          "default": true,
+          "title": "Mars",
+          "type": "boolean"
+        },
+        "jupiter": {
+          "default": true,
+          "title": "Jupiter",
+          "type": "boolean"
+        },
+        "saturn": {
+          "default": true,
+          "title": "Saturn",
+          "type": "boolean"
+        },
+        "uranus": {
+          "default": true,
+          "title": "Uranus",
+          "type": "boolean"
+        },
+        "neptune": {
+          "default": true,
+          "title": "Neptune",
+          "type": "boolean"
+        },
+        "pluto": {
+          "default": true,
+          "title": "Pluto",
+          "type": "boolean"
+        },
+        "mean_node": {
+          "default": true,
+          "title": "Mean Node",
+          "type": "boolean"
+        },
+        "true_node": {
+          "default": false,
+          "title": "True Node",
+          "type": "boolean"
+        },
+        "mean_apog": {
+          "default": false,
+          "title": "Mean Apog",
+          "type": "boolean"
+        },
+        "oscu_apog": {
+          "default": false,
+          "title": "Oscu Apog",
+          "type": "boolean"
+        },
+        "earth": {
+          "default": false,
+          "title": "Earth",
+          "type": "boolean"
+        },
+        "chiron": {
+          "default": false,
+          "title": "Chiron",
+          "type": "boolean"
+        },
+        "pholus": {
+          "default": false,
+          "title": "Pholus",
+          "type": "boolean"
+        },
+        "ceres": {
+          "default": false,
+          "title": "Ceres",
+          "type": "boolean"
+        },
+        "pallas": {
+          "default": false,
+          "title": "Pallas",
+          "type": "boolean"
+        },
+        "juno": {
+          "default": false,
+          "title": "Juno",
+          "type": "boolean"
+        },
+        "vesta": {
+          "default": false,
+          "title": "Vesta",
+          "type": "boolean"
+        },
+        "asc": {
+          "default": true,
+          "title": "Asc",
+          "type": "boolean"
+        },
+        "mc": {
+          "default": true,
+          "title": "Mc",
+          "type": "boolean"
+        }
+      },
+      "title": "Display",
+      "type": "object"
+    },
+    "LightTheme": {
+      "description": "default light colors",
+      "properties": {
+        "red": {
+          "default": "#ef476f",
+          "title": "Red",
+          "type": "string"
+        },
+        "yellow": {
+          "default": "#ffd166",
+          "title": "Yellow",
+          "type": "string"
+        },
+        "green": {
+          "default": "#06d6a0",
+          "title": "Green",
+          "type": "string"
+        },
+        "blue": {
+          "default": "#81bce7",
+          "title": "Blue",
+          "type": "string"
+        },
+        "aqua": {
+          "default": "#118ab2",
+          "title": "Aqua",
+          "type": "string"
+        },
+        "purple": {
+          "default": "##AA96DA",
+          "title": "Purple",
+          "type": "string"
+        },
+        "orange": {
+          "default": "#FFA500",
+          "title": "Orange",
+          "type": "string"
+        },
+        "pink": {
+          "default": "#FFC0CB",
+          "title": "Pink",
+          "type": "string"
+        },
+        "brown": {
+          "default": "#AD8B73",
+          "title": "Brown",
+          "type": "string"
+        },
+        "foreground": {
+          "default": "#343a40",
+          "title": "Foreground",
+          "type": "string"
+        },
+        "background": {
+          "default": "#F7F3F0",
+          "title": "Background",
+          "type": "string"
+        }
+      },
+      "title": "LightTheme",
+      "type": "object"
+    },
     "Orb": {
       "description": "aspect orb model with default values",
       "properties": {
@@ -24,7 +270,7 @@
           "type": "integer"
         },
         "sextile": {
-          "default": 5,
+          "default": 4,
           "title": "Sextile",
           "type": "integer"
         }
@@ -35,13 +281,93 @@
   },
   "description": "package configuration model",
   "properties": {
+    "light_theme": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/LightTheme"
+        }
+      ],
+      "default": {
+        "red": "#ef476f",
+        "yellow": "#ffd166",
+        "green": "#06d6a0",
+        "blue": "#81bce7",
+        "aqua": "#118ab2",
+        "purple": "##AA96DA",
+        "orange": "#FFA500",
+        "pink": "#FFC0CB",
+        "brown": "#AD8B73",
+        "foreground": "#343a40",
+        "background": "#F7F3F0"
+      }
+    },
     "orb": {
-      "$ref": "#/$defs/Orb"
+      "allOf": [
+        {
+          "$ref": "#/$defs/Orb"
+        }
+      ],
+      "default": {
+        "conjunction": 8,
+        "opposition": 8,
+        "trine": 6,
+        "square": 6,
+        "sextile": 4
+      }
+    },
+    "dark_theme": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/DarkTheme"
+        }
+      ],
+      "default": {
+        "red": "#ef476f",
+        "yellow": "#ffd166",
+        "green": "#06d6a0",
+        "blue": "#81bce7",
+        "aqua": "#118ab2",
+        "purple": "##AA96DA",
+        "orange": "#FFA500",
+        "pink": "#FFC0CB",
+        "brown": "#AD8B73",
+        "foreground": "#F7F3F0",
+        "background": "#343a40"
+      }
+    },
+    "display": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Display"
+        }
+      ],
+      "default": {
+        "sun": true,
+        "moon": true,
+        "mercury": true,
+        "venus": true,
+        "mars": true,
+        "jupiter": true,
+        "saturn": true,
+        "uranus": true,
+        "neptune": true,
+        "pluto": true,
+        "mean_node": true,
+        "true_node": false,
+        "mean_apog": false,
+        "oscu_apog": false,
+        "earth": false,
+        "chiron": false,
+        "pholus": false,
+        "ceres": false,
+        "pallas": false,
+        "juno": false,
+        "vesta": false,
+        "asc": true,
+        "mc": true
+      }
     }
   },
-  "required": [
-    "orb"
-  ],
   "title": "Config",
   "type": "object"
 }

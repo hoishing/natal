@@ -1,0 +1,18 @@
+light_theme:
+    red: "#ff0000"
+    yellow: "#ffff00"
+    green: "#00ff00"
+    blue: "#0000ff"
+    aqua: "#00ffff"
+
+
+display:
+    mean_node: False
+    chiron: True
+
+orb:
+    conjunction: 8
+    opposition: 7
+    trine: 6
+    square: 6
+    sextile: 5

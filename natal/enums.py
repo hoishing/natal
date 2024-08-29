@@ -1,13 +1,13 @@
-"""Astrological `IntEnum` for signs, modalities, elements, polarities, planets, extra points, houses, and aspects
+"""Enums for signs, modalities, elements, polarities, bodies(planets, asteroid, angles), houses, and aspects
 
-- most `IntEnum` are ⚠️ 1-indexed ⚠️ for astrological convenience
-- `auto()` starts from 1
-- polarities are -1 for negative, 1 for positive
-- aspects value are their respective degrees
+Note: 
+    - Sign, Element, Hse, Modality are 1-indexed for astrological convenience
+    - `auto()` starts from 1
+    - polarities are -1 for negative, 1 for positive
+    - aspects value are their respective degrees
 """
 
-from enum import auto, IntEnum
-from natal.config import load_config
+from enum import IntEnum, StrEnum, auto
 
 
 class Sign(IntEnum):
@@ -94,6 +94,10 @@ class Sign(IntEnum):
             Planet.neptune,
         ][self - 1]
 
+    @property
+    def color_name(self) -> str:
+        return self.element.color_name
+
 
 class Modality(IntEnum):
     """3 modalities of Quadruplicity"""
@@ -109,6 +113,10 @@ class Modality(IntEnum):
     @property
     def signs(self) -> list[Sign]:
         return [Sign(i) for i in range(self, 13, 3)]
+
+    @property
+    def color_name(self) -> str:
+        return ["red", "yellow", "green"][self - 1]
 
 
 class Element(IntEnum):
@@ -127,6 +135,10 @@ class Element(IntEnum):
     def signs(self) -> list[Sign]:
         return [Sign(i) for i in range(self, 13, 4)]
 
+    @property
+    def color_name(self) -> str:
+        return ["red", "yellow", "green", "blue"][self - 1]
+
 
 class Polarity(IntEnum):
     """Polarities (-1 for negative, 1 for positive)"""
@@ -144,90 +156,82 @@ class Polarity(IntEnum):
 
 
 class Planet(IntEnum):
-    """10 planets"""
+    """celestial bodies, including planets, asteroid and angles.
 
-    sun = auto()
-    moon = auto()
-    mercury = auto()
-    venus = auto()
-    mars = auto()
-    jupiter = auto()
-    saturn = auto()
-    uranus = auto()
-    neptune = auto()
-    pluto = auto()
+    both name and value match Swiss Ephemeris constants"""
+
+    sun = 0
+    moon = 1
+    mercury = 2
+    venus = 3
+    mars = 4
+    jupiter = 5
+    saturn = 6
+    uranus = 7
+    neptune = 8
+    pluto = 9
 
     @property
     def symbol(self) -> str:
         """astrological symbol of the planet"""
-        return "☉☽☿♀♂♃♄♅♆♇"[self - 1]
-
+        return "☉☽☿♀♂♃♄♅♆♇"[self]
+    
     @property
-    def swe(self) -> str:
-        """swiss ephemeris constant"""
-        return "SE_" + self.name.upper()
-
-    @property
-    def ruling(self) -> list[Sign]:
-        """signs ruled by the planet"""
-        return (
-            [Sign.aries],
-            [Sign.cancer],
-            [Sign.gemini, Sign.virgo],
-            [Sign.taurus, Sign.libra],
-            [Sign.aries],
-            [Sign.sagittarius],
-            [Sign.capricorn],
-            [Sign.aquarius],
-            [Sign.pisces],
-            [Sign.scorpio],
-        )[self]
+    def color_name(self) -> str:
+        rulers = [s.ruler for s in Sign]
+        idx = rulers.index(self)
+        return Sign(idx + 1).color_name
 
 
-class Extra(IntEnum):
-    """Extra point of interests in astrology"""
+class Asteroid(IntEnum):
+    """asteroids"""
 
-    chiron = auto()
-    mean_node = auto()
-    ascendant = auto()
-    midheaven = auto()
-    descendant = auto()
-    imum_coeli = auto()
+    chiron = 15
+    pholus = 16
+    ceres = 17
+    pallas = 18
+    juno = 19
+    vesta = 20
 
     @property
     def symbol(self) -> str:
-        return "⚷ ☊ Asc MC Dsc IC".split()[self - 1]
-
-
-class House(IntEnum):
-    """12 houses"""
-
-    one = 1
-    two = 2
-    three = 3
-    four = 4
-    five = 5
-    six = 6
-    seven = 7
-    eight = 8
-    nine = 9
-    ten = 10
-    eleven = 11
-    twelve = 12
+        return "⚷⯛⚳⚴⚵⚶"[self - 15]
 
     @property
-    def sign(self):
-        """sign on the cusp of the house"""
-        return Sign(self)
+    def color_name(self) -> str:
+        return "purple"
+
+
+class Points(IntEnum):
+    """celestial points, including nodes and apogees"""
+
+    mean_node = 10
+    asc = -2
+    mc = -2
 
     @property
-    def ruler(self):
-        """ruler of the house"""
-        return Sign(self).ruler
+    def symbol(self) -> str:
+        return "☊ Asc MC"[self - 10]
+
+    @property
+    def color_name(self) -> str:
+        return ["aqua", "red", "yellow"][self - 1]
+
+
+class HouseSystem(StrEnum):
+    """Astrological house systems, values are Swiss Ephemeris constants"""
+
+    Placidus = "P"
+    Koch = "K"
+    Porphyry = "O"
+    Regiomontanus = "R"
+    Campanus = "C"
+    Equal = "E"
+    Whole_Sign = "W"
 
 
 class Aspect(IntEnum):
-    """Astrological aspects"""
+    """Astrological aspects, values are degrees"""
 
     conjunction = 0
     opposition = 180
@@ -240,9 +244,6 @@ class Aspect(IntEnum):
         return "☌☍△□⚹"[list(Aspect).index(self)]
 
     @property
-    def orb(self) -> float:
-        config = load_config()
-        return config.orb.__getattribute__(self.name)
-
-
-Entity = Planet | Extra
+    def color_name(self) -> str:
+        idx = list(Aspect).index(self)
+        return ["orange", "blue", "green", "red", "aqua"][idx]
