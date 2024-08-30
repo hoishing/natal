@@ -1,6 +1,6 @@
 from math import radians, cos, sin
 from dataclasses import dataclass
-from natal.natal_data import Natal
+from natal.natal_data import NatalData
 from ptag import Tag, svg, path, circle, text, g, line
 
 
@@ -8,7 +8,7 @@ from ptag import Tag, svg, path, circle, text, g, line
 class Chart:
     """SVG representation of natal chart."""
 
-    natal_data: Natal
+    natal_data: NatalData
     width: int = 1000
     height: int = 1000
 
