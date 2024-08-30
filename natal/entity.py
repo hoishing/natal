@@ -1,18 +1,25 @@
 from natal.enums import Sign, Planet, Asteroid, Points
-from pydantic import BaseModel
+from pydantic import Field, field_validator
+from pydantic.dataclasses import dataclass
 
 
-class Entity(BaseModel):
+@dataclass
+class Entity:
     """astrological entity in natal chart"""
 
     body: Planet | Asteroid | Points
     """celestial body"""
 
-    degree: float
+    degree: float = Field(..., ge=0, le=359.99)
     """decimal degree, between 0 and 359.99"""
 
-    retro: bool
+    retro: bool = False
     """is retrograde or not"""
+
+    @field_validator("degree")
+    @classmethod
+    def round_degree(cls, degree):
+        return round(degree, 3)
 
     @property
     def signed_deg(self) -> int:

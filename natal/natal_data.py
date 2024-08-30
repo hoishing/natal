@@ -1,28 +1,29 @@
-from dataclasses import dataclass
-from typing import Any
 from natal.enums import Aspect, HouseSystem, Sign, Points, Planet, Asteroid
 from natal.entity import Entity
 import swisseph as swe
 from datetime import datetime
 import pandas as pd
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
+from pydantic.dataclasses import dataclass
 from datetime import datetime
 
 swe.set_ephe_path("natal/data")
 
 
 @dataclass
-class Natal(BaseModel):
+class NatalData:
     """Data object for a natal chart."""
 
     name: str
     city: str
     dt: datetime
-    hse_sys: HouseSystem = HouseSystem.Placidus
-    entities: list[Entity] = []
-    cusps: list[float] = []
+    house_sys: HouseSystem = HouseSystem.Placidus
+    entities: list[Entity] = Field(default_factory=list)
+    cusps: list[float] = Field(default_factory=list)
+    lat: float = Field(None, ge=-90, le=90)
+    lon: float = Field(None, ge=-180, le=180)
 
-    def model_post_init(self) -> None:
+    def __post_init__(self):
         self.set_lat_lon()
         self.set_cusp_asc_mc()
         self.set_entities()
@@ -45,9 +46,9 @@ class Natal(BaseModel):
 
         # fields: name, ascii_name, pop, timezone, country, lat, lon
         cities = pd.read_csv("natal/data/cities.csv")
-        info = cities[cities["ascii_name"] == self.city].iloc[0]
-        self.lat = info["lat"]
-        self.lon = info["lon"]
+        info = cities[cities["ascii_name"].str.lower() == self.city.lower()].iloc[0]
+        self.lat = float(info["lat"])
+        self.lon = float(info["lon"])
 
     def set_entities(self):
         """Set the positions of the planets and other celestial bodies."""
@@ -66,11 +67,16 @@ class Natal(BaseModel):
     def set_cusp_asc_mc(self) -> None:
         """Calculate the cusps of the houses."""
 
-        self.cusp, (asc_deg, mc_deg, *_) = swe.houses(
+        cusps, (asc_deg, mc_deg, *_) = swe.houses(
             self.julian_day,
             self.lat,
             self.lon,
-            self.hse_sys.encode(),
+            self.house_sys.encode(),
         )
-        self.entities.append(Entity(Points.asc, asc_deg))
-        self.entities.append(Entity(Points.mc, mc_deg))
+        self.cusps = [round(cusp, 2) for cusp in cusps]
+        self.entities.extend(
+            [
+                Entity(Points.asc, asc_deg),
+                Entity(Points.mc, mc_deg),
+            ]
+        )
