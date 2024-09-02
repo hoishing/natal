@@ -6,11 +6,21 @@
 """
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, GetAttrProtocol
 from pathlib import Path
+from typing import Any, TypeVar
+
+T = TypeVar('T')
+
+class SubscriptableModel(BaseModel):
+    def __getitem__(self: GetAttrProtocol[T], key: str) -> T:
+        return getattr(self, key)
+    
+    def __setitem__(self, key: str, value: Any) -> None:
+        setattr(self, key, value)
 
 
-class Orb(BaseModel):
+class Orb(SubscriptableModel):
     """aspect orb model with default values"""
 
     conjunction: int = 8
@@ -20,7 +30,7 @@ class Orb(BaseModel):
     sextile: int = 4
 
 
-class Theme(BaseModel):
+class Theme(SubscriptableModel):
     """default colors"""
 
     fire: str = "#ef476f"  # fire, square, Asc
@@ -50,7 +60,7 @@ class DarkTheme(Theme):
     background: str = "#343a40"
 
 
-class Display(BaseModel):
+class Display(SubscriptableModel):
     """display the celestial bodies or not"""
 
     sun: bool = True

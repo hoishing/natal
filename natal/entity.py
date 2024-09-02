@@ -8,8 +8,9 @@ from math import floor
 class Entity:
     """astrological entity in natal chart"""
 
-    body: Body
-    """celestial body"""
+    name: str
+    color: str
+    symbol: str
 
     degree: float = Field(..., ge=0, le=359.99)
     """decimal degree, between 0 and 359.99"""

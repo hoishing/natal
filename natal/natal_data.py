@@ -1,4 +1,13 @@
-from natal.enums import AspectType, HouseSystem, Sign, Points, Planet, Asteroid
+from natal.enums import (
+    AspectType,
+    HouseSystem,
+    Sign,
+    Points,
+    Planets,
+    Asteroids,
+    Body,
+    HouseType,
+)
 from natal.house import House
 from natal.entity import Entity
 import swisseph as swe
@@ -25,6 +34,7 @@ class NatalData:
     lat: float = Field(None, ge=-90, le=90)
     lon: float = Field(None, ge=-180, le=180)
     house_sys: HouseSystem = HouseSystem.Placidus
+    houses: list[House] = Field(default_factory=list)
     entities: list[Entity] = Field(default_factory=list)
 
     def __post_init__(self):
@@ -61,7 +71,11 @@ class NatalData:
 
     def set_entities(self):
         """Set the positions of the planets and other celestial bodies."""
-        bodies = list(Planet) + list(Asteroid) + [p for p in Points if p > 0]
+        self.planets = Planets
+        self.asteroids = Asteroids
+        self.points = Points
+
+        bodies: list[Body] = list(Planets) + list(Asteroids) + list(Points)
 
         for body in bodies:
             # return (lat, lon, dist, speed_lat, speed_lon, speed_dist), flag_used)
@@ -71,9 +85,15 @@ class NatalData:
                 _,
             ) = swe.calc_ut(self.julian_day, body)
             retro = speed < 0
-            entity = Entity(body, lon, retro)
+            entity = Entity(
+                name=body.name,
+                color=self.config.theme[body.color_name],
+                symbol=body.symbol,
+                degree=lon,
+                retro=retro,
+            )
             self.entities.append(entity)
-            setattr(self, body.name, entity)
+            setattr(self, entity.name, entity)
 
     def set_cusp_asc_mc(self) -> None:
         """Calculate the cusps of the houses."""
@@ -85,8 +105,12 @@ class NatalData:
             self.house_sys.encode(),
         )
         for i, cusp in enumerate(cusps):
-            house = House(num=i + 1, cusp=floor(cusp * 100) / 100)
-            self.houses.append(house)
+            cusp = floor(cusp * 100) / 100
+            self.houses = HouseType(i + 1)
+            house = House(
+                num=i + 1,
+            )
+
             self.entities.append(Entity(house, cusp))
 
         asc = Entity(Points.asc, asc_deg)
@@ -95,7 +119,7 @@ class NatalData:
         self.asc = asc
         self.mc = mc
 
-    def get_entity(self, body: Planet | Asteroid | Points) -> Entity:
+    def get_entity(self, body: Planets | Asteroids | Points) -> Entity:
         """Get an entity by body."""
         return next(e for e in self.entities if e.body == body)
 
