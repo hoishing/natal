@@ -5,11 +5,11 @@ from typing import Generator
 
 config = """
 light_theme:
-    red: "#ff0000"
-    yellow: "#ffff00"
-    green: "#00ff00"
-    blue: "#0000ff"
-    aqua: "#00ffff"
+    fire: "#ff0000"
+    earth: "#ffff00"
+    air: "#00ff00"
+    water: "#0000ff"
+    points: "#00ffff"
 
 
 display:
@@ -38,6 +38,6 @@ def tmp_config_file() -> Generator[str, None, None]:
 def test_load_config(tmp_config_file: str) -> None:
     cfg = load_config(tmp_config_file)
 
-    assert cfg.light_theme.red == "#ff0000"
+    assert cfg.is_light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7

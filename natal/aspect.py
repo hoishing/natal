@@ -1,15 +1,15 @@
 from typing import NamedTuple
-from natal.enums import Body, Aspect, House
-from natal.config import CONFIG
+from natal.enums import AspectType, Points, Asteroid, Planet
+from natal.config import load_config, Config
 
 
 class Aspect(NamedTuple):
     """Aspect between two astrological entities
 
     Args:
-        entity1 (Planet | House): first entity
-        entity2 (Planet | House): second entity
-        aspect (Aspect): aspect between the entities
+        entity1 (Planet | Points | Asteroid): first entity
+        entity2 (Planet | Points | Asteroid): second entity
+        aspect (AspectEnum): aspect between the entities
 
     Example:
 
@@ -18,14 +18,19 @@ class Aspect(NamedTuple):
         "trine"
     """
 
-    entity1: Body | House
+    entity1: Planet | Points | Asteroid
     """first entity"""
-    entity2: Body | House
+    entity2: Planet | Points | Asteroid
     """second entity"""
-    enum: Aspect
+    aspect: AspectType
     """aspect between the entities"""
+
+    @property
+    def config(self) -> Config:
+        """config"""
+        return load_config()
 
     @property
     def orb(self) -> int:
         """orb of the aspect"""
-        return getattr(CONFIG.orb, self.enum.name)
+        return getattr(self.config.orb, self.aspect.name)

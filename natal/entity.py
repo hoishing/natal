@@ -1,13 +1,14 @@
-from natal.enums import Sign, Planet, Asteroid, Points
+from natal.enums import Sign, Body
 from pydantic import Field, field_validator
 from pydantic.dataclasses import dataclass
+from math import floor
 
 
 @dataclass
 class Entity:
     """astrological entity in natal chart"""
 
-    body: Planet | Asteroid | Points
+    body: Body
     """celestial body"""
 
     degree: float = Field(..., ge=0, le=359.99)
@@ -19,12 +20,7 @@ class Entity:
     @field_validator("degree")
     @classmethod
     def round_degree(cls, degree):
-        return round(degree, 3)
-
-    @property
-    def signed_deg(self) -> int:
-        """degree in sign, between 0 and 29"""
-        return int(self.degree % 30)
+        return round(degree, 2)
 
     @property
     def sign(self) -> Sign:
@@ -32,11 +28,15 @@ class Entity:
         return Sign(int(self.degree // 30) + 1)
 
     @property
+    def signed_deg(self) -> int:
+        """degree in sign, between 0 and 29"""
+        return int(self.degree % 30)
+
+    @property
     def minute(self) -> int:
         """minute of the entity, between 0 and 59"""
         minutes = (self.degree % 30 - self.signed_deg) * 60
-        round_min = round(minutes)
-        return round_min if round_min != 60 else 59
+        return floor(minutes)
 
     @property
     def rx(self) -> str | None:
@@ -46,11 +46,15 @@ class Entity:
     @property
     def dms(self) -> str:
         """Degree Minute Second representation of the position"""
-        base = f"{self.signed_deg}° {self.minute}'"
-        return f"{base} {self.rx}" if self.rx else base
+        op = [f"{self.signed_deg}°", f"{self.minute}'"]
+        if self.rx:
+            op.append(self.rx)
+        return " ".join(op)
 
     @property
     def signed_dms(self) -> str:
         """Degree Minute representation with sign"""
-        base = f"{self.signed_deg} {self.sign.symbol} {self.minute}"
-        return f"{base} {self.rx}" if self.rx else base
+        op = [f"{self.signed_deg}", f"{self.sign.symbol}", f"{self.minute}'"]
+        if self.rx:
+            op.append(self.rx)
+        return " ".join(op)

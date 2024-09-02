@@ -1,9 +1,11 @@
+is_light_theme: false
+
 light_theme:
-    red: "#ff0000"
-    yellow: "#ffff00"
-    green: "#00ff00"
-    blue: "#0000ff"
-    aqua: "#00ffff"
+    fire: "#ff0000"
+    earth: "#ffff00"
+    air: "#00ff00"
+    water: "#0000ff"
+    points: "#00ffff"
 
 
 display:

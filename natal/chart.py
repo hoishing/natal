@@ -1,7 +1,10 @@
 from math import radians, cos, sin
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
+from pydantic import Field
 from natal.natal_data import NatalData
 from ptag import Tag, svg, path, circle, text, g, line
+from natal.enums import Points, Element, Sign
+from natal.config import Config, load_config
 
 
 @dataclass
@@ -9,46 +12,29 @@ class Chart:
     """SVG representation of natal chart."""
 
     natal_data: NatalData
-    width: int = 1000
-    height: int = 1000
+    width: int
+    height: int | None = None
+    config: Config = Field(default_factory=load_config)
 
-    def svg_root(
-        height: int,
-        width: int,
-        viewbox: str | None = None,
-        version: str = "1.1",
-        xmlns: str = "http://www.w3.org/2000/svg",
-    ) -> Tag:
-        """
-        Generate an SVG element with sensible defaults.
+    def __post_init__(self):
+        if self.height is None:
+            self.height = self.width
 
-        Parameters:
-            height (int): The height of the SVG element.
-            width (int): The width of the SVG element.
-            viewbox (str, optional): The viewbox of the SVG element. Defaults to None.
-            version (str, optional): The version of SVG. Defaults to "1.1".
-            xmlns (str, optional): The XML namespace of SVG. Defaults to "http://www.w3.org/2000/svg".
+    @property
+    def svg_root(self) -> Tag:
+        """Generate an SVG element with sensible defaults"""
 
-        Returns:
-            svg_tag: The generated SVG element.
-
-        Example:
-            >>> svg("", 100, 100)
-            '<svg height="100" width="100" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>'
-
-        """
         return svg(
             "",
-            height=height,
-            width=width,
-            viewbox=viewbox,
-            version=version,
-            xmlns=xmlns,
+            height=self.height,
+            width=self.width,
+            # viewbox=None,
+            version="1.1",
+            xmlns="http://www.w3.org/2000/svg",
         )
 
     def sector(
-        center_x: int,
-        center_y: int,
+        self,
         radius: int,
         start_deg: float,
         end_deg: float,
@@ -60,8 +46,6 @@ class Chart:
         Creates a sector shape in SVG format.
 
         Args:
-            center_x (int): The x-coordinate of the center of the sector.
-            center_y (int): The y-coordinate of the center of the sector.
             radius (int): The radius of the sector.
             start_deg (float): The starting angle of the sector in degrees.
             end_deg (float): The ending angle of the sector in degrees.
@@ -76,6 +60,8 @@ class Chart:
             >>> sector(100, 100, 50, 0, 90)
             <path d="M100 100 L50.0 100.0 A50 50 0 0 0 100.0 150.0 Z" fill="white" stroke="black" stroke-width="1"></path>
         """
+        center_x: float = self.width / 2
+        center_y: float = self.height / 2
         start_rad = radians(start_deg)
         end_rad = radians(end_deg)
         start_x = center_x - radius * cos(start_rad)
@@ -99,5 +85,38 @@ class Chart:
             "", d=path_data, fill=fill, stroke=stroke, stroke_width=stroke_width
         )
 
-    def __str__(self) -> str:
-        pass
+    def wheel(
+        self,
+        radius: int | None = None,
+        stroke_width: int = 1,
+    ) -> Tag:
+        """
+        Creates a wheel shape in SVG format.
+
+        Returns:
+            Tag: The SVG tag representing the wheel shape.
+        """
+
+        max_radius = min(self.width, self.height) // 2
+
+        if radius is None:
+            radius = max_radius
+
+        if radius > max_radius:
+            raise ValueError(f"{radius=} > half of the chart: {max_radius}")
+
+        # offset from asc in NatalData.entities
+        offset = self.natal_data.get_entity(Points.asc).degree
+
+        for i in range(12):
+            start_deg = i * 30 + offset
+            end_deg = start_deg + 30
+            fill_hex = getattr(self.config.theme, Sign(i + 1).color_name)
+            self.sector(
+                radius=radius,
+                start_deg=start_deg,
+                end_deg=end_deg,
+                fill=fill_hex,
+                stroke=self.config.theme.foreground,
+                stroke_width=stroke_width,
+            )
