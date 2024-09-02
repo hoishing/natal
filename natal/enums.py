@@ -7,9 +7,12 @@ Note:
     - aspects value are their respective degrees
 """
 
-from enum import IntEnum, StrEnum
+from enum import IntEnum, StrEnum, Enum
 from abc import ABC, abstractmethod
 
+
+def pos(member: Enum):
+    return list(member.__class__).index(member)
 
 class Body(ABC):
     name: str
@@ -92,21 +95,21 @@ class Sign(IntEnum, Body):
         return (list(Polarity) * 6)[self - 1]
 
     @property
-    def ruler(self) -> "Planet":
+    def ruler(self) -> "Planets":
         """ruler of the sign"""
         return [
-            Planet.mars,
-            Planet.venus,
-            Planet.mercury,
-            Planet.moon,
-            Planet.sun,
-            Planet.mercury,
-            Planet.venus,
-            Planet.mars,
-            Planet.jupiter,
-            Planet.saturn,
-            Planet.uranus,
-            Planet.neptune,
+            Planets.mars,
+            Planets.venus,
+            Planets.mercury,
+            Planets.moon,
+            Planets.sun,
+            Planets.mercury,
+            Planets.venus,
+            Planets.mars,
+            Planets.jupiter,
+            Planets.saturn,
+            Planets.uranus,
+            Planets.neptune,
         ][self - 1]
 
     @property
@@ -170,7 +173,7 @@ class Polarity(IntEnum):
         return [Sign(i) for i in range(1, 13, 2)]
 
 
-class Planet(IntEnum, Body):
+class Planets(IntEnum, Body):
     """celestial bodies, including planets, asteroid and angles.
 
     both name and value match Swiss Ephemeris constants"""
@@ -198,7 +201,7 @@ class Planet(IntEnum, Body):
         return Sign(idx + 1).color_name
 
 
-class Asteroid(IntEnum, Body):
+class Asteroids(IntEnum, Body):
     """asteroids"""
 
     chiron = 15
@@ -210,23 +213,25 @@ class Asteroid(IntEnum, Body):
 
     @property
     def symbol(self) -> str:
-        return "⚷⯛⚳⚴⚵⚶"[self - 15]
+        return "⚷⯛⚳⚴⚵⚶"[pos(self)]
+    
+    @property
+    def color_name(self) -> str:
+        return self.__class__.__name__.lower()
 
 
 class Points(IntEnum, Body):
     """celestial points, including nodes and apogees"""
 
     mean_node = 10
-    asc = -2
-    mc = -3
 
     @property
     def symbol(self) -> str:
-        return "☊ Asc MC"[self - 10]
+        return "☊"[pos(self)]
 
     @property
     def color_name(self) -> str:
-        return ["points", "fire", "earth"][self - 1]
+        return self.__class__.__name__.lower()
 
 
 class HouseType(IntEnum, Body):
@@ -275,9 +280,8 @@ class AspectType(IntEnum):
 
     @property
     def symbol(self) -> str:
-        return "☌☍△□⚹"[list(AspectType).index(self)]
+        return "☌☍△□⚹"[pos(self)]
 
     @property
     def color_name(self) -> str:
-        idx = list(AspectType).index(self)
-        return ["orange", "blue", "green", "red", "aqua"][idx]
+        return ["orange", "blue", "green", "red", "aqua"][pos(self)]

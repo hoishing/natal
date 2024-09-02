@@ -1,5 +1,5 @@
 from typing import NamedTuple
-from natal.enums import AspectType, Points, Asteroid, Planet
+from natal.enums import AspectType, Points, Asteroids, Planets
 from natal.config import load_config, Config
 
 
@@ -18,9 +18,9 @@ class Aspect(NamedTuple):
         "trine"
     """
 
-    entity1: Planet | Points | Asteroid
+    entity1: Planets | Points | Asteroids
     """first entity"""
-    entity2: Planet | Points | Asteroid
+    entity2: Planets | Points | Asteroids
     """second entity"""
     aspect: AspectType
     """aspect between the entities"""

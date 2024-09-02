@@ -25,5 +25,6 @@ class House:
     def body(self) -> HouseType:
         """type of the house"""
         return HouseType(self.num)
+
     
 
