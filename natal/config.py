@@ -23,15 +23,15 @@ class Orb(BaseModel):
 class Theme(BaseModel):
     """default colors"""
 
-    red: str = "#ef476f"  # fire, square, Asc
-    yellow: str = "#ffd166"  # earth, MC
-    green: str = "#06d6a0"  # air, trine
-    blue: str = "#81bce7"  # water, opposition
-    aqua: str = "#118ab2"  # lunar nodes, sextile
-    purple: str = "##AA96DA"  # asteroids
-    orange: str = "#FFA500"  # conjunction
-    pink: str = "#FFC0CB"  # positive
-    brown: str = "#AD8B73"  # negative
+    fire: str = "#ef476f"  # fire, square, Asc
+    earth: str = "#ffd166"  # earth, MC
+    air: str = "#06d6a0"  # air, trine
+    water: str = "#81bce7"  # water, opposition
+    points: str = "#118ab2"  # lunar nodes, sextile
+    asteroids: str = "##AA96DA"  # asteroids
+    positive: str = "#FFC0CB"  # positive
+    negative: str = "#AD8B73"  # negative
+    others: str = "#FFA500"  # conjunction
     foreground: str
     background: str
 
@@ -81,16 +81,16 @@ class Display(BaseModel):
 class Config(BaseModel):
     """package configuration model"""
 
-    light_theme: bool = True
+    is_light_theme: bool = True
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()
 
     @property
-    def colors(self) -> Theme:
+    def theme(self) -> Theme:
         """return light or dark theme colors"""
-        return self.light_theme if self.light_theme else self.dark_theme
+        return self.light_theme if self.is_light_theme else self.dark_theme
 
 
 def load_config(file: str = "natal_config.yml") -> Config:

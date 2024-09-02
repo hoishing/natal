@@ -19,6 +19,6 @@ def test_entity(
     expected_dms,
     expected_sign_dms,
 ):
-    obj = Entity(body=body, degree=degree, retro=retro)
+    obj = Entity(body, degree, retro)
     assert obj.dms == expected_dms
     assert obj.signed_dms == expected_sign_dms

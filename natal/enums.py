@@ -7,10 +7,25 @@ Note:
     - aspects value are their respective degrees
 """
 
-from enum import IntEnum, StrEnum, auto
+from enum import IntEnum, StrEnum
+from abc import ABC, abstractmethod
 
 
-class Sign(IntEnum):
+class Body(ABC):
+    name: str
+
+    @property
+    @abstractmethod
+    def symbol(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def color_name(self) -> str:
+        pass
+
+
+class Sign(IntEnum, Body):
     """12 zodiac signs
 
     Examples:
@@ -96,7 +111,7 @@ class Sign(IntEnum):
 
     @property
     def color_name(self) -> str:
-        return self.element.color_name
+        return self.element.name
 
 
 class Modality(IntEnum):
@@ -116,7 +131,7 @@ class Modality(IntEnum):
 
     @property
     def color_name(self) -> str:
-        return ["red", "yellow", "green"][self - 1]
+        return ["fire", "earth", "air"][self - 1]
 
 
 class Element(IntEnum):
@@ -137,7 +152,7 @@ class Element(IntEnum):
 
     @property
     def color_name(self) -> str:
-        return ["red", "yellow", "green", "blue"][self - 1]
+        return self.name
 
 
 class Polarity(IntEnum):
@@ -155,7 +170,7 @@ class Polarity(IntEnum):
         return [Sign(i) for i in range(1, 13, 2)]
 
 
-class Planet(IntEnum):
+class Planet(IntEnum, Body):
     """celestial bodies, including planets, asteroid and angles.
 
     both name and value match Swiss Ephemeris constants"""
@@ -175,7 +190,7 @@ class Planet(IntEnum):
     def symbol(self) -> str:
         """astrological symbol of the planet"""
         return "☉☽☿♀♂♃♄♅♆♇"[self]
-    
+
     @property
     def color_name(self) -> str:
         rulers = [s.ruler for s in Sign]
@@ -183,7 +198,7 @@ class Planet(IntEnum):
         return Sign(idx + 1).color_name
 
 
-class Asteroid(IntEnum):
+class Asteroid(IntEnum, Body):
     """asteroids"""
 
     chiron = 15
@@ -197,17 +212,13 @@ class Asteroid(IntEnum):
     def symbol(self) -> str:
         return "⚷⯛⚳⚴⚵⚶"[self - 15]
 
-    @property
-    def color_name(self) -> str:
-        return "purple"
 
-
-class Points(IntEnum):
+class Points(IntEnum, Body):
     """celestial points, including nodes and apogees"""
 
     mean_node = 10
     asc = -2
-    mc = -2
+    mc = -3
 
     @property
     def symbol(self) -> str:
@@ -215,7 +226,30 @@ class Points(IntEnum):
 
     @property
     def color_name(self) -> str:
-        return ["aqua", "red", "yellow"][self - 1]
+        return ["points", "fire", "earth"][self - 1]
+
+
+class HouseType(IntEnum, Body):
+    one = 1
+    two = 2
+    three = 3
+    four = 4
+    five = 5
+    six = 6
+    seven = 7
+    eight = 8
+    nine = 9
+    ten = 10
+    eleven = 11
+    twelve = 12
+
+    @property
+    def symbol(self) -> str:
+        return str(self)
+
+    @property
+    def color_name(self) -> str:
+        return Sign(self).color_name
 
 
 class HouseSystem(StrEnum):
@@ -230,7 +264,7 @@ class HouseSystem(StrEnum):
     Whole_Sign = "W"
 
 
-class Aspect(IntEnum):
+class AspectType(IntEnum):
     """Astrological aspects, values are degrees"""
 
     conjunction = 0
@@ -241,9 +275,9 @@ class Aspect(IntEnum):
 
     @property
     def symbol(self) -> str:
-        return "☌☍△□⚹"[list(Aspect).index(self)]
+        return "☌☍△□⚹"[list(AspectType).index(self)]
 
     @property
     def color_name(self) -> str:
-        idx = list(Aspect).index(self)
+        idx = list(AspectType).index(self)
         return ["orange", "blue", "green", "red", "aqua"][idx]
