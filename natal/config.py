@@ -86,6 +86,11 @@ class Display(SubscriptableModel):
     vesta: bool = False
     asc: bool = True
     mc: bool = True
+    conjunction: bool = True
+    opposition: bool = True
+    trine: bool = True
+    square: bool = True
+    sextile: bool = True
 
 
 class Config(BaseModel):

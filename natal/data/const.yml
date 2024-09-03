@@ -73,9 +73,9 @@ Others:
         - yellow
         - red
 
-Houses:
-    sys: [placidus, koch, regiomontanus, campanus, equal, porphyry, whole sign]
-    swe_symbol: [P, K, R, C, E, O, W]
+HouseSystem:
+    name: [placidus, koch, regiomontanus, campanus, equal, porphyry, whole sign]
+    sym: [P, K, R, C, E, O, W]
 
 
 Aspects:

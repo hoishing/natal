@@ -1,4 +1,4 @@
-from natal.entity import Entity
+from natal.entity import Position
 from natal.enums import Planets
 from pytest import mark
 
@@ -19,6 +19,6 @@ def test_entity(
     expected_dms,
     expected_sign_dms,
 ):
-    obj = Entity(body, degree, retro)
+    obj = Position(body, degree, retro)
     assert obj.dms == expected_dms
     assert obj.signed_dms == expected_sign_dms

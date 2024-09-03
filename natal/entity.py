@@ -1,22 +1,22 @@
-from natal.enums import Sign, Body
+from natal.enums import Sign
 from pydantic import Field, field_validator
-from pydantic.dataclasses import dataclass
 from math import floor
+from typing import Self
+from natal.const import Entity
 
 
-@dataclass
-class Entity:
+class Position(Entity):
     """astrological entity in natal chart"""
 
-    name: str
-    color: str
-    symbol: str
-
-    degree: float = Field(..., ge=0, le=359.99)
+    degree: float | None = Field(None, ge=0, le=359.99)
     """decimal degree, between 0 and 359.99"""
 
     retro: bool = False
     """is retrograde or not"""
+
+    @classmethod
+    def create(cls, entity: Entity) -> Self:
+        return Self(name=entity.name, symbol=entity.symbol, color=entity.color)
 
     @field_validator("degree")
     @classmethod
