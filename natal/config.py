@@ -6,16 +6,21 @@
 """
 
 import yaml
-from pydantic import BaseModel, GetAttrProtocol
+from pydantic import BaseModel
+from typing import Protocol, TypeVar, Any
 from pathlib import Path
-from typing import Any, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
+
+
+class GetAttrProtocol(Protocol[T]):
+    def __getattr__(self, name: str) -> T: ...
+
 
 class SubscriptableModel(BaseModel):
     def __getitem__(self: GetAttrProtocol[T], key: str) -> T:
         return getattr(self, key)
-    
+
     def __setitem__(self, key: str, value: Any) -> None:
         setattr(self, key, value)
 

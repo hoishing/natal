@@ -1,5 +1,4 @@
 """utility functions for natal"""
-
 from natal.config import Config, load_config
 from typing import Iterable
 

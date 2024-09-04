@@ -1,7 +1,7 @@
 from math import radians, cos, sin
 from pydantic.dataclasses import dataclass
 from pydantic import Field
-from natal.natal_data import NatalData
+from natal.data import Data
 from ptag import Tag, svg, path, circle, text, g, line
 from natal.enums import Points, Element, Sign
 from natal.config import Config, load_config
@@ -11,7 +11,7 @@ from natal.config import Config, load_config
 class Chart:
     """SVG representation of natal chart."""
 
-    natal_data: NatalData
+    natal_data: Data
     width: int
     height: int | None = None
     config: Config = Field(default_factory=load_config)

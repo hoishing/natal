@@ -1,32 +1,25 @@
-from natal.enums import Sign, Body
-from pydantic import Field, field_validator
-from pydantic.dataclasses import dataclass
+from natal.const import *
+from pydantic import BaseModel, Field, field_validator
+from typing import NamedTuple
+from enum import StrEnum
 from math import floor
 
 
-@dataclass
-class Entity:
-    """astrological entity in natal chart"""
-
+class Entity(BaseModel):
     name: str
-    color: str
     symbol: str
+    value: int | str
+    color: str
 
-    degree: float = Field(..., ge=0, le=359.99)
-    """decimal degree, between 0 and 359.99"""
 
+class MovableEntity(Entity):
+    degree: float = Field(..., gt=0, lt=360)
     retro: bool = False
-    """is retrograde or not"""
 
     @field_validator("degree")
     @classmethod
     def round_degree(cls, degree):
-        return round(degree, 2)
-
-    @property
-    def sign(self) -> Sign:
-        """sign of the entity"""
-        return Sign(int(self.degree // 30) + 1)
+        return round(degree, 4)
 
     @property
     def signed_deg(self) -> int:
@@ -55,7 +48,33 @@ class Entity:
     @property
     def signed_dms(self) -> str:
         """Degree Minute representation with sign"""
-        op = [f"{self.signed_deg}", f"{self.sign.symbol}", f"{self.minute}'"]
+        idx = int(self.degree // 30)
+        symbol = SIGNS["symbol"][idx]
+        op = [f"{self.signed_deg}", symbol, f"{self.minute}'"]
         if self.rx:
             op.append(self.rx)
         return " ".join(op)
+
+
+class Sign(MovableEntity):
+    name: SignName
+    ruler: str
+    quality: str
+    element: str
+    polarity: str
+
+
+class Aspect(NamedTuple):
+    entity1: MovableEntity
+    entity2: MovableEntity
+    aspect_type: Entity
+
+
+class HouseSys(StrEnum):
+    Placidus = "P"
+    Koch = "K"
+    Equal = "E"
+    Campanus = "C"
+    Regiomontanus = "R"
+    Porphyry = "P"
+    Whole_Sign = "W"
