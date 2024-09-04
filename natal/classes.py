@@ -3,17 +3,27 @@ from pydantic import BaseModel, Field, field_validator
 from typing import NamedTuple
 from enum import StrEnum
 from math import floor
+from natal.utils import DotDict
 
 
-class Entity(BaseModel):
+class SignMember(DotDict):
+    name: SignName
+    symbol: str
+    ruler: str
+    element: str
+    quality: str
+    polarity: str
+
+
+class Body(BaseModel):
     name: str
     symbol: str
     value: int | str
     color: str
 
 
-class MovableEntity(Entity):
-    degree: float = Field(..., gt=0, lt=360)
+class MovableBody(Body):
+    degree: float = Field(None, gt=0, lt=360)
     retro: bool = False
 
     @field_validator("degree")
@@ -28,14 +38,22 @@ class MovableEntity(Entity):
 
     @property
     def minute(self) -> int:
-        """minute of the entity, between 0 and 59"""
+        """minute of the body, between 0 and 59"""
         minutes = (self.degree % 30 - self.signed_deg) * 60
         return floor(minutes)
 
     @property
-    def rx(self) -> str | None:
+    def rx(self) -> str:
         """Retrograde symbol"""
-        return "℞" if self.retro else None
+        return "℞" if self.retro else ""
+
+    @property
+    def sign(self) -> SignMember:
+        """Return sign name, symbol, element, quality, and polarity."""
+        idx = int(self.degree // 30)
+        return SignMember(
+            **{prop: SIGNS[prop][idx] for prop in SignMember.__annotations__.keys()}
+        )
 
     @property
     def dms(self) -> str:
@@ -48,15 +66,13 @@ class MovableEntity(Entity):
     @property
     def signed_dms(self) -> str:
         """Degree Minute representation with sign"""
-        idx = int(self.degree // 30)
-        symbol = SIGNS["symbol"][idx]
-        op = [f"{self.signed_deg}", symbol, f"{self.minute}'"]
+        op = [f"{self.signed_deg}", self.sign.symbol, f"{self.minute}'"]
         if self.rx:
             op.append(self.rx)
         return " ".join(op)
 
 
-class Sign(MovableEntity):
+class Sign(MovableBody):
     name: SignName
     ruler: str
     quality: str
@@ -64,10 +80,18 @@ class Sign(MovableEntity):
     polarity: str
 
 
+class House(MovableBody):
+    ruler: str
+    ruler_sign: str
+    ruler_house: int
+
+
 class Aspect(NamedTuple):
-    entity1: MovableEntity
-    entity2: MovableEntity
-    aspect_type: Entity
+    body1: MovableBody
+    body2: MovableBody
+    aspect_type: Body
+    approaching: bool = None
+    orb: float = None
 
 
 class HouseSys(StrEnum):

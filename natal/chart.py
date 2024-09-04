@@ -3,15 +3,15 @@ from pydantic.dataclasses import dataclass
 from pydantic import Field
 from natal.data import Data
 from ptag import Tag, svg, path, circle, text, g, line
-from natal.enums import Points, Element, Sign
 from natal.config import Config, load_config
+from natal.const import SIGNS
 
 
 @dataclass
 class Chart:
     """SVG representation of natal chart."""
 
-    natal_data: Data
+    data: Data
     width: int
     height: int | None = None
     config: Config = Field(default_factory=load_config)
@@ -105,13 +105,12 @@ class Chart:
         if radius > max_radius:
             raise ValueError(f"{radius=} > half of the chart: {max_radius}")
 
-        # offset from asc in NatalData.entities
-        offset = self.natal_data.get_entity(Points.asc).degree
+        offset = self.data.asc.degree
 
         for i in range(12):
             start_deg = i * 30 + offset
             end_deg = start_deg + 30
-            fill_hex = getattr(self.config.theme, Sign(i + 1).color_name)
+            fill_hex = getattr(self.config.theme, SIGNS["color"][i])
             self.sector(
                 radius=radius,
                 start_deg=start_deg,

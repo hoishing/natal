@@ -2,10 +2,10 @@ import pandas as pd
 import swisseph as swe
 from datetime import datetime
 from math import floor
-from natal.classes import Aspect, Entity, HouseSys, MovableEntity, Sign
+from natal.classes import Aspect, Body, HouseSys, MovableBody, Sign, House, SignMember
 from natal.config import load_config
 from natal.const import *
-from natal.utils import pairs
+from natal.utils import pairs, member_of
 from pydantic import Field, field_validator, BaseModel
 from zoneinfo import ZoneInfo
 from typing import Any
@@ -24,23 +24,26 @@ class Data(BaseModel):
     lon: float = Field(None, ge=-180, le=180)
     timezone: str = ""
     house_sys: HouseSys = HouseSys.Placidus
-    houses: list[MovableEntity] = []
-    planets: list[MovableEntity] = []
-    extras: list[MovableEntity] = []
+    houses: list[House] = []
+    planets: list[MovableBody] = []
+    extras: list[MovableBody] = []
     signs: list[Sign] = []
-    aspectable: list[MovableEntity] = []
+    aspectable: list[MovableBody] = []
     aspects: list[Aspect] = []
+    body_houses: dict[str, int] = {}
 
     class Config:
         extra = "allow"
 
     def model_post_init(self, __context: Any) -> None:
         self.set_lat_lon()
-        self.set_cusp_asc_mc()
-        self.set_movable_entities()
+        self.set_houses_asc_mc()
+        self.set_movable_bodies()
         self.aspectable = self.planets + self.extras + [self.asc, self.mc]
         self.set_signs()
         self.set_aspects()
+        self.set_body_houses()
+        self.set_rulers()
 
     @field_validator("dt")
     @classmethod
@@ -69,13 +72,13 @@ class Data(BaseModel):
         self.lon = float(info["lon"])
         self.timezone = info["timezone"]
 
-    def set_movable_entities(self):
+    def set_movable_bodies(self):
         """Set the positions of the planets and other celestial bodies."""
 
         self.planets = self.set_positions(PlanetName.__args__, PLANETS)
         self.extras = self.set_positions(ExtraName.__args__, EXTRAS)
 
-    def set_cusp_asc_mc(self) -> None:
+    def set_houses_asc_mc(self) -> None:
         """Calculate the cusps of the houses."""
 
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
@@ -88,20 +91,19 @@ class Data(BaseModel):
         for i, cusp in enumerate(cusps):
             cusp = floor(cusp * 100) / 100
             name = HouseName.__args__[i]
-            pos = MovableEntity(
+            house = MovableBody(
                 name=name,
                 value=i + 1,
                 symbol=HOUSES["symbol"][i],
                 color=HOUSES["color"][i],
                 degree=cusp,
             )
-            setattr(self, name, pos)
-            self.houses.append(pos)
+            self.houses.append(house)
 
-        self.asc = MovableEntity(
+        self.asc = MovableBody(
             name="asc", symbol="Asc", value=-2, color="fire", degree=asc_deg
         )
-        self.mc = MovableEntity(
+        self.mc = MovableBody(
             name="mc", symbol="MC", value=-3, color="earth", degree=mc_deg
         )
 
@@ -124,20 +126,40 @@ class Data(BaseModel):
 
     def set_aspects(self):
         """Set the aspects between the planets."""
-        entity_pairs = pairs(self.aspectable)
-        for e1, e2 in entity_pairs:
+        body_pairs = pairs(self.aspectable)
+        for e1, e2 in body_pairs:
             angle = abs(e1.degree - e2.degree)
             for i, asp_name in enumerate(AspectName.__args__):
                 max_orb = ASPECTS["value"][i] + CONFIG.orb[asp_name]
                 min_orb = ASPECTS["value"][i] - CONFIG.orb[asp_name]
                 if min_orb <= angle <= max_orb:
-                    aspect_type = Entity(
+                    aspect_type = Body(
                         name=asp_name,
                         symbol=ASPECTS["symbol"][i],
                         value=ASPECTS["value"][i],
                         color=ASPECTS["color"][i],
                     )
-                    self.aspects.append(Aspect(e1, e2, aspect_type))
+                    self.aspects.append(Aspect(e1, e2, aspect_type, None, None))
+
+    def set_body_houses(self):
+        """Set the houses of the bodies."""
+        for body in self.aspectable:
+            house = self.house_of(body)
+            self.body_houses[body.name] = house
+
+    def set_rulers(self):
+        houses = []
+        for house in self.houses:
+            ruler_obj = getattr(self, house.sign.ruler)
+            ruled_house = House(
+                **house.model_dump(),
+                ruler=ruler_obj.name,
+                ruler_sign=f"{ruler_obj.sign.symbol} {ruler_obj.sign.name}",
+                ruler_house=self.body_houses[ruler_obj.name],
+            )
+            setattr(self, house.name, ruled_house)
+            houses.append(ruled_house)
+        self.houses = houses
 
     def __str__(self):
         op = ""
@@ -163,7 +185,7 @@ class Data(BaseModel):
             op += f"{e.name}: degree={e.degree:.2f}, ruler={e.ruler}, color={e.color}, quality={e.quality}, element={e.element}, polarity={e.polarity}\n"
         op += "Aspects:\n"
         for e in self.aspects:
-            op += f"{e.entity1.name} {e.aspect_type.symbol} {e.entity2.name}: {e.aspect_type.color}\n"
+            op += f"{e.body1.name} {e.aspect_type.symbol} {e.body2.name}: {e.aspect_type.color}\n"
         return op
 
     # utils ===============================
@@ -173,13 +195,13 @@ class Data(BaseModel):
         retro = speed < 0
         return lon, retro
 
-    def set_positions(self, names: list[str], const: dict) -> list[MovableEntity]:
+    def set_positions(self, names: list[str], const: dict) -> list[MovableBody]:
         """Set the positions of the planets and other celestial bodies."""
         output = []
         for i, name in enumerate(names):
             value = const["value"][i]
             degree, retro = self.get_degree(value)
-            pos = MovableEntity(
+            pos = MovableBody(
                 name=name,
                 value=value,
                 symbol=const["symbol"][i],
@@ -190,3 +212,15 @@ class Data(BaseModel):
             setattr(self, name, pos)
             output.append(pos)
         return output
+
+    def house_of(self, body: MovableBody) -> int:
+        """House of the body."""
+        sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
+        for house in sorted_houses:
+            if body.degree >= house.degree:
+                return house.value
+        return sorted_houses[0].value
+
+    def ruler_of(self, house: MovableBody) -> str:
+        """Ruler of the house."""
+        return getattr(self, house.ruler)

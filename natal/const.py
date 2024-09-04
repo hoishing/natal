@@ -1,4 +1,19 @@
-from typing import Literal
+from typing import Literal, Iterable
+from natal.utils import DotDict
+
+
+class BodyDict(DotDict):
+    name: Iterable[str]
+    symbol: Iterable[str]
+    value: list[int]
+    color: list[str]
+
+
+class SignMember(BodyDict):
+    ruler: list[str]
+    quality: list[str]
+    element: list[str]
+    polarity: list[str]
 
 
 PlanetName = Literal[
@@ -49,42 +64,42 @@ HouseName = Literal[
 
 AspectName = Literal["conjunction", "opposition", "trine", "square", "sextile"]
 
-PLANETS = dict(
+PLANETS = BodyDict(
     name=PlanetName.__args__,
     symbol="☉☽☿♀♂♃♄♅♆♇",
     value=list(range(10)),
-    color=["fire", "earth", "air", "water"] * 3,
+    color="fire water air earth fire fire earth air water water".split(),
 )
 
-ASPECTS = dict(
+ASPECTS = BodyDict(
     name=AspectName.__args__,
     symbol="☌☍△□⚹",
     value=[0, 180, 120, 90, 60],
     color=["others", "water", "air", "fire", "points"],
 )
 
-ELEMENTS = dict(
+ELEMENTS = BodyDict(
     name=ElementName.__args__,
     symbol="🜂🜃🜁🜄",
     value=[0, 1, 2, 3],
     color=["fire", "earth", "air", "water"],
 )
 
-QUALITY = dict(
+QUALITY = BodyDict(
     name=QualityName.__args__,
     symbol="⟑⊟𛰣",
     value=[0, 1, 2],
     color=["fire", "earth", "air"],
 )
 
-POLARITY = dict(
+POLARITY = BodyDict(
     name=PolarityName.__args__,
     symbol=["+", "-"],
     value=[1, -1],
     color=["positive", "negative"],
 )
 
-SIGNS = dict(
+SIGNS = SignMember(
     name=SignName.__args__,
     symbol="♈♉♊♋♌♍♎♏♐♑♒♓",
     value=list(range(1, 13)),
@@ -95,14 +110,14 @@ SIGNS = dict(
     polarity=list(POLARITY["name"]) * 6,
 )
 
-HOUSES = dict(
+HOUSES = BodyDict(
     name=HouseName.__args__,
     symbol=[str(i) for i in range(1, 13)],
     value=list(range(1, 13)),
     color=["fire", "earth", "air", "water"] * 3,
 )
 
-EXTRAS = dict(
+EXTRAS = BodyDict(
     name=ExtraName.__args__,
     symbol="⚷☊",
     value=[15, 10],

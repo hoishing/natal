@@ -7,14 +7,10 @@
 ## Features
 
 - SVG natal chart generation in pure python
-- astrological entities in `Enum` to enhance DX
-    - better code intellisense
-    - more accurate copilot completion
-    - enhanced type safety
 - high precision astrological data with [Swiss Ephemeris]
 - timezone, latitude and longitude database from [GeoNames]
-- docstrings with examples
-- test with `doctest` and `pytest`
+- docs with examples
+- tested with `pytest`
 
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [GeoNames]: https://www.geonames.org
@@ -28,14 +24,13 @@
 - quick start
 
 ```python
-from natal import Astro, Chart
+from natal import Data, Chart
 
 # create object for the natal chart data
-natal_data = NatalData(
-  name = "Person1",
-  yr = 1980, mo = 1, day = 1,
-  hr = 12, min = 0,
-  city = "Taipei"
+natal_data = Data(
+  name = "MiMi",
+  city = "Taipei",
+  dt = "1980-04-20 14:30"
 )
 
 # return SVG string, optionally export to file
@@ -49,26 +44,13 @@ natal_data.houses
 # aspect(angle) between planets
 natal_data.aspects
 
-# percentage of planet in each element(fire, earth, air, water)
-natal_data.element_percentage
+# statistics
+...
 ```
 
-refer the [documentation] for chart configuration and other details
+read the [docs] for chart configuration and other details
 
-[documentation]: https://hoishing.github.io/natal
-
-## Motivation
-
-Creating a natal chart is fundamental to developing astrological software. Currently, the Python ecosystem:
-
-- Primarily focuses on the "data" aspect of astrological entities, such as calculating planet positions, house cusps, etc.
-- Lacks robust visualization tools for rendering natal charts in a graphical format
-- The available Python natal charting packages:
-    - Are outdated and not very Pythonic (often due to being ported from other languages)
-    - Are not friendly to code completion or Copilot (as they frequently use generic types like `str`, `list`, `dict`, etc.)
-    - Lack docstrings, examples, and comprehensive documentation
-
-This package aims to address the above problems, and provide a pythonic way to create natal chart.
+[docs]: https://hoishing.github.io/natal
 
 ## Tech Stack
 

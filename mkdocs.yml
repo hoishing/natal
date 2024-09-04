@@ -63,9 +63,11 @@ nav:
   - Quick Start: index.md
   - References:
       - chart: chart.md
-      - entities: entities.md
-      - enums: enums.md
-      - natal_data: natal_data.md
+      - classes: classes.md
+      - constants: consts.md
+      - data: data.md
+      - utils: utils.md
+      - stats: stats.md
       # - config: config.md
   - License: license.md
   - Author: https://hoishing.github.io

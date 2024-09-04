@@ -38,6 +38,7 @@ def tmp_config_file() -> Generator[str, None, None]:
 def test_load_config(tmp_config_file: str) -> None:
     cfg = load_config(tmp_config_file)
 
-    assert cfg.is_light_theme.fire == "#ff0000"
+    assert cfg.is_light_theme == True
+    assert cfg.light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7

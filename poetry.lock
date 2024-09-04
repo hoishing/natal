@@ -1732,6 +1732,25 @@ pure-eval = "*"
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [[package]]
+name = "tabulate2"
+version = "1.9.0"
+description = "Pretty-print tabular data"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tabulate2-1.9.0-py3-none-any.whl", hash = "sha256:a78c3f654e03d92de319d5b1a6465c7a255b6e6bbaea1a76f42c1e25a6f1f70d"},
+    {file = "tabulate2-1.9.0.tar.gz", hash = "sha256:64a111cb9a998d007349b86755382963a15b32f329cb9defe3da9eeaf7745972"},
+]
+
+[package.dependencies]
+wcwidth = {version = ">=0.2.13", optional = true, markers = "extra == \"widechars\""}
+
+[package.extras]
+dev = ["black", "pre-commit", "tox"]
+test = ["numpy", "pandas", "pytest", "wcwidth"]
+widechars = ["wcwidth"]
+
+[[package]]
 name = "tornado"
 version = "6.4.1"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -1861,4 +1880,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2790ec71c0fd2dc8396b23b796c97c7332df8dfaec79d11876480de5ff84663b"
+content-hash = "de7ca8e00446b39a253ee2d805db73346869805afcf407319db5798aad882821"
