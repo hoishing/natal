@@ -2,13 +2,22 @@ import pandas as pd
 import swisseph as swe
 from datetime import datetime
 from math import floor
-from natal.classes import Aspect, Body, HouseSys, MovableBody, Sign, House, SignMember
+from natal.classes import (
+    Aspect,
+    Body,
+    House,
+    HouseSys,
+    HouseWithRuler,
+    MovableBody,
+    Sign,
+    Aspectable,
+)
 from natal.config import load_config
 from natal.const import *
-from natal.utils import pairs, member_of
-from pydantic import Field, field_validator, BaseModel
-from zoneinfo import ZoneInfo
+from natal.utils import pairs
+from pydantic import BaseModel, Field, field_validator
 from typing import Any
+from zoneinfo import ZoneInfo
 
 swe.set_ephe_path("natal/data")
 CONFIG = load_config()
@@ -28,7 +37,7 @@ class Data(BaseModel):
     planets: list[MovableBody] = []
     extras: list[MovableBody] = []
     signs: list[Sign] = []
-    aspectable: list[MovableBody] = []
+    aspectable: list[Aspectable] = []
     aspects: list[Aspect] = []
     body_houses: dict[str, int] = {}
 
@@ -75,8 +84,8 @@ class Data(BaseModel):
     def set_movable_bodies(self):
         """Set the positions of the planets and other celestial bodies."""
 
-        self.planets = self.set_positions(PlanetName.__args__, PLANETS)
-        self.extras = self.set_positions(ExtraName.__args__, EXTRAS)
+        self.planets = self.set_positions(PLANET_MEMBERS)
+        self.extras = self.set_positions([m for m in EXTRA_MEMBERS if m.value > 0])
 
     def set_houses_asc_mc(self) -> None:
         """Calculate the cusps of the houses."""
@@ -88,17 +97,12 @@ class Data(BaseModel):
             self.house_sys.encode(),
         )
 
-        for i, cusp in enumerate(cusps):
-            cusp = floor(cusp * 100) / 100
-            name = HouseName.__args__[i]
-            house = MovableBody(
-                name=name,
-                value=i + 1,
-                symbol=HOUSES["symbol"][i],
-                color=HOUSES["color"][i],
-                degree=cusp,
+        for house, cusp in zip(HOUSE_MEMBERS, cusps):
+            house_body = House(
+                **house,
+                degree=floor(cusp * 100) / 100,
             )
-            self.houses.append(house)
+            self.houses.append(house_body)
 
         self.asc = MovableBody(
             name="asc", symbol="Asc", value=-2, color="fire", degree=asc_deg
@@ -109,27 +113,20 @@ class Data(BaseModel):
 
     def set_signs(self):
         """Set the signs of the zodiac."""
-        for i, name in enumerate(SignName.__args__):
-            pos = Sign(
-                name=name,
-                value=i + 1,
-                symbol=SIGNS["symbol"][i],
-                color=SIGNS["color"][i],
+        for i, sign_member in enumerate(SIGN_MEMBERS):
+            sign = Sign(
+                **sign_member,
                 degree=(i * 30 + (360 - self.asc.degree)) % 360,
-                ruler=SIGNS["ruler"][i],
-                quality=SIGNS["quality"][i],
-                element=SIGNS["element"][i],
-                polarity=SIGNS["polarity"][i],
             )
-            setattr(self, name, pos)
-            self.signs.append(pos)
+            setattr(self, sign.name, sign)
+            self.signs.append(sign)
 
     def set_aspects(self):
         """Set the aspects between the planets."""
         body_pairs = pairs(self.aspectable)
         for e1, e2 in body_pairs:
             angle = abs(e1.degree - e2.degree)
-            for i, asp_name in enumerate(AspectName.__args__):
+            for i, asp_name in enumerate(AspectType.__args__):
                 max_orb = ASPECTS["value"][i] + CONFIG.orb[asp_name]
                 min_orb = ASPECTS["value"][i] - CONFIG.orb[asp_name]
                 if min_orb <= angle <= max_orb:
@@ -150,12 +147,16 @@ class Data(BaseModel):
     def set_rulers(self):
         houses = []
         for house in self.houses:
-            ruler_obj = getattr(self, house.sign.ruler)
-            ruled_house = House(
-                **house.model_dump(),
-                ruler=ruler_obj.name,
-                ruler_sign=f"{ruler_obj.sign.symbol} {ruler_obj.sign.name}",
-                ruler_house=self.body_houses[ruler_obj.name],
+            ruler = getattr(self, house.sign.ruler)
+            classic_ruler = getattr(self, house.sign.classic_ruler)
+            ruled_house = HouseWithRuler(
+                **house,
+                ruler=ruler.name,
+                ruler_sign=f"{ruler.sign.symbol} {ruler.sign.name}",
+                ruler_house=self.body_houses[ruler.name],
+                classic_ruler=classic_ruler.name,
+                classic_ruler_sign=f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}",
+                classic_ruler_house=self.body_houses[classic_ruler.name],
             )
             setattr(self, house.name, ruled_house)
             houses.append(ruled_house)
@@ -195,21 +196,17 @@ class Data(BaseModel):
         retro = speed < 0
         return lon, retro
 
-    def set_positions(self, names: list[str], const: dict) -> list[MovableBody]:
+    def set_positions(self, members: list[Body]) -> list[MovableBody]:
         """Set the positions of the planets and other celestial bodies."""
         output = []
-        for i, name in enumerate(names):
-            value = const["value"][i]
-            degree, retro = self.get_degree(value)
+        for member in members:
+            degree, retro = self.get_degree(member.value)
             pos = MovableBody(
-                name=name,
-                value=value,
-                symbol=const["symbol"][i],
-                color=const["color"][i],
+                **member,
                 degree=degree,
                 retro=retro,
             )
-            setattr(self, name, pos)
+            setattr(self, member.name, pos)
             output.append(pos)
         return output
 

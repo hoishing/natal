@@ -1,25 +1,8 @@
 from natal.const import *
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 from typing import NamedTuple
 from enum import StrEnum
 from math import floor
-from natal.utils import DotDict
-
-
-class SignMember(DotDict):
-    name: SignName
-    symbol: str
-    ruler: str
-    element: str
-    quality: str
-    polarity: str
-
-
-class Body(BaseModel):
-    name: str
-    symbol: str
-    value: int | str
-    color: str
 
 
 class MovableBody(Body):
@@ -51,9 +34,7 @@ class MovableBody(Body):
     def sign(self) -> SignMember:
         """Return sign name, symbol, element, quality, and polarity."""
         idx = int(self.degree // 30)
-        return SignMember(
-            **{prop: SIGNS[prop][idx] for prop in SignMember.__annotations__.keys()}
-        )
+        return SIGN_MEMBERS[idx]
 
     @property
     def dms(self) -> str:
@@ -72,24 +53,44 @@ class MovableBody(Body):
         return " ".join(op)
 
 
+class Planet(MovableBody):
+    name: PlanetType
+
+
+class Extra(MovableBody):
+    name: ExtraType
+
+
+class Aspectable(MovableBody):
+    name: PlanetType | ExtraType
+
+
 class Sign(MovableBody):
-    name: SignName
+    name: SignType
     ruler: str
+    classic_ruler: str
     quality: str
     element: str
     polarity: str
 
 
 class House(MovableBody):
-    ruler: str
-    ruler_sign: str
-    ruler_house: int
+    name: HouseType
+
+
+class HouseWithRuler(House):
+    ruler: str = None
+    ruler_sign: str = None
+    ruler_house: int = None
+    classic_ruler: str = None
+    classic_ruler_sign: str = None
+    classic_ruler_house: int = None
 
 
 class Aspect(NamedTuple):
-    body1: MovableBody
-    body2: MovableBody
-    aspect_type: Body
+    body1: Aspectable
+    body2: Aspectable
+    aspect_type: AspectType
     approaching: bool = None
     orb: float = None
 

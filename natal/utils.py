@@ -1,32 +1,23 @@
 """utility functions for natal"""
 
+from pydantic import BaseModel
 from natal.config import Config, load_config
 from typing import Iterable
+from collections.abc import Mapping
 
 
-class DotDict(dict):
-    # def __init__(self, **kwargs):
-    #     self.__dict__.update(kwargs)
+class BaseDict(BaseModel, Mapping):
+    def __getitem__(self, key):
+        return getattr(self, key)
 
-    # def __getitem__(self, key):
-    #     return getattr(self, key)
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
 
-    # def __setitem__(self, key, value):
-    #     setattr(self, key, value)
-    def __getattr__(self, key):
-        try:
-            return self[key]
-        except KeyError:
-            raise AttributeError(key)
+    def __iter__(self):
+        return iter(self.model_fields)
 
-    def __setattr__(self, key, value):
-        self[key] = value
-
-    def __delattr__(self, key):
-        try:
-            del self[key]
-        except KeyError:
-            raise AttributeError(key)
+    def __len__(self):
+        return len(self.model_fields)
 
 
 def color_hex(name: str, config: Config = load_config()) -> str:
@@ -34,7 +25,7 @@ def color_hex(name: str, config: Config = load_config()) -> str:
     return getattr(config.colors, name)
 
 
-def pairs(iterable: Iterable) -> list[tuple]:
+def pairs[T](iterable: Iterable[T]) -> list[tuple[T, T]]:
     """pairs of iterable"""
     output = []
     for i in range(len(iterable)):
@@ -43,6 +34,6 @@ def pairs(iterable: Iterable) -> list[tuple]:
     return output
 
 
-def member_of(const: DotDict, name: str):
+def member_of[T](const: list[T], name: str) -> T:
     idx: int = const["name"].index(name)
-    return {prop: const[prop][idx] for prop in const.__annotations__.keys()}
+    return {prop: const[prop][idx] for prop in const.model_fields}
