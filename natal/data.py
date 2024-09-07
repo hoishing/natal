@@ -124,19 +124,27 @@ class Data(BaseModel):
     def set_aspects(self):
         """Set the aspects between the planets."""
         body_pairs = pairs(self.aspectable)
-        for e1, e2 in body_pairs:
-            angle = abs(e1.degree - e2.degree)
-            for i, asp_name in enumerate(AspectType.__args__):
-                max_orb = ASPECTS["value"][i] + CONFIG.orb[asp_name]
-                min_orb = ASPECTS["value"][i] - CONFIG.orb[asp_name]
+        for b1, b2 in body_pairs:
+            ordered = sorted([b1, b2], key=lambda x: x.degree)
+            org_angle = ordered[1].degree - ordered[0].degree
+            angle = 360 - org_angle if org_angle > 180 else org_angle  # get the smaller angle
+            for aspect_member in ASPECT_MEMBERS:
+                max_orb = aspect_member.value + CONFIG.orb[aspect_member.name]
+                min_orb = aspect_member.value - CONFIG.orb[aspect_member.name]
                 if min_orb <= angle <= max_orb:
-                    aspect_type = Body(
-                        name=asp_name,
-                        symbol=ASPECTS["symbol"][i],
-                        value=ASPECTS["value"][i],
-                        color=ASPECTS["color"][i],
+                    applying = ordered[0].speed > ordered[1].speed  # decreasing angle approach aspect
+                    if angle < aspect_member.value:
+                        applying = not applying  # increasing angle approach aspect
+                    applying = not applying if org_angle > 180 else applying  # reverse if org_angle is reflex angle
+                    self.aspects.append(
+                        Aspect(
+                            body1=b1,
+                            body2=b2,
+                            aspect_member=aspect_member,
+                            applying=applying,
+                            orb=abs(angle - aspect_member.value),
+                        )
                     )
-                    self.aspects.append(Aspect(e1, e2, aspect_type, None, None))
 
     def set_body_houses(self):
         """Set the houses of the bodies."""
@@ -186,25 +194,20 @@ class Data(BaseModel):
             op += f"{e.name}: degree={e.degree:.2f}, ruler={e.ruler}, color={e.color}, quality={e.quality}, element={e.element}, polarity={e.polarity}\n"
         op += "Aspects:\n"
         for e in self.aspects:
-            op += f"{e.body1.name} {e.aspect_type.symbol} {e.body2.name}: {e.aspect_type.color}\n"
+            op += f"{e.body1.name} {e.aspect_member.symbol} {e.body2.name}: {e.aspect_member.color}\n"
         return op
 
     # utils ===============================
-
-    def get_degree(self, swe_const: int) -> tuple[float, bool]:
-        ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, swe_const)
-        retro = speed < 0
-        return lon, retro
 
     def set_positions(self, members: list[Body]) -> list[MovableBody]:
         """Set the positions of the planets and other celestial bodies."""
         output = []
         for member in members:
-            degree, retro = self.get_degree(member.value)
+            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, member.value)
             pos = MovableBody(
                 **member,
-                degree=degree,
-                retro=retro,
+                degree=lon,
+                speed=speed,
             )
             setattr(self, member.name, pos)
             output.append(pos)

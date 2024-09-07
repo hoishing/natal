@@ -27,10 +27,10 @@ ASPECT_NAMES = list(AspectType.__args__)
 
 
 class Body(BaseDict):
-    name: str
-    symbol: str
-    value: int
-    color: str
+    name: str = ""
+    symbol: str = ""
+    value: int = 0
+    color: str = ""
 
 
 class PlanetMember(Body):

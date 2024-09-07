@@ -1,3 +1,4 @@
+from math import floor
 from typing import Literal
 from natal.data import Data, MovableBody
 from collections import defaultdict
@@ -44,15 +45,17 @@ class Stats:
 
     @property
     def aspect_table(self) -> str:
-        grid = [("body 1", "aspect", "body 2", "approaching", "orb")]
+        grid = [("body 1", "aspect", "body 2", "phase", "orb")]
         for aspect in self.data.aspects:
+            degree = floor(aspect.orb)
+            minutes = round((aspect.orb - degree) * 60)
             grid.append(
                 (
                     aspect.body1.name,
-                    aspect.aspect_type.symbol,
+                    aspect.aspect_member.symbol,
                     aspect.body2.name,
-                    aspect.approaching,
-                    aspect.orb,
+                    "> <" if aspect.applying else "<->",
+                    f"{degree}° {minutes:02d}'",
                 )
             )
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")

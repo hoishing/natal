@@ -7,7 +7,7 @@ from math import floor
 
 class MovableBody(Body):
     degree: float = Field(None, gt=0, lt=360)
-    retro: bool = False
+    speed: float = 0
 
     @field_validator("degree")
     @classmethod
@@ -26,6 +26,11 @@ class MovableBody(Body):
         return floor(minutes)
 
     @property
+    def retro(self) -> bool:
+        """Retrograde status"""
+        return self.speed < 0
+
+    @property
     def rx(self) -> str:
         """Retrograde symbol"""
         return "℞" if self.retro else ""
@@ -39,18 +44,18 @@ class MovableBody(Body):
     @property
     def dms(self) -> str:
         """Degree Minute Second representation of the position"""
-        op = [f"{self.signed_deg}°", f"{self.minute}'"]
+        op = [f"{self.signed_deg:02d}°", f"{self.minute:02d}'"]
         if self.rx:
             op.append(self.rx)
-        return " ".join(op)
+        return "".join(op)
 
     @property
     def signed_dms(self) -> str:
         """Degree Minute representation with sign"""
-        op = [f"{self.signed_deg}", self.sign.symbol, f"{self.minute}'"]
+        op = [f"{self.signed_deg:02d}°", self.sign.symbol, f"{self.minute:02d}'"]
         if self.rx:
             op.append(self.rx)
-        return " ".join(op)
+        return "".join(op)
 
 
 class Planet(MovableBody):
@@ -87,11 +92,11 @@ class HouseWithRuler(House):
     classic_ruler_house: int = None
 
 
-class Aspect(NamedTuple):
+class Aspect(BaseDict):
     body1: Aspectable
     body2: Aspectable
-    aspect_type: AspectType
-    approaching: bool = None
+    aspect_member: AspectMember
+    applying: bool = None
     orb: float = None
 
 

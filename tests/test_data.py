@@ -11,44 +11,44 @@ def data() -> Data:
 @fixture
 def planets() -> dict[str, str]:
     return dict(
-        sun="0 ♉ 26'",
-        moon="19 ♑ 47'",
-        mercury="18 ♉ 30'",
-        venus="14 ♈ 49'",
-        mars="15 ♋ 54'",
-        jupiter="5 ♉ 52'",
-        saturn="26 ♋ 31'",
-        uranus="5 ♏ 19' ℞",
-        neptune="13 ♐ 38' ℞",
-        pluto="9 ♎ 47' ℞",
+        sun="00°♉26'",
+        moon="19°♑47'",
+        mercury="18°♉30'",
+        venus="14°♈49'",
+        mars="15°♋54'",
+        jupiter="05°♉52'",
+        saturn="26°♋31'",
+        uranus="05°♏19'℞",
+        neptune="13°♐38'℞",
+        pluto="09°♎47'℞",
     )
 
 
 @fixture
 def houses() -> dict[str, str]:
     return dict(
-        one="20 ♎ 32'",
-        two="19 ♏ 43'",
-        three="19 ♐ 49'",
-        four="20 ♑ 36'",
-        five="21 ♒ 53'",
-        six="22 ♓ 29'",
-        seven="20 ♈ 32'",
-        eight="19 ♉ 43'",
-        nine="19 ♊ 49'",
-        ten="20 ♋ 36'",
-        eleven="21 ♌ 54'",
-        twelve="22 ♍ 29'",
+        one="20°♎32'",
+        two="19°♏43'",
+        three="19°♐49'",
+        four="20°♑36'",
+        five="21°♒53'",
+        six="22°♓29'",
+        seven="20°♈32'",
+        eight="19°♉43'",
+        nine="19°♊49'",
+        ten="20°♋36'",
+        eleven="21°♌54'",
+        twelve="22°♍29'",
     )
 
 
 @fixture
 def others() -> dict[str, str]:
     return dict(
-        chiron="27 ♈ 49'",
-        mean_node="13 ♏ 25' ℞",
-        asc="20 ♎ 32'",
-        mc="20 ♋ 36'",
+        chiron="27°♈49'",
+        mean_node="13°♏25'℞",
+        asc="20°♎32'",
+        mc="20°♋36'",
         house_sys="P",
     )
 
