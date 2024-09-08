@@ -1,68 +1,35 @@
-from typing import Literal
-from natal.utils import BaseDict
-import re
-
-# Names and its Types
-
-# fmt: off
-PlanetType = Literal["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
-PLANET_NAMES = list(PlanetType.__args__)
-ExtraType = Literal["chiron", "mean_node", "asc", "mc"]
-EXTRA_NAMES = list(ExtraType.__args__)
-ElementType = Literal["fire", "earth", "air", "water"]
-ELEMENT_NAMES = list(ElementType.__args__)
-QualityType = Literal["cardinal", "fixed", "mutable"]
-QUALITY_NAMES = list(QualityType.__args__)
-PolarityType = Literal["positive", "negative"]
-POLARITY_NAMES = list(PolarityType.__args__)
-SignType = Literal["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
-SIGN_NAMES = list(SignType.__args__)
-HouseType = Literal["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
-HOUSE_NAMES = list(HouseType.__args__)
-AspectType = Literal["conjunction", "opposition", "trine", "square", "sextile"]
-ASPECT_NAMES = list(AspectType.__args__)
-# fmt: on
-
-# Types ==================================
+from natal.utils import DotDict
 
 
-class Body(BaseDict):
-    name: str = ""
-    symbol: str = ""
-    value: int = 0
-    color: str = ""
+class Body(DotDict):
+    name: str
+    symbol: str
+    value: int
+    color: str
 
 
-class PlanetMember(Body):
-    name: PlanetType
+class PlanetMember(Body): ...
 
 
-class AspectMember(Body):
-    name: AspectType
+class AspectMember(Body): ...
 
 
-class ElementMember(Body):
-    name: ElementType
+class ElementMember(Body): ...
 
 
-class QualityMember(Body):
-    name: QualityType
+class QualityMember(Body): ...
 
 
-class PolarityMember(Body):
-    name: PolarityType
+class PolarityMember(Body): ...
 
 
-class HouseMember(Body):
-    name: HouseType
+class HouseMember(Body): ...
 
 
-class ExtraMember(Body):
-    name: ExtraType
+class ExtraMember(Body): ...
 
 
 class SignMember(Body):
-    name: SignType
     ruler: str
     classic_ruler: str
     quality: str
@@ -70,76 +37,68 @@ class SignMember(Body):
     polarity: str
 
 
-class Raw[T](Body):
-    name: list[str]
-    symbol: list[str] | str
-    value: list[int]
-    color: list[str]
-
-
-class RawSign[T](Raw[T]):
-    ruler: list[str]
-    classic_ruler: list[str]
-    quality: list[str]
-    element: list[str]
-    polarity: list[str]
-
-
 # utils ==================================
 
 
-def get_member[T](raw: Raw[T], name: str) -> T:
-    idx = raw.name.index(name)
-    member = {key: raw[key][idx] for key in raw.model_fields.keys()}
-    raw_class_name = str(type(raw))
-    member_class_name = re.search(r"\[([^\]]+)\]", raw_class_name).group(1)
-    member_class = globals()[member_class_name]
-    return member_class(**member)
+def get_member(raw_data: dict, name: str) -> DotDict:
+    idx = raw_data["name"].index(name)
+    member = {key: raw_data[key][idx] for key in raw_data.keys()}
+    return DotDict(**member)
 
 
-def get_members[T](raw: Raw[T]) -> list[T]:
-    return [get_member(raw, name) for name in raw.name]
+def get_members(raw_data: dict) -> list[DotDict]:
+    return [get_member(raw_data, name) for name in raw_data["name"]]
 
 
 # Raw Data ===============================
 
+# fmt: off
+PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
+EXTRA_NAMES = ["chiron", "mean_node", "asc", "mc"]
+ELEMENT_NAMES = ["fire", "earth", "air", "water"]
+QUALITY_NAMES = ["cardinal", "fixed", "mutable"]
+POLARITY_NAMES = ["positive", "negative"]
+SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
+HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
+ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile"]
+# fmt: on
 
-PLANETS = Raw[PlanetMember](
+PLANETS = dict(
     name=PLANET_NAMES,
     symbol="☉☽☿♀♂♃♄♅♆♇",
     value=list(range(10)),
     color="fire water air earth fire fire earth air water water".split(),
 )
 
-ASPECTS = Raw[AspectMember](
+ASPECTS = dict(
     name=ASPECT_NAMES,
     symbol="☌☍△□⚹",
     value=[0, 180, 120, 90, 60],
     color=["others", "water", "air", "fire", "points"],
 )
 
-ELEMENTS = Raw[ElementMember](
+ELEMENTS = dict(
     name=ELEMENT_NAMES,
     symbol="🜂🜃🜁🜄",
     value=[0, 1, 2, 3],
     color=["fire", "earth", "air", "water"],
 )
 
-QUALITY = Raw[QualityMember](
+QUALITY = dict(
     name=QUALITY_NAMES,
     symbol="⟑⊟𛰣",
     value=[0, 1, 2],
     color=["fire", "earth", "air"],
 )
 
-POLARITY = Raw[PolarityMember](
+POLARITY = dict(
     name=POLARITY_NAMES,
     symbol=["+", "-"],
     value=[1, -1],
     color=["positive", "negative"],
 )
 
-SIGNS = RawSign[SignMember](
+SIGNS = dict(
     name=SIGN_NAMES,
     symbol="♈♉♊♋♌♍♎♏♐♑♒♓",
     value=list(range(1, 13)),
@@ -151,14 +110,14 @@ SIGNS = RawSign[SignMember](
     polarity=list(POLARITY["name"]) * 6,
 )
 
-HOUSES = Raw[HouseMember](
+HOUSES = dict(
     name=HOUSE_NAMES,
     symbol=[str(i) for i in range(1, 13)],
     value=list(range(1, 13)),
     color=["fire", "earth", "air", "water"] * 3,
 )
 
-EXTRAS = Raw[ExtraMember](
+EXTRAS = dict(
     name=EXTRA_NAMES,
     symbol="⚷ ☊ Asc MC",
     value=[15, 10, -2, -3],

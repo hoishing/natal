@@ -1,18 +1,11 @@
 from natal.const import *
-from pydantic import Field, field_validator
-from typing import NamedTuple
 from enum import StrEnum
 from math import floor
 
 
 class MovableBody(Body):
-    degree: float = Field(None, gt=0, lt=360)
+    degree: float = 0
     speed: float = 0
-
-    @field_validator("degree")
-    @classmethod
-    def round_degree(cls, degree):
-        return round(degree, 4)
 
     @property
     def signed_deg(self) -> int:
@@ -58,20 +51,16 @@ class MovableBody(Body):
         return "".join(op)
 
 
-class Planet(MovableBody):
-    name: PlanetType
+class Planet(MovableBody): ...
 
 
-class Extra(MovableBody):
-    name: ExtraType
+class Extra(MovableBody): ...
 
 
-class Aspectable(MovableBody):
-    name: PlanetType | ExtraType
+class Aspectable(MovableBody): ...
 
 
 class Sign(MovableBody):
-    name: SignType
     ruler: str
     classic_ruler: str
     quality: str
@@ -79,8 +68,7 @@ class Sign(MovableBody):
     polarity: str
 
 
-class House(MovableBody):
-    name: HouseType
+class House(MovableBody): ...
 
 
 class HouseWithRuler(House):
@@ -92,7 +80,7 @@ class HouseWithRuler(House):
     classic_ruler_house: int = None
 
 
-class Aspect(BaseDict):
+class Aspect(DotDict):
     body1: Aspectable
     body2: Aspectable
     aspect_member: AspectMember

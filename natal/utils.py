@@ -1,12 +1,14 @@
 """utility functions for natal"""
 
-from pydantic import BaseModel
 from natal.config import Config, load_config
-from typing import Iterable
-from collections.abc import Mapping
+from typing import Iterable, Any, Mapping
+from datetime import datetime
 
 
-class BaseDict(BaseModel, Mapping):
+class DotDict(Mapping):
+    def __init__(self, /, **kwargs):
+        self.__dict__.update(kwargs)
+
     def __getitem__(self, key):
         return getattr(self, key)
 
@@ -14,10 +16,10 @@ class BaseDict(BaseModel, Mapping):
         setattr(self, key, value)
 
     def __iter__(self):
-        return iter(self.model_fields)
+        return iter(self.__dict__.keys())
 
     def __len__(self):
-        return len(self.model_fields)
+        return len(self.__dict__)
 
 
 def color_hex(name: str, config: Config = load_config()) -> str:
@@ -37,3 +39,7 @@ def pairs[T](iterable: Iterable[T]) -> list[tuple[T, T]]:
 def member_of[T](const: list[T], name: str) -> T:
     idx: int = const["name"].index(name)
     return {prop: const[prop][idx] for prop in const.model_fields}
+
+
+def str_to_dt(dt_str: str) -> datetime:
+    return datetime.strptime(dt_str, "%Y-%m-%d %H:%M")

@@ -4,62 +4,54 @@ from datetime import datetime
 from math import floor
 from natal.classes import (
     Aspect,
+    Aspectable,
     Body,
+    Extra,
     House,
     HouseSys,
     HouseWithRuler,
-    MovableBody,
+    Planet,
     Sign,
-    Aspectable,
 )
 from natal.config import load_config
 from natal.const import *
-from natal.utils import pairs
-from pydantic import BaseModel, Field, field_validator
-from typing import Any
+from natal.utils import pairs, str_to_dt
 from zoneinfo import ZoneInfo
 
 swe.set_ephe_path("natal/data")
 CONFIG = load_config()
 
 
-class Data(BaseModel):
-    """Data object for a natal chart."""
+class Data(DotDict):
+    """Data object for a natal chart"""
 
     name: str
     city: str
-    dt: datetime
-    lat: float = Field(None, ge=-90, le=90)
-    lon: float = Field(None, ge=-180, le=180)
-    timezone: str = ""
+    dt: datetime | str
+    lat: float = None
+    lon: float = None
+    timezone: str = None
     house_sys: HouseSys = HouseSys.Placidus
     houses: list[House] = []
-    planets: list[MovableBody] = []
-    extras: list[MovableBody] = []
+    planets: list[Planet] = []
+    extras: list[Extra] = []
     signs: list[Sign] = []
     aspectable: list[Aspectable] = []
     aspects: list[Aspect] = []
-    body_houses: dict[str, int] = {}
 
-    class Config:
-        extra = "allow"
-
-    def model_post_init(self, __context: Any) -> None:
+    def __init__(self, name: str, city: str, dt: datetime | str):
+        self.name = name
+        self.city = city
+        if isinstance(dt, str):
+            dt = str_to_dt(dt)
+        self.dt = dt
         self.set_lat_lon()
         self.set_houses_asc_mc()
         self.set_movable_bodies()
         self.aspectable = self.planets + self.extras + [self.asc, self.mc]
         self.set_signs()
         self.set_aspects()
-        self.set_body_houses()
         self.set_rulers()
-
-    @field_validator("dt")
-    @classmethod
-    def check_year(cls, dt):
-        if not (1800 <= dt.year <= 2399):
-            raise ValueError("Year must be between 1800 and 2399")
-        return dt
 
     @property
     def julian_day(self) -> float:
@@ -104,12 +96,10 @@ class Data(BaseModel):
             )
             self.houses.append(house_body)
 
-        self.asc = MovableBody(
+        self.asc = Extra(
             name="asc", symbol="Asc", value=-2, color="fire", degree=asc_deg
         )
-        self.mc = MovableBody(
-            name="mc", symbol="MC", value=-3, color="earth", degree=mc_deg
-        )
+        self.mc = Extra(name="mc", symbol="MC", value=-3, color="earth", degree=mc_deg)
 
     def set_signs(self):
         """Set the signs of the zodiac."""
@@ -127,15 +117,19 @@ class Data(BaseModel):
         for b1, b2 in body_pairs:
             ordered = sorted([b1, b2], key=lambda x: x.degree)
             org_angle = ordered[1].degree - ordered[0].degree
-            angle = 360 - org_angle if org_angle > 180 else org_angle  # get the smaller angle
+            angle = (
+                360 - org_angle if org_angle > 180 else org_angle
+            )  # get the smaller angle
             for aspect_member in ASPECT_MEMBERS:
                 max_orb = aspect_member.value + CONFIG.orb[aspect_member.name]
                 min_orb = aspect_member.value - CONFIG.orb[aspect_member.name]
                 if min_orb <= angle <= max_orb:
-                    applying = ordered[0].speed > ordered[1].speed  # decreasing angle approach aspect
+                    # decreasing angle approach aspect
+                    applying = ordered[0].speed > ordered[1].speed
                     if angle < aspect_member.value:
                         applying = not applying  # increasing angle approach aspect
-                    applying = not applying if org_angle > 180 else applying  # reverse if org_angle is reflex angle
+                    # reverse if org_angle is reflex angle
+                    applying = not applying if org_angle > 180 else applying
                     self.aspects.append(
                         Aspect(
                             body1=b1,
@@ -146,12 +140,6 @@ class Data(BaseModel):
                         )
                     )
 
-    def set_body_houses(self):
-        """Set the houses of the bodies."""
-        for body in self.aspectable:
-            house = self.house_of(body)
-            self.body_houses[body.name] = house
-
     def set_rulers(self):
         houses = []
         for house in self.houses:
@@ -161,10 +149,10 @@ class Data(BaseModel):
                 **house,
                 ruler=ruler.name,
                 ruler_sign=f"{ruler.sign.symbol} {ruler.sign.name}",
-                ruler_house=self.body_houses[ruler.name],
+                ruler_house=self.house_of(ruler.name),
                 classic_ruler=classic_ruler.name,
                 classic_ruler_sign=f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}",
-                classic_ruler_house=self.body_houses[classic_ruler.name],
+                classic_ruler_house=self.house_of(classic_ruler.name),
             )
             setattr(self, house.name, ruled_house)
             houses.append(ruled_house)
@@ -199,12 +187,12 @@ class Data(BaseModel):
 
     # utils ===============================
 
-    def set_positions(self, members: list[Body]) -> list[MovableBody]:
+    def set_positions(self, members: list[Body]) -> list[Aspectable]:
         """Set the positions of the planets and other celestial bodies."""
         output = []
         for member in members:
             ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, member.value)
-            pos = MovableBody(
+            pos = Aspectable(
                 **member,
                 degree=lon,
                 speed=speed,
@@ -213,14 +201,11 @@ class Data(BaseModel):
             output.append(pos)
         return output
 
-    def house_of(self, body: MovableBody) -> int:
-        """House of the body."""
+    def house_of(self, body_name: str) -> int:
+        """House of a celestial body."""
+        body = getattr(self, body_name)
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
             if body.degree >= house.degree:
                 return house.value
         return sorted_houses[0].value
-
-    def ruler_of(self, house: MovableBody) -> str:
-        """Ruler of the house."""
-        return getattr(self, house.ruler)

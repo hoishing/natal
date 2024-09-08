@@ -1,6 +1,6 @@
 from math import floor
 from typing import Literal
-from natal.data import Data, MovableBody
+from natal.data import Data
 from collections import defaultdict
 from tabulate import tabulate
 
@@ -33,14 +33,15 @@ class Stats:
         setattr(self, f"{kind}_counts", grid)
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
 
-    def quadrant_table(self) -> str: ...
+    def quadrant_table(self) -> str:
+        pass
 
     @property
     def aspectable_body_table(self) -> str:
         """distribution of movable bodies"""
         grid = [("body", "sign", "house")]
         for body in self.data.aspectable:
-            grid.append((body.name, body.signed_dms, self.data.body_houses[body.name]))
+            grid.append((body.name, body.signed_dms, self.data.house_of(body.name)))
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
 
     @property
