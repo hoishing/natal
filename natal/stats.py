@@ -77,6 +77,29 @@ class Stats:
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
 
     @property
+    def quadrant_table(self) -> str:
+        """distribution of celestial bodies in quadrants"""
+        quad_names = ["first", "second", "third", "fourth"]
+        quadrants = defaultdict(lambda: [0, []])
+        for i, quad in enumerate(self.data.quadrants):
+            for body in quad:
+                quadrants[i][0] += 1  # act as a counter
+                quadrants[i][1].append(f"{body.symbol} {body.name}")
+        grid = [("quadrant", "count", "bodies")]
+        data = [
+            (quad_names[quad_no], val[0], ", ".join(val[1]))
+            for quad_no, val in quadrants.items()
+        ]
+
+        left = ("left", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
+        right = ("right", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
+        upper = ("upper", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
+        lower = ("lower", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
+        separator = [(" --- ", " --- ", " --- ")]
+        grid.extend(data + separator + [left, right, upper, lower])
+        return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
+
+    @property
     def full_report(self) -> str:
         output = "\n"
         for dist in ["element", "quality", "polarity"]:
@@ -85,6 +108,9 @@ class Stats:
             output += "\n\n\n"
         output += "# Celestial Bodies\n\n"
         output += self.aspectable_body_table
+        output += "\n\n\n"
+        output += "# Quadrants\n\n"
+        output += self.quadrant_table
         output += "\n\n\n"
         output += "# Houses\n\n"
         output += self.house_table

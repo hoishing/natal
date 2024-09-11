@@ -119,7 +119,7 @@ HOUSES = dict(
 
 EXTRAS = dict(
     name=EXTRA_NAMES,
-    symbol="⚷ ☊ Asc MC",
+    symbol="⚷ ☊ Asc MC".split(),
     value=[15, 10, -2, -3],
     color=["asteroids", "points", "fire", "earth"],
 )

@@ -38,6 +38,7 @@ class Data(DotDict):
     signs: list[Sign] = []
     aspectable: list[Aspectable] = []
     aspects: list[Aspect] = []
+    quadrants: list[list[Aspectable]] = []
 
     def __init__(self, name: str, city: str, dt: datetime | str):
         self.name = name
@@ -52,6 +53,7 @@ class Data(DotDict):
         self.set_signs()
         self.set_aspects()
         self.set_rulers()
+        self.set_quadrants()
 
     @property
     def julian_day(self) -> float:
@@ -158,6 +160,32 @@ class Data(DotDict):
             houses.append(ruled_house)
         self.houses = houses
 
+    def set_quadrants(self):
+        bodies = self.planets + [extra for extra in self.extras if extra.value > 0]
+        normalized_degrees = [self.normalize(b.degree) for b in bodies]
+        normalized_bodies = tuple(zip(bodies, normalized_degrees))
+        normalized_vertex = [
+            self.normalize(self.houses[i].degree) for i in [0, 3, 6, 9]
+        ]
+
+        first = [
+            body for body, degree in normalized_bodies if degree < normalized_vertex[1]
+        ]
+        second = [
+            body
+            for body, degree in normalized_bodies
+            if normalized_vertex[1] <= degree < normalized_vertex[2]
+        ]
+        third = [
+            body
+            for body, degree in normalized_bodies
+            if normalized_vertex[2] <= degree < normalized_vertex[3]
+        ]
+        fourth = [
+            body for body, degree in normalized_bodies if normalized_vertex[3] <= degree
+        ]
+        self.quadrants = [first, second, third, fourth]
+
     def __str__(self):
         op = ""
         op += f"Name: {self.name}\n"
@@ -209,3 +237,7 @@ class Data(DotDict):
             if body.degree >= house.degree:
                 return house.value
         return sorted_houses[0].value
+
+    def normalize(self, degree: float) -> float:
+        """degree relative to the first house."""
+        return (degree - self.houses[0].degree + 360) % 360
