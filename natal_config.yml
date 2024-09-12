@@ -1,12 +1,11 @@
-is_light_theme: false
+is_light_theme: False
 
-light_theme:
-    fire: "#ff0000"
-    earth: "#ffff00"
-    air: "#00ff00"
-    water: "#0000ff"
-    points: "#00ffff"
-
+# light_theme:
+#     fire: "#ff0000"
+#     earth: "#ffff00"
+#     air: "#00ff00"
+#     water: "#0000ff"
+#     points: "#00ffff"
 
 display:
     mean_node: False

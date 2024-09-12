@@ -23,3 +23,9 @@ def test_sign_member():
     sign = SIGN_MEMBERS[3]
     assert sign.ruler == "moon"
     assert sign["element"] == "water"
+
+
+def test_house_member():
+    house = HOUSE_MEMBERS[3]
+    assert house.name == "four"
+    assert house.color == "water"

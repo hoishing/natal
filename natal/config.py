@@ -49,6 +49,7 @@ class Theme(SubscriptableModel):
     others: str = "#FFA500"  # conjunction
     foreground: str
     background: str
+    transparency: float
 
 
 class LightTheme(Theme):
@@ -56,6 +57,7 @@ class LightTheme(Theme):
 
     foreground: str = "#343a40"
     background: str = "#F7F3F0"
+    transparency: float = 0.3
 
 
 class DarkTheme(Theme):
@@ -63,7 +65,7 @@ class DarkTheme(Theme):
 
     foreground: str = "#F7F3F0"
     background: str = "#343a40"
-
+    transparency: float = 0.1
 
 class Display(SubscriptableModel):
     """display the celestial bodies or not"""

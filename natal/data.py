@@ -156,7 +156,6 @@ class Data(DotDict):
                 classic_ruler_sign=f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}",
                 classic_ruler_house=self.house_of(classic_ruler.name),
             )
-            setattr(self, house.name, ruled_house)
             houses.append(ruled_house)
         self.houses = houses
 
