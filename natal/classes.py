@@ -72,10 +72,7 @@ class Sign(MovableBody):
     polarity: str
 
 
-class House(MovableBody): ...
-
-
-class HouseWithRuler(House):
+class House(MovableBody):
     ruler: str = None
     ruler_sign: str = None
     ruler_house: int = None

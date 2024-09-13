@@ -9,7 +9,6 @@ from natal.classes import (
     Extra,
     House,
     HouseSys,
-    HouseWithRuler,
     Planet,
     Sign,
     Vertex,
@@ -26,27 +25,28 @@ CONFIG = load_config()
 class Data(DotDict):
     """Data object for a natal chart"""
 
-    name: str
-    city: str
-    dt: datetime | str
-    lat: float = None
-    lon: float = None
-    timezone: str = None
-    house_sys: HouseSys = HouseSys.Placidus
-    houses: list[House] = []
-    planets: list[Planet] = []
-    extras: list[Extra] = []
-    signs: list[Sign] = []
-    aspectable: list[Aspectable] = []
-    aspects: list[Aspect] = []
-    quadrants: list[list[Aspectable]] = []
-
-    def __init__(self, name: str, city: str, dt: datetime | str):
+    def __init__(
+        self,
+        name: str,
+        city: str,
+        dt: datetime | str,
+    ):
         self.name = name
         self.city = city
         if isinstance(dt, str):
             dt = str_to_dt(dt)
         self.dt = dt
+        self.lat: float = None
+        self.lon: float = None
+        self.timezone: str = None
+        self.house_sys: HouseSys = HouseSys.Placidus
+        self.houses: list[House] = []
+        self.planets: list[Planet] = []
+        self.extras: list[Extra] = []
+        self.signs: list[Sign] = []
+        self.aspectable: list[Aspectable] = []
+        self.aspects: list[Aspect] = []
+        self.quadrants: list[list[Aspectable]] = []
         self.set_lat_lon()
         self.set_houses_vertices()
         self.set_movable_bodies()
@@ -156,21 +156,17 @@ class Data(DotDict):
             body.normalized_degree = self.normalize(body.degree)
 
     def set_rulers(self):
-        houses = []
         for house in self.houses:
             ruler = getattr(self, house.sign.ruler)
             classic_ruler = getattr(self, house.sign.classic_ruler)
-            ruled_house = HouseWithRuler(
-                **house,
-                ruler=ruler.name,
-                ruler_sign=f"{ruler.sign.symbol} {ruler.sign.name}",
-                ruler_house=self.house_of(ruler.name),
-                classic_ruler=classic_ruler.name,
-                classic_ruler_sign=f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}",
-                classic_ruler_house=self.house_of(classic_ruler.name),
+            house.ruler = ruler.name
+            house.ruler_sign = f"{ruler.sign.symbol} {ruler.sign.name}"
+            house.ruler_house = self.house_of(ruler.name)
+            house.classic_ruler = classic_ruler.name
+            house.classic_ruler_sign = (
+                f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
             )
-            houses.append(ruled_house)
-        self.houses = houses
+            house.classic_ruler_house = self.house_of(classic_ruler.name)
 
     def set_quadrants(self):
         bodies = self.planets + self.extras

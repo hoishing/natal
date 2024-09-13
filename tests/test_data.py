@@ -1,14 +1,10 @@
 from natal.data import Data
 from datetime import datetime
 from pytest import fixture
+from . import data
 
 
 @fixture(scope="module")
-def data() -> Data:
-    return Data(name="shing", city="hong kong", dt="1976-04-20 18:58")
-
-
-@fixture
 def planets() -> dict[str, str]:
     return dict(
         sun="00°♉26'",
@@ -24,7 +20,7 @@ def planets() -> dict[str, str]:
     )
 
 
-@fixture
+@fixture(scope="module")
 def houses() -> dict[str, str]:
     return dict(
         one="20°♎32'",
@@ -42,7 +38,7 @@ def houses() -> dict[str, str]:
     )
 
 
-@fixture
+@fixture(scope="module")
 def others() -> dict[str, str]:
     return dict(
         chiron="27°♈49'",
@@ -53,7 +49,7 @@ def others() -> dict[str, str]:
     )
 
 
-@fixture
+@fixture(scope="module")
 def signs() -> dict:
     return dict(
         aries=(159.45, "mars", "fire", "cardinal", "fire", "positive"),
