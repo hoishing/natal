@@ -9,7 +9,8 @@ def test_const():
     assert len(POLARITY_MEMBERS) == 2
     assert len(SIGN_MEMBERS) == 12
     assert len(HOUSE_MEMBERS) == 12
-    assert len(EXTRA_MEMBERS) == 4
+    assert len(EXTRA_MEMBERS) == 2
+    assert len(VERTEX_MEMBERS) == 4
 
 
 def test_planet_member():

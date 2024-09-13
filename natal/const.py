@@ -29,6 +29,9 @@ class HouseMember(Body): ...
 class ExtraMember(Body): ...
 
 
+class VertexMember(Body): ...
+
+
 class SignMember(Body):
     ruler: str
     classic_ruler: str
@@ -54,13 +57,14 @@ def get_members(raw_data: dict) -> list[DotDict]:
 
 # fmt: off
 PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
-EXTRA_NAMES = ["chiron", "mean_node", "asc", "mc"]
+EXTRA_NAMES = ["chiron", "mean_node"]
 ELEMENT_NAMES = ["fire", "earth", "air", "water"]
 QUALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
 SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
 HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
 ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile"]
+VERTEX_NAMES = ["asc", "mc", "ic", "dsc"]
 # fmt: on
 
 PLANETS = dict(
@@ -119,9 +123,16 @@ HOUSES = dict(
 
 EXTRAS = dict(
     name=EXTRA_NAMES,
-    symbol="⚷ ☊ Asc MC".split(),
-    value=[15, 10, -2, -3],
-    color=["asteroids", "points", "fire", "earth"],
+    symbol="⚷☊",
+    value=[15, 10],
+    color=["asteroids", "points"],
+)
+
+VERTICES = dict(
+    name=VERTEX_NAMES,
+    symbol=["Asc", "MC", "IC", "Dsc"],
+    value=[1, 4, 7, 10],
+    color=["fire", "water", "air", "earth"],
 )
 
 # Derived Members =================================
@@ -134,3 +145,4 @@ POLARITY_MEMBERS = get_members(POLARITY)
 SIGN_MEMBERS = get_members(SIGNS)
 HOUSE_MEMBERS = get_members(HOUSES)
 EXTRA_MEMBERS = get_members(EXTRAS)
+VERTEX_MEMBERS = get_members(VERTICES)

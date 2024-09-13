@@ -1,6 +1,6 @@
-from math import radians, cos, sin
+from math import radians, cos, sin, pi
 from natal.data import Data
-from ptag import Tag, svg, path, circle, text, g, line
+from ptag import Tag, svg, path, circle, text, g, line, rect
 from natal.config import Config, load_config
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
@@ -9,8 +9,6 @@ from natal.utils import DotDict
 class Chart(DotDict):
     """SVG representation of natal chart."""
 
-    data: Data
-    width: int
     height: int | None = None
     config: Config = load_config()
     stroke_width: int = 1
@@ -18,6 +16,7 @@ class Chart(DotDict):
     ring_thickness: int = 0
     font: str = "Arial Unicode MS, sans-serif"
     font_size_fraction: float = 0.55
+    aspectables: list[Tag] = []
 
     def __init__(self, data: Data, width: int, height: int | None = None):
         self.data = data
@@ -53,24 +52,8 @@ class Chart(DotDict):
         stroke_color: str = "black",
         stroke_width: float = 1,
     ) -> Tag:
-        """
-        Creates a sector shape in SVG format.
+        """Creates a sector shape in SVG format."""
 
-        Args:
-            radius (int): The radius of the sector.
-            start_deg (float): The starting angle of the sector in degrees.
-            end_deg (float): The ending angle of the sector in degrees.
-            fill (str, optional): The fill color of the sector. Defaults to "white".
-            stroke (str, optional): The stroke color of the sector. Defaults to "black".
-            stroke_width (float, optional): The stroke width of the sector. Defaults to 1.
-
-        Returns:
-            Tag: The SVG tag representing the sector shape.
-
-        Example:
-            >>> sector(100, 100, 50, 0, 90)
-            <path d="M100 100 L50.0 100.0 A50 50 0 0 0 100.0 150.0 Z" fill="white" stroke="black" stroke-width="1"></path>
-        """
         start_rad = radians(start_deg)
         end_rad = radians(end_deg)
         start_x = self.cx - radius * cos(start_rad)
@@ -131,7 +114,7 @@ class Chart(DotDict):
                     radius=radius,
                     start_deg=start_deg,
                     end_deg=end_deg,
-                    fill=self.fill_color(i),
+                    fill=self.fill_color(i, bg=True),
                     stroke_color=self.config.theme.foreground,
                     stroke_width=stroke_width,
                 )
@@ -143,13 +126,12 @@ class Chart(DotDict):
             symbol_angle = radians(start_deg + 15)  # Center of the sector
             symbol_x = self.cx - symbol_radius * cos(symbol_angle)
             symbol_y = self.cy + symbol_radius * sin(symbol_angle)
-            symbol_color = getattr(self.config.theme, SIGN_MEMBERS[i].color)
             wheel.append(
                 text(
                     SIGN_MEMBERS[i].symbol,
                     x=symbol_x,
                     y=symbol_y,
-                    fill=symbol_color,
+                    fill=self.fill_color(i),
                     font_family=self.font,
                     font_size=symbol_width,
                     text_anchor="middle",
@@ -162,7 +144,7 @@ class Chart(DotDict):
     def house_wheel(
         self,
         radius: int | None = None,
-    ) -> Tag:
+    ) -> list[Tag]:
         if radius is None:
             radius = self.max_radius - self.ring_thickness
 
@@ -171,7 +153,7 @@ class Chart(DotDict):
             next_i = (i + 1) % 12
             start_deg = self.normalize(self.data.houses[i].degree)
             end_deg = self.normalize(self.data.houses[next_i].degree)
-            
+
             # Handle the case where end_deg is less than start_deg (crosses 0°)
             if end_deg < start_deg:
                 end_deg += 360
@@ -181,7 +163,7 @@ class Chart(DotDict):
                     radius=radius,
                     start_deg=start_deg,
                     end_deg=end_deg,
-                    fill=self.fill_color(i),
+                    fill=self.fill_color(i, bg=True),
                     stroke_color=self.config.theme.foreground,
                     stroke_width=self.stroke_width,
                 )
@@ -190,16 +172,17 @@ class Chart(DotDict):
             # Add house number
             number_width = self.font_size * 0.8
             number_radius = radius - (self.ring_thickness / 2)
-            number_angle = radians(start_deg + ((end_deg - start_deg) % 360) / 2)  # Center of the house
+            number_angle = radians(
+                start_deg + ((end_deg - start_deg) % 360) / 2
+            )  # Center of the house
             number_x = self.cx - number_radius * cos(number_angle)
             number_y = self.cy + number_radius * sin(number_angle)
-            number_color = getattr(self.config.theme, SIGN_MEMBERS[i].color)
-            wheel.append(
+            self.aspectables.append(
                 text(
                     str(i + 1),  # House numbers start from 1
                     x=number_x,
                     y=number_y,
-                    fill=number_color,
+                    fill=self.fill_color(i),
                     font_family=self.font,
                     font_size=number_width,
                     text_anchor="middle",
@@ -212,12 +195,87 @@ class Chart(DotDict):
     def body_wheel(
         self,
         radius: int | None = None,
-    ) -> Tag:
+    ) -> list[Tag]:
         if radius is None:
             radius = self.max_radius - (2 * self.ring_thickness)
+        sorted_aspectables = sorted(self.data.aspectable, key=lambda x: x.degree)
 
-        wheel = [self.background(radius)]
-        return wheel
+        output = [self.background(radius)]
+
+        # Calculate minimum angle in radians
+        min_angle = radians(7)  # Adjust this value as needed
+
+        # Calculate adjusted positions
+        adjusted_positions = self.calculate_adjusted_positions(sorted_aspectables, min_angle)
+
+        for body, adjusted_angle in zip(sorted_aspectables, adjusted_positions):
+            font_size = self.font_size if body.name not in ["asc", "mc"] else self.font_size * 0.7
+            symbol_radius = radius - (self.ring_thickness / 2)
+            degree_radius = radius
+
+            # Use original angle for line start position
+            original_angle = radians(self.normalize(body.degree))
+            degree_x = self.cx - degree_radius * cos(original_angle)
+            degree_y = self.cy + degree_radius * sin(original_angle)
+
+            # Use adjusted angle for symbol position
+            symbol_x = self.cx - symbol_radius * cos(adjusted_angle)
+            symbol_y = self.cy + symbol_radius * sin(adjusted_angle)
+
+            # Add line from degree position to symbol position
+            output.append(
+                line(
+                    x1=degree_x,
+                    y1=degree_y,
+                    x2=symbol_x,
+                    y2=symbol_y,
+                    stroke=getattr(self.config.theme, body.color),
+                    stroke_width=self.stroke_width / 2,
+                )
+            )
+            self.aspectables.append(
+                g()
+                .add(
+                    rect(
+                        x=symbol_x - font_size / 2,
+                        y=symbol_y - font_size / 2,
+                        width=font_size,
+                        height=font_size,
+                        fill=self.config.theme.background,
+                        rx=font_size / 4,  # Rounded corners
+                    )
+                )
+                .add(
+                    text(
+                        body.symbol,
+                        x=symbol_x,
+                        y=symbol_y,
+                        fill=getattr(self.config.theme, body.color),
+                        font_family=self.font,
+                        font_size=font_size,
+                        text_anchor="middle",
+                        dominant_baseline="central",
+                    )
+                )
+            )
+
+        return output + self.aspectables
+
+    def calculate_adjusted_positions(self, bodies, min_angle):
+        adjusted_angles = []
+        last_angle = None
+
+        for body in bodies:
+            current_angle = radians(self.normalize(body.degree))
+            
+            if last_angle is not None:
+                if current_angle - last_angle < min_angle:
+                    current_angle = last_angle + min_angle
+            
+            adjusted_angles.append(current_angle)
+            last_angle = current_angle
+
+        return adjusted_angles
 
     # utils ======================================================
 
@@ -225,7 +283,9 @@ class Chart(DotDict):
         """Normalize an angle to start from 180(Asc)"""
         return (degree - self.data.houses[0].degree) % 360
 
-    def fill_color(self, sign_no: int) -> str:
+    def fill_color(self, sign_no: int, bg: bool = False) -> str:
         fill_hex = getattr(self.config.theme, SIGN_MEMBERS[sign_no].color)
+        if not bg:
+            return fill_hex
         trans_fill_hex = f"{fill_hex}{int(self.config.theme.transparency * 255):02x}"
         return trans_fill_hex

@@ -43,7 +43,7 @@ class Theme(SubscriptableModel):
     air: str = "#06d6a0"  # air, trine
     water: str = "#81bce7"  # water, opposition
     points: str = "#118ab2"  # lunar nodes, sextile
-    asteroids: str = "##AA96DA"  # asteroids
+    asteroids: str = "#AA96DA"  # asteroids
     positive: str = "#FFC0CB"  # positive
     negative: str = "#AD8B73"  # negative
     others: str = "#FFA500"  # conjunction

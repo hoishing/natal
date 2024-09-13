@@ -12,6 +12,7 @@ from natal.classes import (
     HouseWithRuler,
     Planet,
     Sign,
+    Vertex,
 )
 from natal.config import load_config
 from natal.const import *
@@ -47,10 +48,11 @@ class Data(DotDict):
             dt = str_to_dt(dt)
         self.dt = dt
         self.set_lat_lon()
-        self.set_houses_asc_mc()
+        self.set_houses_vertices()
         self.set_movable_bodies()
-        self.aspectable = self.planets + self.extras + [self.asc, self.mc]
+        self.aspectable = self.planets + self.extras + self.vertices[-1:1]
         self.set_signs()
+        self.set_normalized_degrees()
         self.set_aspects()
         self.set_rulers()
         self.set_quadrants()
@@ -79,9 +81,9 @@ class Data(DotDict):
         """Set the positions of the planets and other celestial bodies."""
 
         self.planets = self.set_positions(PLANET_MEMBERS)
-        self.extras = self.set_positions([m for m in EXTRA_MEMBERS if m.value > 0])
+        self.extras = self.set_positions(EXTRA_MEMBERS)
 
-    def set_houses_asc_mc(self) -> None:
+    def set_houses_vertices(self) -> None:
         """Calculate the cusps of the houses."""
 
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
@@ -98,10 +100,15 @@ class Data(DotDict):
             )
             self.houses.append(house_body)
 
-        self.asc = Extra(
-            name="asc", symbol="Asc", value=-2, color="fire", degree=asc_deg
-        )
-        self.mc = Extra(name="mc", symbol="MC", value=-3, color="earth", degree=mc_deg)
+        self.vertices = [
+            Vertex(degree=asc_deg, **VERTEX_MEMBERS[0]),
+            Vertex(degree=(mc_deg + 180) % 360, **VERTEX_MEMBERS[1]),
+            Vertex(degree=(asc_deg + 180) % 360, **VERTEX_MEMBERS[2]),
+            Vertex(degree=mc_deg, **VERTEX_MEMBERS[3]),
+        ]
+
+        self.asc = self.vertices[0]
+        self.mc = self.vertices[3]
 
     def set_signs(self):
         """Set the signs of the zodiac."""
@@ -142,6 +149,12 @@ class Data(DotDict):
                         )
                     )
 
+    def set_normalized_degrees(self):
+        """Normalize the positions of celestial bodies relative to the first house"""
+        bodies = self.signs + self.planets + self.extras + self.vertices + self.houses
+        for body in bodies:
+            body.normalized_degree = self.normalize(body.degree)
+
     def set_rulers(self):
         houses = []
         for house in self.houses:
@@ -160,29 +173,13 @@ class Data(DotDict):
         self.houses = houses
 
     def set_quadrants(self):
-        bodies = self.planets + [extra for extra in self.extras if extra.value > 0]
-        normalized_degrees = [self.normalize(b.degree) for b in bodies]
-        normalized_bodies = tuple(zip(bodies, normalized_degrees))
-        normalized_vertex = [
-            self.normalize(self.houses[i].degree) for i in [0, 3, 6, 9]
-        ]
+        bodies = self.planets + self.extras
+        _, ic, dsc, mc = [v.normalized_degree for v in self.vertices]
 
-        first = [
-            body for body, degree in normalized_bodies if degree < normalized_vertex[1]
-        ]
-        second = [
-            body
-            for body, degree in normalized_bodies
-            if normalized_vertex[1] <= degree < normalized_vertex[2]
-        ]
-        third = [
-            body
-            for body, degree in normalized_bodies
-            if normalized_vertex[2] <= degree < normalized_vertex[3]
-        ]
-        fourth = [
-            body for body, degree in normalized_bodies if normalized_vertex[3] <= degree
-        ]
+        first = [b for b in bodies if b.normalized_degree < ic]
+        second = [b for b in bodies if ic <= b.normalized_degree < dsc]
+        third = [b for b in bodies if dsc <= b.normalized_degree < mc]
+        fourth = [b for b in bodies if mc <= b.normalized_degree]
         self.quadrants = [first, second, third, fourth]
 
     def __str__(self):

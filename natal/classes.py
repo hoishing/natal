@@ -6,6 +6,7 @@ from math import floor
 class MovableBody(Body):
     degree: float = 0
     speed: float = 0
+    normalized_degree: float = 0
 
     @property
     def signed_deg(self) -> int:
@@ -55,6 +56,9 @@ class Planet(MovableBody): ...
 
 
 class Extra(MovableBody): ...
+
+
+class Vertex(MovableBody): ...
 
 
 class Aspectable(MovableBody): ...
