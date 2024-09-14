@@ -3,6 +3,7 @@ from natal.stats import Stats
 from pytest import fixture
 from . import data
 
+
 @fixture(scope="module")
 def stats(data):
     return Stats(data=data)
@@ -11,31 +12,31 @@ def stats(data):
 @fixture
 def element_table():
     return """\
-| element   |   count | bodies                                      |
-|-----------+---------+---------------------------------------------|
-| earth     |       4 | sun ♉, moon ♑, mercury ♉, jupiter ♉     |
-| fire      |       3 | venus ♈, neptune ♐, chiron ♈             |
-| water     |       4 | mars ♋, saturn ♋, uranus ♏, mean_node ♏ |
-| air       |       1 | pluto ♎                                    |"""
+| element   |   count | bodies                                             |
+|-----------+---------+----------------------------------------------------|
+| earth     |       4 | sun ♉, moon ♑, mercury ♉, jupiter ♉            |
+| fire      |       3 | venus ♈, neptune ♐, chiron ♈                    |
+| water     |       5 | mars ♋, saturn ♋, uranus ♏, mean_node ♏, mc ♋ |
+| air       |       2 | pluto ♎, asc ♎                                   |"""
 
 
 @fixture
 def quality_table():
     return """\
-| quality   |   count | bodies                                                     |
-|-----------+---------+------------------------------------------------------------|
-| fixed     |       5 | sun ♉, mercury ♉, jupiter ♉, uranus ♏, mean_node ♏    |
-| cardinal  |       6 | moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, chiron ♈ |
-| mutable   |       1 | neptune ♐                                                 |"""
+| quality   |   count | bodies                                                                    |
+|-----------+---------+---------------------------------------------------------------------------|
+| fixed     |       5 | sun ♉, mercury ♉, jupiter ♉, uranus ♏, mean_node ♏                   |
+| cardinal  |       8 | moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, chiron ♈, asc ♎, mc ♋ |
+| mutable   |       1 | neptune ♐                                                                |"""
 
 
 @fixture
 def polarity_table():
     return """\
-| polarity   |   count | bodies                                                                               |
-|------------+---------+--------------------------------------------------------------------------------------|
-| negative   |       8 | sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, mean_node ♏ |
-| positive   |       4 | venus ♈, neptune ♐, pluto ♎, chiron ♈                                            |"""
+| polarity   |   count | bodies                                                                                      |
+|------------+---------+---------------------------------------------------------------------------------------------|
+| negative   |       9 | sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, mean_node ♏, mc ♋ |
+| positive   |       5 | venus ♈, neptune ♐, pluto ♎, chiron ♈, asc ♎                                           |"""
 
 
 @fixture
@@ -54,7 +55,9 @@ def aspectable_body_table():
 | neptune   | 13°♐38'℞ |       2 |
 | pluto     | 09°♎47'℞ |      12 |
 | chiron    | 27°♈49'  |       7 |
-| mean_node | 13°♏25'℞ |       1 |"""
+| mean_node | 13°♏25'℞ |       1 |
+| asc       | 20°♎32'  |       1 |
+| mc        | 20°♋36'  |      10 |"""
 
 
 @fixture
@@ -105,15 +108,25 @@ def aspect_table():
 | moon     | □        | venus     | <->     | 4° 58' |
 | moon     | ☍        | mars      | <->     | 3° 53' |
 | moon     | ☍        | saturn    | > <     | 6° 44' |
+| moon     | □        | asc       | > <     | 0° 45' |
+| moon     | ☍        | mc        | > <     | 0° 49' |
 | mercury  | ⚹        | mars      | <->     | 2° 36' |
 | mercury  | ☍        | mean_node | <->     | 5° 05' |
+| mercury  | ⚹        | mc        | > <     | 2° 06' |
 | venus    | □        | mars      | > <     | 1° 05' |
 | venus    | △        | neptune   | <->     | 1° 11' |
 | venus    | ☍        | pluto     | <->     | 5° 02' |
+| venus    | ☍        | asc       | > <     | 5° 43' |
+| venus    | □        | mc        | > <     | 5° 47' |
 | mars     | △        | mean_node | <->     | 2° 29' |
+| mars     | □        | asc       | > <     | 4° 38' |
+| mars     | ☌        | mc        | > <     | 4° 42' |
 | jupiter  | ☍        | uranus    | <->     | 0° 34' |
 | saturn   | □        | chiron    | <->     | 1° 18' |
-| neptune  | ⚹        | pluto     | <->     | 3° 51' |"""
+| saturn   | □        | asc       | <->     | 5° 59' |
+| saturn   | ☌        | mc        | <->     | 5° 55' |
+| neptune  | ⚹        | pluto     | <->     | 3° 51' |
+| asc      | □        | mc        | > <     | 0° 04' |"""
 
 
 def test_distribution_tables(stats, element_table, quality_table, polarity_table):
@@ -128,7 +141,6 @@ def test_aspectable_body_table(stats, aspectable_body_table):
 
 def test_house_table(stats, house_table):
     assert stats.house_table == house_table
-
 
 
 def test_quadrant_table(stats, quadrant_table):

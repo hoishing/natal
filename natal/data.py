@@ -50,7 +50,7 @@ class Data(DotDict):
         self.set_lat_lon()
         self.set_houses_vertices()
         self.set_movable_bodies()
-        self.aspectable = self.planets + self.extras + self.vertices[-1:1]
+        self.aspectable = self.planets + self.extras + [self.vertices[0], self.vertices[3]]
         self.set_signs()
         self.set_normalized_degrees()
         self.set_aspects()

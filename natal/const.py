@@ -64,7 +64,7 @@ POLARITY_NAMES = ["positive", "negative"]
 SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
 HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
 ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile"]
-VERTEX_NAMES = ["asc", "mc", "ic", "dsc"]
+VERTEX_NAMES = ["asc", "ic", "dsc", "mc"]
 # fmt: on
 
 PLANETS = dict(
@@ -130,7 +130,7 @@ EXTRAS = dict(
 
 VERTICES = dict(
     name=VERTEX_NAMES,
-    symbol=["Asc", "MC", "IC", "Dsc"],
+    symbol=["Asc", "IC", "Dsc", "MC"],
     value=[1, 4, 7, 10],
     color=["fire", "water", "air", "earth"],
 )

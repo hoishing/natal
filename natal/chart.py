@@ -1,4 +1,5 @@
 from math import radians, cos, sin, pi
+from natal.classes import Aspectable
 from natal.data import Data
 from ptag import Tag, svg, path, circle, text, g, line, rect
 from natal.config import Config, load_config
@@ -9,14 +10,11 @@ from natal.utils import DotDict
 class Chart(DotDict):
     """SVG representation of natal chart."""
 
-    height: int | None = None
     config: Config = load_config()
     stroke_width: int = 1
     margin: int = 5
-    ring_thickness: int = 0
     font: str = "Arial Unicode MS, sans-serif"
     font_size_fraction: float = 0.55
-    aspectables: list[Tag] = []
 
     def __init__(self, data: Data, width: int, height: int | None = None):
         self.data = data
@@ -29,6 +27,7 @@ class Chart(DotDict):
         self.max_radius = min(self.width - self.margin, self.height - self.margin) // 2
         self.ring_thickness = self.max_radius * 0.15
         self.font_size = self.ring_thickness * self.font_size_fraction
+        self.aspectables: list[Tag] = []
 
     @property
     def svg_root(self) -> Tag:
@@ -192,33 +191,39 @@ class Chart(DotDict):
 
         return wheel
 
-    def body_wheel(
+    def natal_body_wheel(
         self,
         radius: int | None = None,
     ) -> list[Tag]:
         if radius is None:
             radius = self.max_radius - (2 * self.ring_thickness)
         sorted_aspectables = sorted(self.data.aspectable, key=lambda x: x.degree)
+        sorted_degrees = [body.normalized_degree for body in sorted_aspectables]
 
         output = [self.background(radius)]
 
         # Calculate minimum angle in radians
-        min_angle = radians(7)  # Adjust this value as needed
+        min_degree: float = 7  # Adjust this value as needed
 
         # Calculate adjusted positions
-        adjusted_positions = self.calculate_adjusted_positions(sorted_aspectables, min_angle)
+        adjusted_degrees = self.adjusted_degrees(sorted_degrees, min_degree)
 
-        for body, adjusted_angle in zip(sorted_aspectables, adjusted_positions):
-            font_size = self.font_size if body.name not in ["asc", "mc"] else self.font_size * 0.7
+        for body, adjusted_degree in zip(sorted_aspectables, adjusted_degrees):
+            font_size = (
+                self.font_size
+                if body.name not in ["asc", "mc"]
+                else self.font_size * 0.7
+            )
             symbol_radius = radius - (self.ring_thickness / 2)
             degree_radius = radius
 
             # Use original angle for line start position
-            original_angle = radians(self.normalize(body.degree))
+            original_angle = radians(body.normalized_degree)
             degree_x = self.cx - degree_radius * cos(original_angle)
             degree_y = self.cy + degree_radius * sin(original_angle)
 
             # Use adjusted angle for symbol position
+            adjusted_angle = radians(adjusted_degree)
             symbol_x = self.cx - symbol_radius * cos(adjusted_angle)
             symbol_y = self.cy + symbol_radius * sin(adjusted_angle)
 
@@ -261,23 +266,66 @@ class Chart(DotDict):
 
         return output + self.aspectables
 
-    def calculate_adjusted_positions(self, bodies, min_angle):
-        adjusted_angles = []
-        last_angle = None
+    def vertex_line(self, radius: int | None = None) -> list[Tag]:
+        if radius is None:
+            radius = self.max_radius + self.ring_thickness
 
-        for body in bodies:
-            current_angle = radians(self.normalize(body.degree))
-            
-            if last_angle is not None:
-                if current_angle - last_angle < min_angle:
-                    current_angle = last_angle + min_angle
-            
-            adjusted_angles.append(current_angle)
-            last_angle = current_angle
+        lines = []
+        for vertex in self.data.vertices:
+            original_angle = radians(self.normalize(vertex.degree))
+            end_x = self.cx - radius * cos(original_angle)
+            end_y = self.cy + radius * sin(original_angle)
 
-        return adjusted_angles
+            lines.append(
+                line(
+                    x1=self.cx,
+                    y1=self.cy,
+                    x2=end_x,
+                    y2=end_y,
+                    stroke=self.config.theme.foreground,
+                    stroke_width=self.stroke_width,
+                )
+            )
+
+        return lines
 
     # utils ======================================================
+
+    def adjusted_degrees(
+        self, sorted_degrees: list[float], min_degree: float
+    ) -> list[float]:
+        forward_adjusted_degrees: list[float] = []
+        backward_adjusted_degrees: list[float] = []
+        last_degree: float | None = None
+
+        # Forward adjustment
+        for degree in sorted_degrees:
+            current_degree = degree
+            if last_degree is not None:
+                if (current_degree - last_degree) % 360 < min_degree:
+                    current_degree = (last_degree + min_degree) % 360
+            forward_adjusted_degrees.append(current_degree)
+            last_degree = current_degree
+
+        # Backward adjustment
+        last_degree = sorted_degrees[-1]  # Start with the last degree
+        backward_adjusted_degrees = [last_degree]  # Add the last degree as anchor
+        for degree in reversed(sorted_degrees[:-1]):  # Skip the last degree
+            current_degree = degree
+            if (last_degree - current_degree) % 360 < min_degree:
+                current_degree = (last_degree - min_degree) % 360
+            backward_adjusted_degrees.append(current_degree)
+            last_degree = current_degree
+
+        backward_adjusted_degrees.reverse()
+
+        # Choose the adjustment that moves the points the least
+        final_adjusted_degrees = []
+        for fwd, bwd in zip(forward_adjusted_degrees, backward_adjusted_degrees):
+            avg = ((fwd + bwd) / 2) % 360
+            final_adjusted_degrees.append(avg)
+
+        return final_adjusted_degrees
 
     def normalize(self, degree: float) -> float:
         """Normalize an angle to start from 180(Asc)"""

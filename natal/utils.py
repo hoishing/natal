@@ -3,11 +3,11 @@
 from natal.config import Config, load_config
 from typing import Iterable, Any, Mapping
 from datetime import datetime
+from types import SimpleNamespace
 
-
-class DotDict(Mapping):
-    def __init__(self, /, **kwargs):
-        self.__dict__.update(kwargs)
+class DotDict(SimpleNamespace, Mapping):
+    # def __init__(self, /, **kwargs):
+    #     self.__dict__.update(kwargs)
 
     def __getitem__(self, key):
         return getattr(self, key)
