@@ -62,6 +62,41 @@ class Stats:
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
 
     @property
+    def aspect_grid(self) -> str:
+        body_symbols = [body.symbol for body in self.data.aspectable]
+        grid = [[""] + body_symbols + ["Total"]]  # Header row with Total column
+
+        for i, body1 in enumerate(self.data.aspectable):
+            row = [body1.symbol]
+            aspect_count = 0
+            for j, body2 in enumerate(self.data.aspectable):
+                aspect = next(
+                    (
+                        asp
+                        for asp in self.data.aspects
+                        if (asp.body1 == body1 and asp.body2 == body2)
+                        or (asp.body1 == body2 and asp.body2 == body1)
+                    ),
+                    None,
+                )
+                if aspect:
+                    row.append(aspect.aspect_member.symbol)
+                    aspect_count += 1
+                else:
+                    row.append(None)
+
+            row.append(str(aspect_count))  # Add total count to the end of the row
+            grid.append(row)
+
+        return tabulate(
+            grid,
+            headers="firstrow",
+            tablefmt="simple_grid",
+            stralign="center",
+            numalign="center",
+        )
+
+    @property
     def house_table(self) -> str:
         grid = [("house", "sign", "ruler", "ruler sign", "ruler house")]
         for house in self.data.houses:
@@ -117,5 +152,25 @@ class Stats:
         output += "\n\n\n"
         output += "# Aspects\n\n"
         output += self.aspect_table
+        output += "\n\n\n"
+        output += "# Aspect Grid\n\n"
+        output += self.aspect_grid
         output += "\n\n"
         return output
+
+
+# for quick testing
+if __name__ == "__main__":
+    from natal.config import Config
+
+    options = dict(
+        display=dict(
+            chiron=True,
+        )
+    )
+
+    data = Data(
+        name="shing", city="hong kong", dt="1976-04-20 18:58", config=Config(**options)
+    )
+    stats = Stats(data=data)
+    print(stats.full_report)

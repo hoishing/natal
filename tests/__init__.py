@@ -3,7 +3,8 @@ from natal.data import Data
 from natal.config import Config
 
 config = Config(
-    display={"chiron": True},
+    display={"chiron": True, "mean_node": True},
+    orb={"conjunction": 8, "opposition": 7, "trine": 6, "square": 6, "sextile": 5},
 )
 
 

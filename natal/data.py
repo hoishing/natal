@@ -44,15 +44,14 @@ class Data(DotDict):
         self.houses: list[House] = []
         self.planets: list[Planet] = []
         self.extras: list[Extra] = []
+        self.vertices: list[Vertex] = []
         self.signs: list[Sign] = []
         self.aspects: list[Aspect] = []
         self.quadrants: list[list[Aspectable]] = []
         self.set_lat_lon()
         self.set_houses_vertices()
         self.set_movable_bodies()
-        self.aspectable: list[Aspectable] = (
-            self.planets + self.extras + [self.vertices[0], self.vertices[3]]
-        )
+        self.set_aspectable()
         self.set_signs()
         self.set_normalized_degrees()
         self.set_aspects()
@@ -109,8 +108,15 @@ class Data(DotDict):
             Vertex(degree=mc_deg, **VERTEX_MEMBERS[3]),
         ]
 
-        self.asc = self.vertices[0]
-        self.mc = self.vertices[3]
+        for v in self.vertices:
+            setattr(self, v.name, v)
+
+    def set_aspectable(self):
+        self.aspectable = [
+            body
+            for body in (self.planets + self.extras + self.vertices)
+            if self.config.display[body.name]
+        ]
 
     def set_signs(self):
         """Set the signs of the zodiac."""
@@ -213,17 +219,14 @@ class Data(DotDict):
         """Set the positions of the planets and other celestial bodies."""
         output = []
         for body in bodies:
-            if body.name not in self.config.display:
-                raise ValueError(f"{body.name} is not in Config.display")
-            if self.config.display[body.name]:
-                ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, body.value)
-                pos = Aspectable(
-                    **body,
-                    degree=lon,
-                    speed=speed,
-                )
-                setattr(self, body.name, pos)
-                output.append(pos)
+            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, body.value)
+            pos = Aspectable(
+                **body,
+                degree=lon,
+                speed=speed,
+            )
+            setattr(self, body.name, pos)
+            output.append(pos)
         return output
 
     def house_of(self, body_name: str) -> int:
