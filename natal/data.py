@@ -13,13 +13,12 @@ from natal.classes import (
     Sign,
     Vertex,
 )
-from natal.config import load_config
+from natal.config import Config, load_config
 from natal.const import *
 from natal.utils import pairs, str_to_dt
 from zoneinfo import ZoneInfo
 
 swe.set_ephe_path("natal/data")
-CONFIG = load_config()
 
 
 class Data(DotDict):
@@ -30,12 +29,14 @@ class Data(DotDict):
         name: str,
         city: str,
         dt: datetime | str,
+        config: Config = load_config(),
     ):
         self.name = name
         self.city = city
         if isinstance(dt, str):
             dt = str_to_dt(dt)
         self.dt = dt
+        self.config = config
         self.lat: float = None
         self.lon: float = None
         self.timezone: str = None
@@ -44,13 +45,14 @@ class Data(DotDict):
         self.planets: list[Planet] = []
         self.extras: list[Extra] = []
         self.signs: list[Sign] = []
-        self.aspectable: list[Aspectable] = []
         self.aspects: list[Aspect] = []
         self.quadrants: list[list[Aspectable]] = []
         self.set_lat_lon()
         self.set_houses_vertices()
         self.set_movable_bodies()
-        self.aspectable = self.planets + self.extras + [self.vertices[0], self.vertices[3]]
+        self.aspectable: list[Aspectable] = (
+            self.planets + self.extras + [self.vertices[0], self.vertices[3]]
+        )
         self.set_signs()
         self.set_normalized_degrees()
         self.set_aspects()
@@ -130,8 +132,8 @@ class Data(DotDict):
                 360 - org_angle if org_angle > 180 else org_angle
             )  # get the smaller angle
             for aspect_member in ASPECT_MEMBERS:
-                max_orb = aspect_member.value + CONFIG.orb[aspect_member.name]
-                min_orb = aspect_member.value - CONFIG.orb[aspect_member.name]
+                max_orb = aspect_member.value + self.config.orb[aspect_member.name]
+                min_orb = aspect_member.value - self.config.orb[aspect_member.name]
                 if min_orb <= angle <= max_orb:
                     # decreasing angle approach aspect
                     applying = ordered[0].speed > ordered[1].speed
@@ -207,18 +209,21 @@ class Data(DotDict):
 
     # utils ===============================
 
-    def set_positions(self, members: list[Body]) -> list[Aspectable]:
+    def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
         """Set the positions of the planets and other celestial bodies."""
         output = []
-        for member in members:
-            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, member.value)
-            pos = Aspectable(
-                **member,
-                degree=lon,
-                speed=speed,
-            )
-            setattr(self, member.name, pos)
-            output.append(pos)
+        for body in bodies:
+            if body.name not in self.config.display:
+                raise ValueError(f"{body.name} is not in Config.display")
+            if self.config.display[body.name]:
+                ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, body.value)
+                pos = Aspectable(
+                    **body,
+                    degree=lon,
+                    speed=speed,
+                )
+                setattr(self, body.name, pos)
+                output.append(pos)
         return output
 
     def house_of(self, body_name: str) -> int:

@@ -1,4 +1,4 @@
-is_light_theme: False
+is_light_theme: true
 
 # light_theme:
 #     fire: "#ff0000"
@@ -13,7 +13,7 @@ display:
 
 orb:
     conjunction: 8
-    opposition: 7
+    opposition: 8
     trine: 6
     square: 6
-    sextile: 5
+    sextile: 6

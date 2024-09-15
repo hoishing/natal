@@ -7,35 +7,36 @@
 
 import yaml
 from pydantic import BaseModel
-from typing import Protocol, TypeVar, Any
+from typing import Any, Mapping, Iterator
 from pathlib import Path
-
-T = TypeVar("T")
-
-
-class GetAttrProtocol(Protocol[T]):
-    def __getattr__(self, name: str) -> T: ...
+from io import IOBase
 
 
-class SubscriptableModel(BaseModel):
-    def __getitem__(self: GetAttrProtocol[T], key: str) -> T:
+class ModelDict(BaseModel, Mapping):
+    def __getitem__(self, key: str):
         return getattr(self, key)
 
     def __setitem__(self, key: str, value: Any) -> None:
         setattr(self, key, value)
 
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.__dict__)
 
-class Orb(SubscriptableModel):
+    def __len__(self) -> int:
+        return len(self.__dict__)
+
+
+class Orb(ModelDict):
     """aspect orb model with default values"""
 
     conjunction: int = 8
-    opposition: int = 8
+    opposition: int = 7
     trine: int = 6
     square: int = 6
-    sextile: int = 4
+    sextile: int = 5
 
 
-class Theme(SubscriptableModel):
+class Theme(ModelDict):
     """default colors"""
 
     fire: str = "#ef476f"  # fire, square, Asc
@@ -55,9 +56,9 @@ class Theme(SubscriptableModel):
 class LightTheme(Theme):
     """default light colors"""
 
-    foreground: str = "#343a40"
-    background: str = "#F7F3F0"
-    transparency: float = 0.3
+    foreground: str = "#758492"
+    background: str = "#F7F5E6"
+    transparency: float = 0.1
 
 
 class DarkTheme(Theme):
@@ -67,7 +68,8 @@ class DarkTheme(Theme):
     background: str = "#343a40"
     transparency: float = 0.1
 
-class Display(SubscriptableModel):
+
+class Display(ModelDict):
     """display the celestial bodies or not"""
 
     sun: bool = True
@@ -95,14 +97,27 @@ class Display(SubscriptableModel):
     mc: bool = True
 
 
+class ChartOptions(ModelDict):
+    """chart configuration"""
+
+    stroke_width: int = 1
+    stroke_opacity: float = 1
+    font: str = "Arial Unicode MS, sans-serif"
+    font_size_fraction: float = 0.55
+    inner_min_degree: float = 6
+    outer_min_degree: float = 7
+    margin_factor: float = 0.1
+
+
 class Config(BaseModel):
     """package configuration model"""
 
-    is_light_theme: bool = True
+    is_light_theme: bool = False
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()
+    chart: ChartOptions = ChartOptions()
 
     @property
     def theme(self) -> Theme:
@@ -110,18 +125,19 @@ class Config(BaseModel):
         return self.light_theme if self.is_light_theme else self.dark_theme
 
 
-def load_config(file: str = "natal_config.yml") -> Config:
-    """load configuration file
+def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:
+    """load configuration file"""
+    if isinstance(file, IOBase):
+        obj = yaml.safe_load(file)
+        return Config(**obj)
 
-    Test:
-        tests/test_config.py
-    """
-    config = Path(file)
-    if not config.exists():
+    path = Path(file)
+    if not path.exists():
         return Config()
-    with open(file) as f:
+
+    with open(path, "r") as f:
         obj = yaml.safe_load(f)
-    return Config(**obj)
+        return Config(**obj)
 
 
 if "__main__" == __name__:

@@ -1,4 +1,3 @@
-from natal.data import Data
 from natal.stats import Stats
 from pytest import fixture
 from . import data
