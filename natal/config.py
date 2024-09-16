@@ -34,6 +34,8 @@ class Orb(ModelDict):
     trine: int = 6
     square: int = 6
     sextile: int = 5
+    composite_reduction: float = 0.5
+
 
 
 class Theme(ModelDict):

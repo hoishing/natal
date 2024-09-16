@@ -220,7 +220,7 @@ class Data(DotDict):
         return (degree - self.houses[0].degree + 360) % 360
 
     def calculate_aspects(
-        self, body_pairs: Iterable[tuple[Aspectable, Aspectable]]
+        self, body_pairs: Iterable[tuple[Aspectable, Aspectable]], reduction: float = 1
     ) -> list[Aspect]:
         output = []
         for b1, b2 in body_pairs:
@@ -229,8 +229,9 @@ class Data(DotDict):
             # get the smaller angle
             angle = 360 - org_angle if org_angle > 180 else org_angle
             for aspect_member in ASPECT_MEMBERS:
-                max_orb = aspect_member.value + self.config.orb[aspect_member.name]
-                min_orb = aspect_member.value - self.config.orb[aspect_member.name]
+                orb = self.config.orb[aspect_member.name] * reduction
+                max_orb = aspect_member.value + orb
+                min_orb = aspect_member.value - orb
                 if min_orb <= angle <= max_orb:
                     # decreasing angle approach aspect
                     applying = ordered[0].speed > ordered[1].speed

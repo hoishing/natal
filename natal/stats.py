@@ -117,9 +117,13 @@ class Stats:
         quad_names = ["first", "second", "third", "fourth"]
         quadrants = defaultdict(lambda: [0, []])
         for i, quad in enumerate(self.data.quadrants):
-            for body in quad:
-                quadrants[i][0] += 1  # act as a counter
-                quadrants[i][1].append(f"{body.symbol} {body.name}")
+            if quad:
+                for body in quad:
+                    quadrants[i][0] += 1  # act as a counter
+                    quadrants[i][1].append(f"{body.symbol} {body.name}")
+            else:
+                # no celestial body in this quadrant
+                quadrants[i][0] = 0
         grid = [("quadrant", "count", "bodies")]
         data = [
             (quad_names[quad_no], val[0], ", ".join(val[1]))
@@ -169,8 +173,16 @@ if __name__ == "__main__":
         )
     )
 
+    from datetime import datetime, timedelta
+
+    target_time = datetime.now()
+
     data = Data(
-        name="shing", city="hong kong", dt="1976-04-20 18:58", config=Config(**options)
+        name="shing",
+        city="hong kong",
+        dt=target_time,
+        config=Config(**options),
+        # name="shing", city="hong kong", dt="1976-04-20 18:58", config=Config(**options)
     )
     stats = Stats(data=data)
     print(stats.full_report)

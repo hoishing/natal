@@ -316,13 +316,17 @@ class Chart(DotDict):
             self.data1.aspects
             if self.data2 is None
             else self.data1.calculate_aspects(
-                itertools.product(self.data1.aspectables, self.data2.aspectables)
+                itertools.product(self.data1.aspectables, self.data2.aspectables),
+                reduction=self.config.orb.composite_reduction,
             )
         )
         for aspect in aspects:
-            start_angle = radians(aspect.body1.normalized_degree)
-            end_angle = radians(aspect.body2.normalized_degree)
-            orb_factor = 1 - aspect.orb / self.config.orb[aspect.aspect_member.name]
+            start_angle = radians(self.data1.normalize(aspect.body1.degree))
+            end_angle = radians(self.data1.normalize(aspect.body2.degree))
+            orb_factor = 1 - aspect.orb / (
+                self.config.orb[aspect.aspect_member.name]
+                * self.config.orb.composite_reduction
+            )
             opacity_factor = (
                 1 if aspect.aspect_member.name == "conjunction" else orb_factor
             )
