@@ -1,10 +1,10 @@
 from math import radians, cos, sin, pi
-from natal.classes import Aspectable
 from natal.data import Data
 from ptag import Tag, svg, path, circle, text, g, line, rect, mask
 from natal.config import Config, load_config
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
+import itertools
 
 
 class Chart(DotDict):
@@ -12,13 +12,13 @@ class Chart(DotDict):
 
     def __init__(
         self,
-        data: Data,
+        data1: Data,
         width: int,
         height: int | None = None,
         data2: Data | None = None,
         config: Config = load_config(),
     ):
-        self.data = data
+        self.data1 = data1
         self.data2 = data2
         self.width = width
         self.height = height
@@ -99,35 +99,35 @@ class Chart(DotDict):
             stroke_opacity=stroke_opacity,
         )
 
-    def background(self, radius: int, stroke_width: int = 1, opacity: float = 1) -> Tag:
+    def background(
+        self,
+        radius: int,
+        fill: str = None,
+        stroke_color: str = None,
+        stroke_width: int = None,
+        stroke_opacity: float = None,
+    ) -> Tag:
         return circle(
             cx=self.cx,
             cy=self.cy,
             r=radius,
-            fill=self.config.theme.background,
-            stroke=self.config.theme.foreground,
-            stroke_width=stroke_width,
-            stroke_opacity=opacity,
+            fill=self.config.theme.background if fill is None else fill,
+            stroke=(
+                self.config.theme.foreground if stroke_color is None else stroke_color
+            ),
+            stroke_width=self.stroke_width if stroke_width is None else stroke_width,
+            stroke_opacity=(
+                self.stroke_opacity if stroke_opacity is None else stroke_opacity
+            ),
         )
 
-    def sign_wheel(
-        self,
-        radius: int | None = None,
-        stroke_width: int = 1,
-    ) -> list[Tag]:
-        """
-        Creates a wheel shape in SVG format.
+    def sign_wheel(self) -> list[Tag]:
 
-        Returns:
-            Tag: The SVG tag representing the wheel shape.
-        """
-
-        if radius is None:
-            radius = self.max_radius
+        radius = self.max_radius
 
         wheel = [self.background(radius)]
         for i in range(12):
-            start_deg = (i * 30 - self.data.houses[0].degree) % 360
+            start_deg = (i * 30 - self.data1.houses[0].degree) % 360
             end_deg = start_deg + 30
             wheel.append(
                 self.sector(
@@ -136,7 +136,7 @@ class Chart(DotDict):
                     end_deg=end_deg,
                     fill=self.fill_color(i, bg=True),
                     stroke_color=self.config.theme.foreground,
-                    stroke_width=stroke_width,
+                    stroke_width=self.stroke_width,
                 )
             )
 
@@ -161,18 +161,14 @@ class Chart(DotDict):
 
         return wheel
 
-    def house_wheel(
-        self,
-        radius: int | None = None,
-    ) -> list[Tag]:
-        if radius is None:
-            radius = self.max_radius - self.ring_thickness
+    def house_wheel(self) -> list[Tag]:
+        radius = self.max_radius - self.ring_thickness
 
         wheel = [self.background(radius)]
         for i in range(12):
             next_i = (i + 1) % 12
-            start_deg = self.data.houses[i].normalized_degree
-            end_deg = self.data.houses[next_i].normalized_degree
+            start_deg = self.data1.houses[i].normalized_degree
+            end_deg = self.data1.houses[next_i].normalized_degree
 
             # Handle the case where end_deg is less than start_deg (crosses 0°)
             if end_deg < start_deg:
@@ -212,19 +208,18 @@ class Chart(DotDict):
 
         return wheel
 
-    def outer_body_wheel(
-        self,
-        radius: int | None = None,
-    ) -> list[Tag]:
-
-        data = self.data2 or self.data
-        if radius is None:
-            radius = self.max_radius - (3 * self.ring_thickness)
+    def body_wheel(self, outer: bool = True) -> list[Tag]:
+        inset_factor = 3 if outer else 4
+        radius = self.max_radius - inset_factor * self.ring_thickness
+        data = (self.data2 or self.data1) if outer else self.data1
 
         sorted_aspectables = sorted(data.aspectables, key=lambda x: x.degree)
-        sorted_degrees = [body.normalized_degree for body in sorted_aspectables]
+        # normalize relative to first house of data1
+        sorted_degrees = [
+            self.data1.normalize(body.degree) for body in sorted_aspectables
+        ]
 
-        output = [self.background(radius, opacity=0.5)]
+        output = [self.background(radius, stroke_opacity=0.5, fill="#FFFFFF00")]
 
         # Calculate adjusted positions
         adjusted_degrees = self.adjusted_degrees(sorted_degrees, self.outer_min_degree)
@@ -239,7 +234,7 @@ class Chart(DotDict):
             degree_radius = radius
 
             # Use original angle for line start position
-            original_angle = radians(body.normalized_degree)
+            original_angle = radians(self.data1.normalize(body.degree))
             degree_x = self.cx - degree_radius * cos(original_angle)
             degree_y = self.cy + degree_radius * sin(original_angle)
 
@@ -283,13 +278,12 @@ class Chart(DotDict):
 
         return output
 
-    def vertex_line(self, vertex_radius: int | None = None) -> list[Tag]:
-        if vertex_radius is None:
-            vertex_radius = self.max_radius + self.ring_thickness
+    def vertex_line(self) -> list[Tag]:
+        vertex_radius = self.max_radius + self.ring_thickness
         house_radius = self.max_radius - 2 * self.ring_thickness
 
-        lines = []
-        for house in self.data.houses:
+        lines = [self.background(house_radius)]
+        for house in self.data1.houses:
             radius = vertex_radius if house.value in [1, 4, 7, 10] else house_radius
             angle = radians(house.normalized_degree)
             end_x = self.cx - radius * cos(angle)
@@ -313,11 +307,19 @@ class Chart(DotDict):
 
         return lines
 
-    def aspect_lines(self, outer: bool = True) -> list[Tag]:
-        inset_factor = 3 if outer else 4
+    def aspect_lines(self) -> list[Tag]:
+        is_outer = self.data2 is None
+        inset_factor = 3 if is_outer else 4
         radius = self.max_radius - inset_factor * self.ring_thickness
-        lines = []
-        for aspect in self.data.aspects:
+        lines = [self.background(radius, stroke_opacity=0)]
+        aspects = (
+            self.data1.aspects
+            if self.data2 is None
+            else self.data1.calculate_aspects(
+                itertools.product(self.data1.aspectables, self.data2.aspectables)
+            )
+        )
+        for aspect in aspects:
             start_angle = radians(aspect.body1.normalized_degree)
             end_angle = radians(aspect.body2.normalized_degree)
             orb_factor = 1 - aspect.orb / self.config.orb[aspect.aspect_member.name]

@@ -16,6 +16,7 @@ from natal.classes import (
 from natal.config import Config, load_config
 from natal.const import *
 from natal.utils import pairs, str_to_dt
+from typing import Iterable
 from zoneinfo import ZoneInfo
 
 swe.set_ephe_path("natal/data")
@@ -131,31 +132,7 @@ class Data(DotDict):
     def set_aspects(self):
         """Set the aspects between the planets."""
         body_pairs = pairs(self.aspectables)
-        for b1, b2 in body_pairs:
-            ordered = sorted([b1, b2], key=lambda x: x.degree)
-            org_angle = ordered[1].degree - ordered[0].degree
-            angle = (
-                360 - org_angle if org_angle > 180 else org_angle
-            )  # get the smaller angle
-            for aspect_member in ASPECT_MEMBERS:
-                max_orb = aspect_member.value + self.config.orb[aspect_member.name]
-                min_orb = aspect_member.value - self.config.orb[aspect_member.name]
-                if min_orb <= angle <= max_orb:
-                    # decreasing angle approach aspect
-                    applying = ordered[0].speed > ordered[1].speed
-                    if angle < aspect_member.value:
-                        applying = not applying  # increasing angle approach aspect
-                    # reverse if org_angle is reflex angle
-                    applying = not applying if org_angle > 180 else applying
-                    self.aspects.append(
-                        Aspect(
-                            body1=b1,
-                            body2=b2,
-                            aspect_member=aspect_member,
-                            applying=applying,
-                            orb=abs(angle - aspect_member.value),
-                        )
-                    )
+        self.aspects = self.calculate_aspects(body_pairs)
 
     def set_normalized_degrees(self):
         """Normalize the positions of celestial bodies relative to the first house"""
@@ -241,3 +218,33 @@ class Data(DotDict):
     def normalize(self, degree: float) -> float:
         """degree relative to the first house."""
         return (degree - self.houses[0].degree + 360) % 360
+
+    def calculate_aspects(
+        self, body_pairs: Iterable[tuple[Aspectable, Aspectable]]
+    ) -> list[Aspect]:
+        output = []
+        for b1, b2 in body_pairs:
+            ordered = sorted([b1, b2], key=lambda x: x.degree)
+            org_angle = ordered[1].degree - ordered[0].degree
+            # get the smaller angle
+            angle = 360 - org_angle if org_angle > 180 else org_angle
+            for aspect_member in ASPECT_MEMBERS:
+                max_orb = aspect_member.value + self.config.orb[aspect_member.name]
+                min_orb = aspect_member.value - self.config.orb[aspect_member.name]
+                if min_orb <= angle <= max_orb:
+                    # decreasing angle approach aspect
+                    applying = ordered[0].speed > ordered[1].speed
+                    if angle < aspect_member.value:
+                        applying = not applying  # increasing angle approach aspect
+                    # reverse if org_angle is reflex angle
+                    applying = not applying if org_angle > 180 else applying
+                    output.append(
+                        Aspect(
+                            body1=b1,
+                            body2=b2,
+                            aspect_member=aspect_member,
+                            applying=applying,
+                            orb=abs(angle - aspect_member.value),
+                        )
+                    )
+        return output
