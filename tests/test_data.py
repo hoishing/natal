@@ -110,5 +110,5 @@ def test_signs(data: Data, signs: dict) -> None:
 
 
 def test_normalized_bodies(data: Data) -> None:
-    for body in data.aspectable:
+    for body in data.aspectables:
         assert body.normalized_degree == data.normalize(body.degree)

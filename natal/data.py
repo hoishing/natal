@@ -112,7 +112,7 @@ class Data(DotDict):
             setattr(self, v.name, v)
 
     def set_aspectable(self):
-        self.aspectable = [
+        self.aspectables = [
             body
             for body in (self.planets + self.extras + self.vertices)
             if self.config.display[body.name]
@@ -130,7 +130,7 @@ class Data(DotDict):
 
     def set_aspects(self):
         """Set the aspects between the planets."""
-        body_pairs = pairs(self.aspectable)
+        body_pairs = pairs(self.aspectables)
         for b1, b2 in body_pairs:
             ordered = sorted([b1, b2], key=lambda x: x.degree)
             org_angle = ordered[1].degree - ordered[0].degree

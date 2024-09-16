@@ -57,7 +57,7 @@ class LightTheme(Theme):
     """default light colors"""
 
     foreground: str = "#758492"
-    background: str = "#F7F5E6"
+    background: str = "#FFFDF1"
     transparency: float = 0.1
 
 
@@ -99,7 +99,7 @@ class Display(ModelDict):
     mc: bool = True
 
 
-class ChartOptions(ModelDict):
+class Chart(ModelDict):
     """chart configuration"""
 
     stroke_width: int = 1
@@ -119,7 +119,7 @@ class Config(ModelDict):
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()
-    chart: ChartOptions = ChartOptions()
+    chart: Chart = Chart()
 
     @property
     def theme(self) -> Theme:

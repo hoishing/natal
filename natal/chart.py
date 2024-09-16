@@ -46,8 +46,6 @@ class Chart(DotDict):
             id="the_mask",
         )
 
-
-
     @property
     def svg_root(self) -> Tag:
         """Generate an SVG element with sensible defaults"""
@@ -223,7 +221,7 @@ class Chart(DotDict):
         if radius is None:
             radius = self.max_radius - (3 * self.ring_thickness)
 
-        sorted_aspectables = sorted(data.aspectable, key=lambda x: x.degree)
+        sorted_aspectables = sorted(data.aspectables, key=lambda x: x.degree)
         sorted_degrees = [body.normalized_degree for body in sorted_aspectables]
 
         output = [self.background(radius, opacity=0.5)]
@@ -266,7 +264,7 @@ class Chart(DotDict):
                         y1=degree_y,
                         x2=symbol_x,
                         y2=symbol_y,
-                        stroke=getattr(self.config.theme, body.color),
+                        stroke=self.config.theme[body.color],
                         stroke_width=self.stroke_width / 2,
                         mask=f"url(#the_mask)",
                     ),
@@ -274,7 +272,7 @@ class Chart(DotDict):
                         body.symbol,
                         x=symbol_x,
                         y=symbol_y,
-                        fill=getattr(self.config.theme, body.color),
+                        fill=self.config.theme[body.color],
                         font_family=self.font,
                         font_size=font_size,
                         text_anchor="middle",
@@ -313,6 +311,30 @@ class Chart(DotDict):
                 )
             )
 
+        return lines
+
+    def aspect_lines(self, outer: bool = True) -> list[Tag]:
+        inset_factor = 3 if outer else 4
+        radius = self.max_radius - inset_factor * self.ring_thickness
+        lines = []
+        for aspect in self.data.aspects:
+            start_angle = radians(aspect.body1.normalized_degree)
+            end_angle = radians(aspect.body2.normalized_degree)
+            orb_factor = 1 - aspect.orb / self.config.orb[aspect.aspect_member.name]
+            opacity_factor = (
+                1 if aspect.aspect_member.name == "conjunction" else orb_factor
+            )
+            lines.append(
+                line(
+                    x1=self.cx - radius * cos(start_angle),
+                    y1=self.cy + radius * sin(start_angle),
+                    x2=self.cx - radius * cos(end_angle),
+                    y2=self.cy + radius * sin(end_angle),
+                    stroke=self.config.theme[aspect.aspect_member.color],
+                    stroke_width=self.stroke_width / 2,
+                    stroke_opacity=self.stroke_opacity * opacity_factor,
+                )
+            )
         return lines
 
     # utils ======================================================

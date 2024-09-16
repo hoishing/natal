@@ -23,7 +23,7 @@ class Stats:
     def distribution_table(self, kind: DistKind) -> str:
         """distribution of celestial bodies"""
         bodies = defaultdict(lambda: [0, []])
-        for body in self.data.aspectable:
+        for body in self.data.aspectables:
             key = body.sign[kind]
             bodies[key][0] += 1  # act as a counter
             bodies[key][1].append(f"{body.name} {body.sign.symbol}")
@@ -40,7 +40,7 @@ class Stats:
     def aspectable_body_table(self) -> str:
         """distribution of movable bodies"""
         grid = [("body", "sign", "house")]
-        for body in self.data.aspectable:
+        for body in self.data.aspectables:
             grid.append((body.name, body.signed_dms, self.data.house_of(body.name)))
         return tabulate(grid, headers="firstrow", tablefmt="orgtbl")
 
@@ -63,13 +63,13 @@ class Stats:
 
     @property
     def aspect_grid(self) -> str:
-        body_symbols = [body.symbol for body in self.data.aspectable]
+        body_symbols = [body.symbol for body in self.data.aspectables]
         grid = [[""] + body_symbols + ["Total"]]  # Header row with Total column
 
-        for i, body1 in enumerate(self.data.aspectable):
+        for i, body1 in enumerate(self.data.aspectables):
             row = [body1.symbol]
             aspect_count = 0
-            for j, body2 in enumerate(self.data.aspectable):
+            for j, body2 in enumerate(self.data.aspectables):
                 aspect = next(
                     (
                         asp
