@@ -225,11 +225,15 @@ class Chart(DotDict):
         adjusted_degrees = self.adjusted_degrees(sorted_degrees, self.outer_min_degree)
 
         for body, adjusted_degree in zip(sorted_aspectables, adjusted_degrees):
-            font_size = (
-                self.font_size
-                if body.name not in ["asc", "mc"]
-                else self.font_size * 0.7
-            )
+            font_size = self.font_size
+            text_opt = {}
+            if body.name in ["asc", "mc"]:
+                text_opt = {
+                    "lengthAdjust": "spacingAndGlyphs",
+                    "textLength": self.font_size * 0.7,
+                }
+                font_size *= 0.85
+
             symbol_radius = radius + (self.ring_thickness / 2)
             degree_radius = radius
 
@@ -272,9 +276,28 @@ class Chart(DotDict):
                         font_size=font_size,
                         text_anchor="middle",
                         dominant_baseline="central",
+                        **text_opt,
                     ),
                 ]
             )
+
+            if outer:
+                # Add line connecting to the inner circle
+                inner_radius = self.max_radius - 4 * self.ring_thickness
+                inner_x = self.cx - inner_radius * cos(original_angle)
+                inner_y = self.cy + inner_radius * sin(original_angle)
+                
+                output.append(
+                    line(
+                        x1=degree_x,
+                        y1=degree_y,
+                        x2=inner_x,
+                        y2=inner_y,
+                        stroke=self.config.theme[body.color],
+                        stroke_width=self.stroke_width / 2,
+                        stroke_dasharray=self.ring_thickness / 11
+                    )
+                )
 
         return output
 
