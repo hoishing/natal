@@ -1,10 +1,11 @@
-from math import radians, cos, sin, pi
+from math import radians, cos, sin
 from natal.data import Data
 from ptag import Tag, svg, path, circle, text, line
-from natal.config import Config, load_config
+from natal.config import Config, load_config, Orb
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
 import itertools
+from natal.classes import Aspect
 
 
 class Chart(DotDict):
@@ -179,6 +180,7 @@ class Chart(DotDict):
     def vertex_line(self) -> list[Tag]:
         vertex_radius = self.max_radius + self.ring_thickness
         house_radius = self.max_radius - 2 * self.ring_thickness
+        body_radius = self.max_radius - 3 * self.ring_thickness
 
         lines = [
             self.background(
@@ -186,7 +188,13 @@ class Chart(DotDict):
                 fill=self.config.theme.background,
                 stroke=self.config.theme.foreground,
                 stroke_width=self.config.chart.stroke_width,
-            )
+            ),
+            self.background(
+                body_radius,
+                fill="#88888800",
+                stroke=self.config.theme.dim,
+                stroke_width=self.config.chart.stroke_width,
+            ),
         ]
         for house in self.data1.houses:
             radius = house_radius
@@ -218,70 +226,33 @@ class Chart(DotDict):
     def outer_body_wheel(self) -> list[Tag]:
         radius = self.max_radius - 3 * self.ring_thickness
         data = self.data2 or self.data1
-        output = [
-            self.background(
-                radius,
-                fill="#88888800",
-                stroke=self.config.theme.dim,
-                stroke_width=self.config.chart.stroke_width,
-            )
-        ]
-        return output + self.body_wheel(
-            radius, data, self.config.chart.outer_min_degree
-        )
+        return self.body_wheel(radius, data, self.config.chart.outer_min_degree)
 
     def inner_body_wheel(self) -> list[Tag] | None:
         if self.data2 is None:
             return
         radius = self.max_radius - 4 * self.ring_thickness
         data = self.data1
-        output = []
-        return output + self.body_wheel(
-            radius, data, self.config.chart.inner_min_degree
-        )
+        return self.body_wheel(radius, data, self.config.chart.inner_min_degree)
 
-    def aspect_lines(self) -> list[Tag]:
-        """draw aspect lines between aspectables"""
+    def outer_aspect(self) -> list[Tag]:
+        if self.data2 is not None:
+            return []
+        radius = self.max_radius - 3 * self.ring_thickness
+        orb = self.config.orb
+        aspects = self.data1.aspects
+        return self.aspect_lines(radius, orb, aspects)
 
-        is_outer = self.data2 is None
-        inset_factor = 3 if is_outer else 4
-        radius = self.max_radius - inset_factor * self.ring_thickness
-        output = [
-            self.background(
-                radius,
-                fill=self.config.theme.background,
-                stroke=self.config.theme.dim,
-                stroke_width=self.config.chart.stroke_width,
-            )
-        ]
-        orb = self.config.orb if is_outer else self.config.composite_orb
-        aspects = (
-            self.data1.aspects
-            if self.data2 is None
-            else self.data1.calculate_aspects(
-                itertools.product(self.data1.aspectables, self.data2.aspectables),
-                orb=orb,
-            )
+    def inner_aspect(self) -> list[Tag]:
+        if self.data2 is None:
+            return []
+        radius = self.max_radius - 4 * self.ring_thickness
+        orb = self.config.composite_orb
+        aspects = self.data1.calculate_aspects(
+            itertools.product(self.data1.aspectables, self.data2.aspectables),
+            orb=orb,
         )
-        for aspect in aspects:
-            start_angle = radians(self.data1.normalize(aspect.body1.degree))
-            end_angle = radians(self.data1.normalize(aspect.body2.degree))
-            orb_fraction = 1 - aspect.orb / orb[aspect.aspect_member.name]
-            opacity_factor = (
-                1 if aspect.aspect_member.name == "conjunction" else orb_fraction
-            )
-            output.append(
-                line(
-                    x1=self.cx - radius * cos(start_angle),
-                    y1=self.cy + radius * sin(start_angle),
-                    x2=self.cx - radius * cos(end_angle),
-                    y2=self.cy + radius * sin(end_angle),
-                    stroke=self.config.theme[aspect.aspect_member.color],
-                    stroke_width=self.config.chart.stroke_width / 2,
-                    stroke_opacity=self.config.chart.stroke_opacity * opacity_factor,
-                )
-            )
-        return output
+        return self.aspect_lines(radius, orb, aspects)
 
     # utils ======================================================
 
@@ -410,5 +381,36 @@ class Chart(DotDict):
                         **text_opt,
                     ),
                 ]
+            )
+        return output
+
+    def aspect_lines(self, radius: float, orb: Orb, aspects: list[Aspect]) -> list[Tag]:
+        """draw aspect lines between aspectables"""
+
+        output = [
+            self.background(
+                radius,
+                fill=self.config.theme.background,
+                stroke=self.config.theme.dim,
+                stroke_width=self.config.chart.stroke_width,
+            )
+        ]
+        for aspect in aspects:
+            start_angle = radians(self.data1.normalize(aspect.body1.degree))
+            end_angle = radians(self.data1.normalize(aspect.body2.degree))
+            orb_fraction = 1 - aspect.orb / orb[aspect.aspect_member.name]
+            opacity_factor = (
+                1 if aspect.aspect_member.name == "conjunction" else orb_fraction
+            )
+            output.append(
+                line(
+                    x1=self.cx - radius * cos(start_angle),
+                    y1=self.cy + radius * sin(start_angle),
+                    x2=self.cx - radius * cos(end_angle),
+                    y2=self.cy + radius * sin(end_angle),
+                    stroke=self.config.theme[aspect.aspect_member.color],
+                    stroke_width=self.config.chart.stroke_width / 2,
+                    stroke_opacity=self.config.chart.stroke_opacity * opacity_factor,
+                )
             )
         return output

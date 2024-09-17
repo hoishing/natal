@@ -7,7 +7,7 @@
 
 import yaml
 from pydantic import BaseModel
-from typing import Any, Mapping, Iterator
+from typing import Any, Mapping, Iterator, Literal
 from pathlib import Path
 from io import IOBase
 
@@ -126,7 +126,7 @@ class Chart(ModelDict):
 class Config(ModelDict):
     """package configuration model"""
 
-    is_light_theme: bool = False
+    theme_type: Literal["light", "dark", "mono"] = "dark"
     orb: Orb = Orb()
     composite_orb: CompositeOrb = CompositeOrb()
     light_theme: LightTheme = LightTheme()
@@ -137,7 +137,16 @@ class Config(ModelDict):
     @property
     def theme(self) -> Theme:
         """return light or dark theme colors"""
-        return self.light_theme if self.is_light_theme else self.dark_theme
+        match self.theme_type:
+            case "light":
+                return self.light_theme
+            case "dark":
+                return self.dark_theme
+            case "mono":
+                kwargs = {key: "#888888" for key in self.light_theme.model_dump()}
+                kwargs["background"] = "white"
+                kwargs["transparency"] = 0
+                return Theme(**kwargs)
 
 
 def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:

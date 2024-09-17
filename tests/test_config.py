@@ -1,4 +1,4 @@
-from natal.config import load_config
+from natal.config import load_config, Config
 from tempfile import NamedTemporaryFile
 from pytest import fixture
 from typing import Generator
@@ -39,7 +39,7 @@ def tmp_config_file() -> Generator[str, None, None]:
 def test_load_config(tmp_config_file: str) -> None:
     cfg = load_config(tmp_config_file)
 
-    assert cfg.is_light_theme == False
+    assert cfg.theme_type == "dark"
     assert cfg.light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7
@@ -48,7 +48,15 @@ def test_load_config(tmp_config_file: str) -> None:
 def test_load_config_from_string() -> None:
     file = StringIO(config)
     cfg = load_config(file)
-    assert cfg.is_light_theme == False
+    assert cfg.theme_type == "dark"
     assert cfg.light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7
+
+
+def test_mono_theme() -> None:
+    cfg = Config(**dict(theme_type="mono"))
+    assert cfg.theme_type == "mono"
+    assert cfg.theme.foreground == cfg.theme.fire
+    assert cfg.theme.background == "white"
+    assert cfg.theme.transparency == 0
