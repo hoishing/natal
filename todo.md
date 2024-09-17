@@ -1,4 +1,5 @@
 # todo
 
-- asc mc width
-- transit orb
+- composite chart
+    - stats
+    - tests

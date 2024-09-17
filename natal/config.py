@@ -27,15 +27,23 @@ class ModelDict(BaseModel, Mapping):
 
 
 class Orb(ModelDict):
-    """aspect orb model with default values"""
+    """default orb for natal chart"""
 
-    conjunction: int = 8
-    opposition: int = 7
+    conjunction: int = 7
+    opposition: int = 6
     trine: int = 6
     square: int = 6
     sextile: int = 5
-    composite_reduction: float = 0.5
 
+
+class CompositeOrb(Orb):
+    """default orb for composite chart"""
+
+    conjunction: int = 2
+    opposition: int = 2
+    trine: int = 2
+    square: int = 2
+    sextile: int = 1
 
 
 class Theme(ModelDict):
@@ -50,9 +58,10 @@ class Theme(ModelDict):
     positive: str = "#FFC0CB"  # positive
     negative: str = "#AD8B73"  # negative
     others: str = "#FFA500"  # conjunction
+    transparency: float = 0.1
     foreground: str
     background: str
-    transparency: float
+    dim: str
 
 
 class LightTheme(Theme):
@@ -60,7 +69,7 @@ class LightTheme(Theme):
 
     foreground: str = "#758492"
     background: str = "#FFFDF1"
-    transparency: float = 0.1
+    dim: str = "#A4BACD"
 
 
 class DarkTheme(Theme):
@@ -68,7 +77,7 @@ class DarkTheme(Theme):
 
     foreground: str = "#F7F3F0"
     background: str = "#343a40"
-    transparency: float = 0.1
+    dim: str = "#515860"
 
 
 class Display(ModelDict):
@@ -108,9 +117,10 @@ class Chart(ModelDict):
     stroke_opacity: float = 1
     font: str = "Arial Unicode MS, sans-serif"
     font_size_fraction: float = 0.55
-    inner_min_degree: float = 6
+    inner_min_degree: float = 9
     outer_min_degree: float = 7
     margin_factor: float = 0.1
+    ring_thickness_fraction: float = 0.15
 
 
 class Config(ModelDict):
@@ -118,6 +128,7 @@ class Config(ModelDict):
 
     is_light_theme: bool = False
     orb: Orb = Orb()
+    composite_orb: CompositeOrb = CompositeOrb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()
