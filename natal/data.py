@@ -1,3 +1,4 @@
+import itertools
 import pandas as pd
 import swisseph as swe
 from datetime import datetime
@@ -13,10 +14,10 @@ from natal.classes import (
     Sign,
     Vertex,
 )
-from natal.config import Config, load_config, Orb
+from natal.config import Config, Orb, load_config
 from natal.const import *
 from natal.utils import pairs, str_to_dt
-from typing import Iterable
+from typing import Iterable, Self
 from zoneinfo import ZoneInfo
 
 swe.set_ephe_path("natal/data")
@@ -146,12 +147,12 @@ class Data(DotDict):
             classic_ruler = getattr(self, house.sign.classic_ruler)
             house.ruler = ruler.name
             house.ruler_sign = f"{ruler.sign.symbol} {ruler.sign.name}"
-            house.ruler_house = self.house_of(ruler.name)
+            house.ruler_house = self.house_of(ruler)
             house.classic_ruler = classic_ruler.name
             house.classic_ruler_sign = (
                 f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
             )
-            house.classic_ruler_house = self.house_of(classic_ruler.name)
+            house.classic_ruler_house = self.house_of(classic_ruler)
 
     def set_quadrants(self):
         bodies = self.planets + self.extras
@@ -206,9 +207,8 @@ class Data(DotDict):
             output.append(pos)
         return output
 
-    def house_of(self, body_name: str) -> int:
+    def house_of(self, body: Body) -> int:
         """House of a celestial body."""
-        body = getattr(self, body_name)
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
             if body.degree >= house.degree:
@@ -219,8 +219,8 @@ class Data(DotDict):
         """degree relative to the first house."""
         return (degree - self.houses[0].degree + 360) % 360
 
+    @staticmethod
     def calculate_aspects(
-        self,
         body_pairs: Iterable[tuple[Aspectable, Aspectable]],
         orb: Orb,
     ) -> list[Aspect]:
@@ -251,3 +251,10 @@ class Data(DotDict):
                         )
                     )
         return output
+
+    @staticmethod
+    def composite_aspects_pairs(
+        data1: Self,
+        data2: Self,
+    ) -> Iterable[tuple[Aspectable, Aspectable]]:
+        return itertools.product(data1.aspectables, data2.aspectables)

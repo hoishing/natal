@@ -4,7 +4,6 @@ from ptag import Tag, svg, path, circle, text, line
 from natal.config import Config, load_config, Orb
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
-import itertools
 from natal.classes import Aspect
 
 
@@ -248,8 +247,8 @@ class Chart(DotDict):
             return []
         radius = self.max_radius - 4 * self.ring_thickness
         orb = self.config.composite_orb
-        aspects = self.data1.calculate_aspects(
-            itertools.product(self.data1.aspectables, self.data2.aspectables),
+        aspects = Data.calculate_aspects(
+            Data.composite_aspects_pairs(self.data1, self.data2),
             orb=orb,
         )
         return self.aspect_lines(radius, orb, aspects)

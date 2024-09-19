@@ -1,7 +1,7 @@
 from natal.data import Data
 from datetime import datetime
 from pytest import fixture
-from . import data
+from . import data1
 
 
 @fixture(scope="module")
@@ -67,39 +67,39 @@ def signs() -> dict:
     )
 
 
-def test_lat_lon(data: Data) -> None:
-    assert round(data.lat, 2) == 22.28
-    assert round(data.lon, 2) == 114.17
+def test_lat_lon(data1: Data) -> None:
+    assert round(data1.lat, 2) == 22.28
+    assert round(data1.lon, 2) == 114.17
 
 
-def test_data_input(data: Data) -> None:
-    assert data.name == "shing"
-    assert data.city == "hong kong"
-    assert data.dt == datetime(1976, 4, 20, 18, 58)
+def test_data_input(data1: Data) -> None:
+    assert data1.name == "shing"
+    assert data1.city == "hong kong"
+    assert data1.dt == datetime(1976, 4, 20, 18, 58)
 
 
-def test_planet(data: Data, planets: dict[str, str]) -> None:
-    for planet in data.planets:
+def test_planet(data1: Data, planets: dict[str, str]) -> None:
+    for planet in data1.planets:
         assert planet.name in planets
         assert planet.signed_dms == planets[planet.name]
 
 
-def test_houses(data: Data, houses: dict[str, str]) -> None:
-    for house in data.houses:
+def test_houses(data1: Data, houses: dict[str, str]) -> None:
+    for house in data1.houses:
         assert house.name in houses
         assert house.signed_dms == houses[house.name]
 
 
-def test_asc_mc(data: Data, others: dict[str, str]) -> None:
-    assert data.asc.signed_dms == others["asc"]
-    assert data.mc.signed_dms == others["mc"]
-    assert data.chiron.signed_dms == others["chiron"]
-    assert data.mean_node.signed_dms == others["mean_node"]
-    assert data.house_sys == others["house_sys"]
+def test_asc_mc(data1: Data, others: dict[str, str]) -> None:
+    assert data1.asc.signed_dms == others["asc"]
+    assert data1.mc.signed_dms == others["mc"]
+    assert data1.chiron.signed_dms == others["chiron"]
+    assert data1.mean_node.signed_dms == others["mean_node"]
+    assert data1.house_sys == others["house_sys"]
 
 
-def test_signs(data: Data, signs: dict) -> None:
-    for sign in data.signs:
+def test_signs(data1: Data, signs: dict) -> None:
+    for sign in data1.signs:
         assert sign.name in signs
         assert round(sign.degree, 2) == signs[sign.name][0]
         assert sign.ruler == signs[sign.name][1]
@@ -109,6 +109,6 @@ def test_signs(data: Data, signs: dict) -> None:
         assert sign.polarity == signs[sign.name][5]
 
 
-def test_normalized_bodies(data: Data) -> None:
-    for body in data.aspectables:
-        assert body.normalized_degree == data.normalize(body.degree)
+def test_normalized_bodies(data1: Data) -> None:
+    for body in data1.aspectables:
+        assert body.normalized_degree == data1.normalize(body.degree)
