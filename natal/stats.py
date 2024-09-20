@@ -223,7 +223,7 @@ class Stats:
 if __name__ == "__main__":
     from tests import config, person1, person2
 
-    data1 = Data(**person1, config=config)
-    data2 = Data(**person2, config=config)
-    stats = Stats(data1=data1, data2=data2)
+    shing = Data(**person1, config=config)
+    belle = Data(**person2, config=config)
+    stats = Stats(data1=belle, data2=None)
     print(stats.full_report)

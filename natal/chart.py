@@ -260,38 +260,43 @@ class Chart(DotDict):
     ) -> list[float]:
         """adjust spacing between celestial bodies to avoid overlap"""
 
-        forward_adjusted_degrees: list[float] = []
-        backward_adjusted_degrees: list[float] = []
-        last_degree: float | None = None
+        forward_adjustments: list[float] = []
+        backward_adjustments: list[float] = []
 
         # Forward adjustment
+        last_degree = sorted_degrees[-1] - 360
         for degree in sorted_degrees:
-            current_degree = degree
-            if last_degree is not None:
-                if (current_degree - last_degree) % 360 < min_degree:
-                    current_degree = (last_degree + min_degree) % 360
-            forward_adjusted_degrees.append(current_degree)
-            last_degree = current_degree
+            if degree - last_degree < min_degree:
+                adjusted_degree = (last_degree + min_degree) % 360
+            else:
+                adjusted_degree = degree
+            forward_adjustments.append(adjusted_degree)
+            last_degree = adjusted_degree
 
         # Backward adjustment
-        last_degree = sorted_degrees[-1]  # Start with the last degree
-        backward_adjusted_degrees = [last_degree]  # Add the last degree as anchor
-        for degree in reversed(sorted_degrees[:-1]):  # Skip the last degree
-            current_degree = degree
-            if (last_degree - current_degree) % 360 < min_degree:
-                current_degree = (last_degree - min_degree) % 360
-            backward_adjusted_degrees.append(current_degree)
-            last_degree = current_degree
+        reversed_degrees = sorted_degrees[::-1]
+        last_degree = reversed_degrees[-1] + 360
+        for degree in reversed_degrees:
+            if last_degree - degree < min_degree:
+                adjusted_degree = (last_degree - min_degree) % 360
+            else:
+                adjusted_degree = degree
+            backward_adjustments.append(adjusted_degree)
+            last_degree = adjusted_degree
 
-        backward_adjusted_degrees.reverse()
+        backward_adjustments.reverse()
 
-        # Choose the adjustment that moves the points the least
-        final_adjusted_degrees = []
-        for fwd, bwd in zip(forward_adjusted_degrees, backward_adjusted_degrees):
-            avg = ((fwd + bwd) / 2) % 360
-            final_adjusted_degrees.append(avg)
+        # average forward and backward adjustments
+        avg_adjustments = []
+        for fwd, bwd in zip(forward_adjustments, backward_adjustments):
+            if abs(fwd - bwd) < 180:
+                avg = (fwd + bwd) / 2
+            else:
+                avg = ((fwd + bwd + 360) / 2) % 360
+            avg_adjustments.append(avg)
 
-        return final_adjusted_degrees
+        return avg_adjustments
+        # return forward_adjusted_degrees
 
     def fill_color(self, sign_no: int, bg: bool = False) -> str:
         fill_hex = getattr(self.config.theme, SIGN_MEMBERS[sign_no].color)
@@ -300,20 +305,22 @@ class Chart(DotDict):
         trans_fill_hex = f"{fill_hex}{int(self.config.theme.transparency * 255):02x}"
         return trans_fill_hex
 
-    def body_wheel(self, radius: float, data: Data, min_degree: float):
+    def body_wheel(self, wheel_radius: float, data: Data, min_degree: float):
         """common steps for drawing inner and outer body wheel"""
 
-        sorted_aspectables = sorted(data.aspectables, key=lambda x: x.degree)
-        # normalize relative to first house of data1
-        sorted_degrees = [
-            self.data1.normalize(body.degree) for body in sorted_aspectables
+        # normalize relative to data1
+        normalized_degree = lambda x: self.data1.normalize(x.degree)
+
+        sorted_normalized_bodies = sorted(data.aspectables, key=normalized_degree)
+        sorted_normalized_degrees = [
+            normalized_degree(body) for body in sorted_normalized_bodies
         ]
 
         # Calculate adjusted positions
-        adjusted_degrees = self.adjusted_degrees(sorted_degrees, min_degree)
+        adjusted_degrees = self.adjusted_degrees(sorted_normalized_degrees, min_degree)
 
         output = []
-        for body, adjusted_degree in zip(sorted_aspectables, adjusted_degrees):
+        for body, adjusted_degree in zip(sorted_normalized_bodies, adjusted_degrees):
             font_size = self.font_size
             text_opt = {}
 
@@ -323,15 +330,14 @@ class Chart(DotDict):
                     "lengthAdjust": "spacingAndGlyphs",
                     "textLength": self.font_size * 0.7,
                 }
-                font_size *= 0.85
+                font_size = self.font_size * 0.85
 
-            symbol_radius = radius + (self.ring_thickness / 2)
-            degree_radius = radius
+            symbol_radius = wheel_radius + (self.ring_thickness / 2)
 
             # Use original angle for line start position
-            original_angle = radians(self.data1.normalize(body.degree))
-            degree_x = self.cx - degree_radius * cos(original_angle)
-            degree_y = self.cy + degree_radius * sin(original_angle)
+            original_angle = radians(normalized_degree(body))
+            degree_x = self.cx - wheel_radius * cos(original_angle)
+            degree_y = self.cy + wheel_radius * sin(original_angle)
 
             # Use adjusted angle for symbol position
             adjusted_angle = radians(adjusted_degree)
@@ -339,7 +345,7 @@ class Chart(DotDict):
             symbol_y = self.cy + symbol_radius * sin(adjusted_angle)
 
             # Add line connecting to the inner circle
-            inner_radius = self.max_radius - 4 * self.ring_thickness
+            inner_radius = wheel_radius - self.ring_thickness
             inner_x = self.cx - inner_radius * cos(original_angle)
             inner_y = self.cy + inner_radius * sin(original_angle)
 
@@ -356,7 +362,7 @@ class Chart(DotDict):
                     circle(
                         cx=symbol_x,
                         cy=symbol_y,
-                        r=font_size / 2,
+                        r=self.font_size / 2,
                         fill=self.config.theme.background,
                     ),
                     line(

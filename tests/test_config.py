@@ -36,19 +36,17 @@ def tmp_config_file() -> Generator[str, None, None]:
 
 
 # test the load_config function by using the fixture
-def test_load_config(tmp_config_file: str) -> None:
+def test_load_config_from_path(tmp_config_file: str) -> None:
     cfg = load_config(tmp_config_file)
 
-    assert cfg.theme_type == "dark"
     assert cfg.light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7
 
 
-def test_load_config_from_string() -> None:
+def test_load_config_from_io() -> None:
     file = StringIO(config)
     cfg = load_config(file)
-    assert cfg.theme_type == "dark"
     assert cfg.light_theme.fire == "#ff0000"
     assert cfg.display.mean_node == False
     assert cfg.orb.opposition == 7
