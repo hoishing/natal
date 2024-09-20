@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from typing import Any, Mapping, Iterator, Literal
 from pathlib import Path
 from io import IOBase
+from darkdetect import isDark
 
 
 class ModelDict(BaseModel, Mapping):
@@ -126,7 +127,7 @@ class Chart(ModelDict):
 class Config(ModelDict):
     """package configuration model"""
 
-    theme_type: Literal["light", "dark", "mono"] = "dark"
+    theme_type: Literal["light", "dark", "mono", "auto"] = "auto"
     orb: Orb = Orb()
     composite_orb: CompositeOrb = CompositeOrb()
     light_theme: LightTheme = LightTheme()
@@ -147,6 +148,8 @@ class Config(ModelDict):
                 kwargs["background"] = "white"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)
+            case "auto":
+                return self.dark_theme if isDark() else self.light_theme
 
 
 def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:

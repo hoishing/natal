@@ -17,6 +17,7 @@ pydantic = "^2.8.2"
 pyyaml = "^6.0.2"
 pandas = "^2.2.2"
 tabulate2 = {extras = ["widechars"], version = "^1.9.0"}
+darkdetect = "^0.8.0"
 
 [tool.poetry.group.dev]
 optional = true
