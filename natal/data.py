@@ -125,9 +125,9 @@ class Data(DotDict):
         for i, sign_member in enumerate(SIGN_MEMBERS):
             sign = Sign(
                 **sign_member,
-                degree=(i * 30 + (360 - self.asc.degree)) % 360,
+                # degree=(i * 30 + (360 - self.asc.degree)) % 360,
+                degree=i * 30,
             )
-            setattr(self, sign.name, sign)
             self.signs.append(sign)
 
     def set_aspects(self):
@@ -217,7 +217,7 @@ class Data(DotDict):
 
     def normalize(self, degree: float) -> float:
         """degree relative to the first house."""
-        return (degree - self.houses[0].degree + 360) % 360
+        return (degree - self.asc.degree + 360) % 360
 
     @staticmethod
     def calculate_aspects(

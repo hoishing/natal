@@ -52,18 +52,18 @@ def others() -> dict[str, str]:
 @fixture(scope="module")
 def signs() -> dict:
     return dict(
-        aries=(159.45, "mars", "fire", "cardinal", "fire", "positive"),
-        taurus=(189.45, "venus", "earth", "fixed", "earth", "negative"),
-        gemini=(219.45, "mercury", "air", "mutable", "air", "positive"),
-        cancer=(249.45, "moon", "water", "cardinal", "water", "negative"),
-        leo=(279.45, "sun", "fire", "fixed", "fire", "positive"),
-        virgo=(309.45, "mercury", "earth", "mutable", "earth", "negative"),
-        libra=(339.45, "venus", "air", "cardinal", "air", "positive"),
-        scorpio=(9.45, "pluto", "water", "fixed", "water", "negative"),
-        sagittarius=(39.45, "jupiter", "fire", "mutable", "fire", "positive"),
-        capricorn=(69.45, "saturn", "earth", "cardinal", "earth", "negative"),
-        aquarius=(99.45, "uranus", "air", "fixed", "air", "positive"),
-        pisces=(129.45, "neptune", "water", "mutable", "water", "negative"),
+        aries=(0, "mars", "fire", "cardinal", "fire", "positive"),
+        taurus=(30, "venus", "earth", "fixed", "earth", "negative"),
+        gemini=(60, "mercury", "air", "mutable", "air", "positive"),
+        cancer=(90, "moon", "water", "cardinal", "water", "negative"),
+        leo=(120, "sun", "fire", "fixed", "fire", "positive"),
+        virgo=(150, "mercury", "earth", "mutable", "earth", "negative"),
+        libra=(180, "venus", "air", "cardinal", "air", "positive"),
+        scorpio=(210, "pluto", "water", "fixed", "water", "negative"),
+        sagittarius=(240, "jupiter", "fire", "mutable", "fire", "positive"),
+        capricorn=(270, "saturn", "earth", "cardinal", "earth", "negative"),
+        aquarius=(300, "uranus", "air", "fixed", "air", "positive"),
+        pisces=(330, "neptune", "water", "mutable", "water", "negative"),
     )
 
 

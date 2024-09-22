@@ -5,6 +5,7 @@ from natal.config import Config, load_config, Orb
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
 from natal.classes import Aspect
+from numpy import array
 
 
 class Chart(DotDict):
@@ -95,7 +96,7 @@ class Chart(DotDict):
 
         wheel = [self.background(radius=radius, fill=self.config.theme.background)]
         for i in range(12):
-            start_deg = (i * 30 - self.data1.houses[0].degree) % 360
+            start_deg = self.data1.signs[i].normalized_degree
             end_deg = start_deg + 30
             wheel.append(
                 self.sector(
@@ -255,48 +256,50 @@ class Chart(DotDict):
 
     # utils ======================================================
 
-    def adjusted_degrees(
-        self, sorted_degrees: list[float], min_degree: float
-    ) -> list[float]:
+    def adjusted_degrees(self, degrees: list[float], min_degree: float) -> list[float]:
         """adjust spacing between celestial bodies to avoid overlap"""
-
-        forward_adjustments: list[float] = []
-        backward_adjustments: list[float] = []
+        step = min_degree + 0.1  # prevent overlap for float precision
+        n = len(degrees)
+        fwd_degs = degrees.copy()
+        bwd_degs = degrees[::-1]
 
         # Forward adjustment
-        last_degree = sorted_degrees[-1] - 360
-        for degree in sorted_degrees:
-            if degree - last_degree < min_degree:
-                adjusted_degree = (last_degree + min_degree) % 360
-            else:
-                adjusted_degree = degree
-            forward_adjustments.append(adjusted_degree)
-            last_degree = adjusted_degree
+        changed = True
+        while changed:
+            changed = False
+            for i in range(n):
+                prev = (i - 1) % n
+                diff = fwd_degs[i] - fwd_degs[prev]
+                if diff < -180:
+                    diff += 360
+                if diff < min_degree:
+                    fwd_degs[i] = (fwd_degs[prev] + step) % 360
+                    changed = True
 
         # Backward adjustment
-        reversed_degrees = sorted_degrees[::-1]
-        last_degree = reversed_degrees[-1] + 360
-        for degree in reversed_degrees:
-            if last_degree - degree < min_degree:
-                adjusted_degree = (last_degree - min_degree) % 360
-            else:
-                adjusted_degree = degree
-            backward_adjustments.append(adjusted_degree)
-            last_degree = adjusted_degree
-
-        backward_adjustments.reverse()
+        changed = True
+        while changed:
+            changed = False
+            for i in range(n):
+                prev = (i - 1) % n
+                diff = bwd_degs[prev] - bwd_degs[i]
+                if diff < -180:
+                    diff += 360
+                if diff < min_degree:
+                    bwd_degs[i] = (bwd_degs[prev] - step) % 360
+                    changed = True
+        bwd_degs.reverse()
 
         # average forward and backward adjustments
-        avg_adjustments = []
-        for fwd, bwd in zip(forward_adjustments, backward_adjustments):
+        avg_adj = []
+        for fwd, bwd in zip(fwd_degs, bwd_degs):
             if abs(fwd - bwd) < 180:
                 avg = (fwd + bwd) / 2
             else:
                 avg = ((fwd + bwd + 360) / 2) % 360
-            avg_adjustments.append(avg)
+            avg_adj.append(avg)
 
-        return avg_adjustments
-        # return forward_adjusted_degrees
+        return avg_adj
 
     def fill_color(self, sign_no: int, bg: bool = False) -> str:
         fill_hex = getattr(self.config.theme, SIGN_MEMBERS[sign_no].color)
@@ -307,20 +310,16 @@ class Chart(DotDict):
 
     def body_wheel(self, wheel_radius: float, data: Data, min_degree: float):
         """common steps for drawing inner and outer body wheel"""
+        norm_deg = lambda x: self.data1.normalize(x.degree)
 
-        # normalize relative to data1
-        normalized_degree = lambda x: self.data1.normalize(x.degree)
-
-        sorted_normalized_bodies = sorted(data.aspectables, key=normalized_degree)
-        sorted_normalized_degrees = [
-            normalized_degree(body) for body in sorted_normalized_bodies
-        ]
+        sorted_norm_bodies = sorted(data.aspectables, key=norm_deg)
+        sorted_norm_degs = [norm_deg(b) for b in sorted_norm_bodies]
 
         # Calculate adjusted positions
-        adjusted_degrees = self.adjusted_degrees(sorted_normalized_degrees, min_degree)
+        adj_norm_degs = self.adjusted_degrees(sorted_norm_degs, min_degree)
 
         output = []
-        for body, adjusted_degree in zip(sorted_normalized_bodies, adjusted_degrees):
+        for body, adj_deg in zip(sorted_norm_bodies, adj_norm_degs):
             font_size = self.font_size
             text_opt = {}
 
@@ -335,12 +334,12 @@ class Chart(DotDict):
             symbol_radius = wheel_radius + (self.ring_thickness / 2)
 
             # Use original angle for line start position
-            original_angle = radians(normalized_degree(body))
+            original_angle = radians(self.data1.normalize(body.degree))
             degree_x = self.cx - wheel_radius * cos(original_angle)
             degree_y = self.cy + wheel_radius * sin(original_angle)
 
             # Use adjusted angle for symbol position
-            adjusted_angle = radians(adjusted_degree)
+            adjusted_angle = radians(adj_deg)
             symbol_x = self.cx - symbol_radius * cos(adjusted_angle)
             symbol_y = self.cy + symbol_radius * sin(adjusted_angle)
 
