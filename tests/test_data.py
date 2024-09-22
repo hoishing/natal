@@ -1,7 +1,7 @@
 from natal.data import Data
 from datetime import datetime
 from pytest import fixture
-from . import data1
+from . import data1, data2
 
 
 @fixture(scope="module")
@@ -67,6 +67,27 @@ def signs() -> dict:
     )
 
 
+@fixture(scope="module")
+def aspects_pairs(data1: Data, data2: Data):
+    return list(Data.composite_aspects_pairs(data1, data2))
+
+
+@fixture(scope="module")
+def aspects_pair_names_sample():
+    return [
+        "sun sun",
+        "moon saturn",
+        "mercury asc",
+        "mars mars",
+        "jupiter chiron",
+        "uranus mercury",
+        "neptune neptune",
+        "chiron sun",
+        "mean_node saturn",
+        "asc asc",
+    ]
+
+
 def test_lat_lon(data1: Data) -> None:
     assert round(data1.lat, 2) == 22.28
     assert round(data1.lon, 2) == 114.17
@@ -112,3 +133,19 @@ def test_signs(data1: Data, signs: dict) -> None:
 def test_normalized_bodies(data1: Data) -> None:
     for body in data1.aspectables:
         assert body.normalized_degree == data1.normalize(body.degree)
+
+
+def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
+    assert len(aspects_pairs) == 196
+    name_pairs = [f"{a.name} {b.name}" for a, b in aspects_pairs]
+    assert name_pairs[::20] == aspects_pair_names_sample
+
+
+# def test_calculate_aspects(aspects_pairs) -> None:
+#     aspects = Data.calculate_aspects(aspects_pairs, orb=1)
+#     assert len(aspects) == 144
+#     assert aspects == [
+#         Aspect(data1.sun, data1.moon, 1, True),
+#         Aspect(data1.sun, data1.mercury, 1, True),
+#         Aspect(data1.sun, data1.venus, 1, True),
+#         Aspect(data1.sun, data1.mars, 1, True),

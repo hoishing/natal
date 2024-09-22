@@ -5,7 +5,7 @@ from natal.config import Config, load_config, Orb
 from natal.const import SIGN_MEMBERS
 from natal.utils import DotDict
 from natal.classes import Aspect
-from numpy import array
+from functools import cached_property
 
 
 class Chart(DotDict):
@@ -132,17 +132,9 @@ class Chart(DotDict):
 
     def house_wheel(self) -> list[Tag]:
         radius = self.max_radius - self.ring_thickness
-
         wheel = [self.background(radius, fill=self.config.theme.background)]
-        for i in range(12):
-            next_i = (i + 1) % 12
-            start_deg = self.data1.houses[i].normalized_degree
-            end_deg = self.data1.houses[next_i].normalized_degree
 
-            # Handle the case where end_deg is less than start_deg (crosses 0°)
-            if end_deg < start_deg:
-                end_deg += 360
-
+        for i, (start_deg, end_deg) in enumerate(self.house_vertices):
             wheel.append(
                 self.sector(
                     radius=radius,
@@ -418,3 +410,17 @@ class Chart(DotDict):
                 )
             )
         return output
+
+    @cached_property
+    def house_vertices(self) -> list[tuple[float, float]]:
+        vertices = []
+        for i in range(12):
+            next_i = (i + 1) % 12
+            start_deg = self.data1.houses[i].normalized_degree
+            end_deg = self.data1.houses[next_i].normalized_degree
+            # Handle the case where end_deg is less than start_deg (crosses 0°)
+            if end_deg < start_deg:
+                end_deg += 360
+            vertices.append((start_deg, end_deg))
+
+        return vertices
