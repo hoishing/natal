@@ -94,13 +94,13 @@ def quadrant_grid():
     ]
 
 @fixture
-def sides_grid():
+def hemisphere_grid():
     return [
-        ('side', 'count', 'bodies'),
-        ('left', 6, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♄ saturn, ♇ pluto'),
-        ('right', 6, '♀ venus, ☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron'),
-        ('upper', 7, '☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron, ♄ saturn, ♇ pluto'),
-        ('lower', 5, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♀ venus'),
+        ('hemisphere', 'count', 'bodies'),
+        ('eastern', 6, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♄ saturn, ♇ pluto'),
+        ('western', 6, '♀ venus, ☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron'),
+        ('northern', 7, '☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron, ♄ saturn, ♇ pluto'),
+        ('southern', 5, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♀ venus'),
     ]
 
 @fixture
@@ -230,8 +230,8 @@ def test_quadrant_grid(stats, quadrant_grid):
     assert stats.quadrant_grid == quadrant_grid
 
 
-def test_sides_grid(stats, sides_grid):
-    assert stats.sides_grid == sides_grid
+def test_hemisphere_grid(stats, hemisphere_grid):
+    assert stats.hemisphere_grid == hemisphere_grid
 
 
 def test_house_grid(stats, house_grid):

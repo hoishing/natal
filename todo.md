@@ -1,6 +1,6 @@
 # todo
 
-- tests for charts?
+- docs
 - front end
     - html table
     - steps: hr, d, wk, mo, yr

@@ -1,14 +1,14 @@
-is_light_theme: true
+theme_type: light
 
-# light_theme:
-#     fire: "#ff0000"
-#     earth: "#ffff00"
-#     air: "#00ff00"
-#     water: "#0000ff"
-#     points: "#00ffff"
+light_theme:
+    fire: "#ff0000"
+    earth: "#ffff00"
+    air: "#00ff00"
+    water: "#0000ff"
+    points: "#00ffff"
 
 display:
-    mean_node: False
+    mean_node: True
     chiron: True
 
 orb:

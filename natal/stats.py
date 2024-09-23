@@ -96,14 +96,14 @@ class Stats:
         return grid + data
 
     @property
-    def sides_grid(self) -> Grid:
-        grid = [("side", "count", "bodies")]
+    def hemisphere_grid(self) -> Grid:
+        grid = [("hemisphere", "count", "bodies")]
         data = self.quadrant_grid[1:]
-        left = ("left", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
-        right = ("right", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
-        upper = ("upper", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
-        lower = ("lower", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
-        return grid + [left, right, upper, lower]
+        eastern = ("eastern", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
+        western = ("western", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
+        northern = ("northern", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
+        southern = ("southern", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
+        return grid + [eastern, western, northern, southern]
 
     @property
     def data1_aspect_grid(self) -> Grid:
@@ -175,10 +175,10 @@ class Stats:
         )
 
     @property
-    def sides_table(self) -> str:
+    def hemisphere_table(self) -> str:
         return self.draw_table(
-            f"Sides ({self.data1.name})",
-            tabulate(self.sides_grid, **self.tb_option),
+            f"Hemispheres ({self.data1.name})",
+            tabulate(self.hemisphere_grid, **self.tb_option),
         )
 
     @property
@@ -230,7 +230,7 @@ class Stats:
         output += self.celestial_body_table
         output += self.house_table
         output += self.quadrant_table
-        output += self.sides_table
+        output += self.hemisphere_table
         if self.data2:
             output += self.data2_celestial_body_table
             output += self.composite_aspect_table
