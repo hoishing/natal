@@ -209,10 +209,12 @@ class Stats:
     @property
     def aspect_cross_ref_table(self) -> str:
         name = (
-            f"{self.data2.name} vs {self.data1.name}" if self.data2 else self.data1.name
+            f"{self.data2.name}(cols) vs {self.data1.name}(rows)"
+            if self.data2
+            else self.data1.name
         )
         return self.draw_table(
-            f"Aspect Cross Reference ({name})",
+            f"Aspect Cross Reference of {name}",
             tabulate(
                 self.aspect_cross_ref_grid,
                 stralign="center",
@@ -270,5 +272,5 @@ if __name__ == "__main__":
 
     shing = Data(**person1)
     belle = Data(**person2)
-    stats = Stats(data1=belle, data2=shing)
+    stats = Stats(data1=shing, data2=belle)
     print(stats.full_report)

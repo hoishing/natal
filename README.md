@@ -90,7 +90,6 @@ following SVG chart will be produced:
 ### Data Object
 
 ```python
-
 ## -- retrieve natal chart properties -- ##
 
 mimi.planets     # list[Planet]
@@ -101,30 +100,47 @@ mimi.signs       # list[Sign]
 mimi.aspects     # list[Aspect]
 mimi.quadrants   # list[list[Aspectable]]
 
-## -- composite charts -- ##
+# Planet object 
+sun = mimi.planets[0]
 
-current = Data(
-    name = "current time"
-    city = "Taipei"
-    dt = datetime.now()
-)
+sun.degree # 30.33039116987769
+sun.normalized_degree # 230.62043431588035 # degree relative to Asc
+sun.color # fire
+sun.speed # 0.9761994105153413
+sun.retro # False
+sun.dms # 00°19'
+sun.signed_dms # 00°♉19'
+sun.signed_deg # 0
+sun.sign.name # taurus
+sun.sign.symbol # ♉
+sun.sign.value # 2
+sun.sign.color # earth
+sun.sign.ruler # venus
+sun.sign.classic_ruler # venus
+sun.sign.element # earth
+sun.sign.quality # fixed
+sun.sign.polarity # negative
 
-svg = Chart(
-    data1 = mimi,
-    data2 = current,
-    width = 600
-)
+# Aspect object
+aspect = mimi.aspects[0]
+
+aspect.body1 # sun Planet obj 
+aspect.body2 # mars Planet obj
+aspect.aspect_member # AspectMember(name='trine', symbol='△', value=120, color='air')
+aspect.applying # False
+aspect.orb # 3.3424
 ```
 
 ### Stats
 
 - statistics of Data object in tabular form
+- Note: fonts with double space char support is suggested for better ascii table display eg. `Sarasa Mono TC`
 
 ```python
 from natal import Data, Stats
 from datetime import datetime
 
-mimi = Data(
+mimi = Data(x
     name = "MiMi",
     city = "Taipei",
     dt = "1980-04-20 14:30"
@@ -266,7 +282,7 @@ print(stats.full_report)
 | mc        |    □     | neptune   |   <->   | 1° 15' |
 
 
-# Aspect Cross Reference (Current vs MiMi)
+# Aspect Cross Reference of Current(cols) vs MiMi(rows)
 
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───────┬──────┬─────────┐
 │     │  ☉  │  ☽  │  ☿  │  ♀  │  ♂  │  ♃  │  ♄  │  ♅  │  ♆  │  ♇  │  ☊  │  Asc  │  MC  │  Total  │
