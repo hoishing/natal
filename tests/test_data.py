@@ -76,15 +76,14 @@ def aspects_pairs(data1: Data, data2: Data):
 def aspects_pair_names_sample():
     return [
         "sun sun",
-        "moon saturn",
-        "mercury asc",
-        "mars mars",
-        "jupiter chiron",
-        "uranus mercury",
-        "neptune neptune",
-        "chiron sun",
-        "mean_node saturn",
-        "asc asc",
+        "moon uranus",
+        "venus moon",
+        "mars neptune",
+        "saturn mercury",
+        "uranus pluto",
+        "pluto venus",
+        "mean_node mean_node",
+        "mc mars",
     ]
 
 
@@ -136,7 +135,7 @@ def test_normalized_bodies(data1: Data) -> None:
 
 
 def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
-    assert len(aspects_pairs) == 196
+    assert len(aspects_pairs) == 169
     name_pairs = [f"{a.name} {b.name}" for a, b in aspects_pairs]
     assert name_pairs[::20] == aspects_pair_names_sample
 

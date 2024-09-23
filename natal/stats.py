@@ -3,10 +3,10 @@ from math import floor
 from natal.classes import Aspect
 from natal.data import Data
 from tabulate import SEPARATING_LINE, tabulate
-from typing import Literal
+from typing import Literal, Iterable
 
 DistKind = Literal["element", "quality", "polarity"]
-Grid = list[list[str | int]]
+Grid = list[Iterable[str | int]]
 
 
 class Stats:
@@ -32,8 +32,9 @@ class Stats:
                 self.composite_pairs, self.data1.config.composite_orb
             )
 
-    def distribution_table(self, kind: DistKind) -> str:
-        """distribution of celestial bodies"""
+    # data grids =================================================================
+
+    def distribution_grid(self, kind: DistKind) -> Grid:
         bodies = defaultdict(lambda: [0, []])
         for body in self.data1.aspectables:
             key = body.sign[kind]
@@ -42,48 +43,25 @@ class Stats:
         grid = [(kind, "count", "bodies")]
         data = [(key, val[0], ", ".join(val[1])) for key, val in bodies.items()]
         grid.extend(data)
-        setattr(self, f"{kind}_counts", grid)
-        return tabulate(grid, **self.tb_option)
-
-    def quadrant_table(self) -> str:
-        pass
+        return grid
 
     @property
-    def aspectable_body_table(self) -> str:
-        """distribution of movable bodies"""
+    def celestial_body_grid(self) -> Grid:
         grid = [("body", "sign", "house")]
         for body in self.data1.aspectables:
             grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
-        return tabulate(grid, **self.tb_option)
+        return grid
 
     @property
-    def data2_aspectable_body_table(self) -> str:
+    def data2_celestial_body_grid(self) -> Grid:
         """distribution of data2 movable bodies"""
-        grid = [("body", "sign", "house")]
+        grid = [(self.data2.name, "sign", "house")]
         for body in self.data2.aspectables:
             grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
-        return tabulate(grid, **self.tb_option)
+        return grid
 
     @property
-    def aspect_table(self) -> str:
-        headers = ["body 1", "aspect", "body 2", "phase", "orb"]
-        return self.draw_aspect_table(self.data1.aspects, headers)
-
-    @property
-    def composite_aspect_table(self) -> str:
-        headers = [self.data2.name, "aspect", self.data1.name, "phase", "orb"]
-        return self.draw_aspect_table(self.composite_aspects, headers)
-
-    @property
-    def aspect_grid(self) -> str:
-        return self.draw_aspect_grid(self.data1, self.data1, self.data1.aspects)
-
-    @property
-    def composite_aspect_grid(self) -> str:
-        return self.draw_aspect_grid(self.data1, self.data2, self.composite_aspects)
-
-    @property
-    def house_table(self) -> str:
+    def house_grid(self) -> Grid:
         grid = [("house", "sign", "ruler", "ruler sign", "ruler house")]
         for house in self.data1.houses:
             grid.append(
@@ -95,10 +73,10 @@ class Stats:
                     house.ruler_house,
                 )
             )
-        return tabulate(grid, **self.tb_option)
+        return grid
 
     @property
-    def quadrant_table(self) -> str:
+    def quadrant_grid(self) -> Grid:
         """distribution of celestial bodies in quadrants"""
         quad_names = ["first", "second", "third", "fourth"]
         quadrants = defaultdict(lambda: [0, []])
@@ -115,87 +93,39 @@ class Stats:
             (quad_names[quad_no], val[0], ", ".join(val[1]))
             for quad_no, val in quadrants.items()
         ]
+        return grid + data
 
+    @property
+    def sides_grid(self) -> Grid:
+        grid = [("side", "count", "bodies")]
+        data = self.quadrant_grid[1:]
         left = ("left", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
         right = ("right", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
         upper = ("upper", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
         lower = ("lower", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
-        grid.extend(data + [SEPARATING_LINE] + [left, right, upper, lower])
-        return tabulate(grid, **self.tb_option, colalign=("global", "center"))
+        return grid + [left, right, upper, lower]
 
     @property
-    def full_report(self) -> str:
-        output = "\n"
-        for dist in ["element", "quality", "polarity"]:
-            output += self.draw_table(
-                f"{dist.capitalize()} Distribution ({self.data1.name})",
-                self.distribution_table(dist),
-            )
-        output += self.draw_table(
-            f"Celestial Bodies ({self.data1.name})", self.aspectable_body_table
-        )
-        output += self.draw_table(f"Quadrants ({self.data1.name})", self.quadrant_table)
-        output += self.draw_table(f"Houses ({self.data1.name})", self.house_table)
-        if self.data2:
-            output += self.draw_table(
-                f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart",
-                self.data2_aspectable_body_table,
-            )
-            output += self.draw_table(
-                f"Aspects of {self.data2.name} vs {self.data1.name}",
-                self.composite_aspect_table,
-            )
-            output += self.draw_table(
-                f"Aspect Grid of {self.data2.name}(horizontal) vs {self.data1.name}(vertical)",
-                self.composite_aspect_grid,
-            )
-        else:
-            output += self.draw_table(f"Aspects ({self.data1.name})", self.aspect_table)
-            output += self.draw_table(
-                f"Aspect Grid ({self.data1.name})", self.aspect_grid
-            )
-        return output
+    def data1_aspect_grid(self) -> Grid:
+        headers = ["body 1", "aspect", "body 2", "phase", "orb"]
+        return self._aspect_grid(self.data1.aspects, headers)
 
-    # utils ======================================================================
+    @property
+    def composite_aspect_grid(self) -> Grid:
+        headers = [self.data2.name, "aspect", self.data1.name, "phase", "orb"]
+        return self._aspect_grid(self.composite_aspects, headers)
 
-    def draw_table(self, title: str, table: str) -> str:
-        output = f"# {title}\n\n"
-        output += table
-        output += "\n\n\n"
-        return output
-
-    def draw_aspect_table(self, aspects: list[Aspect], headers: list[str]) -> str:
-        grid = [headers]
-        for aspect in aspects:
-            degree = floor(aspect.orb)
-            minutes = round((aspect.orb - degree) * 60)
-            grid.append(
-                (
-                    aspect.body1.name,
-                    aspect.aspect_member.symbol,
-                    aspect.body2.name,
-                    "> <" if aspect.applying else "<->",
-                    f"{degree}° {minutes:02d}'",
-                )
-            )
-        return tabulate(
-            grid,
-            **self.tb_option,
-            colalign=(
-                "global",
-                "center",
-                "global",
-                "center",
-            ),
-        )
-
-    def draw_aspect_grid(self, data1: Data, data2: Data, aspects: list[Aspect]) -> str:
-        body_symbols = [body.symbol for body in data1.aspectables]
+    @property
+    def aspect_cross_ref_grid(self) -> Grid:
+        aspectable1 = self.data1.aspectables
+        aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
+        aspects = self.composite_aspects if self.data2 else self.data1.aspects
+        body_symbols = [body.symbol for body in aspectable1]
         grid = [[""] + body_symbols + ["Total"]]  # Header row with Total column
-        for body1 in data1.aspectables:
+        for body1 in aspectable1:
             row = [body1.symbol]
             aspect_count = 0
-            for body2 in data2.aspectables:
+            for body2 in aspectable2:
                 aspect = next(
                     (
                         asp
@@ -213,17 +143,132 @@ class Stats:
 
             row.append(str(aspect_count))  # Add total count to the end of the row
             grid.append(row)
+        return grid
 
-        return tabulate(
-            grid, stralign="center", **self.tb_option | {"tablefmt": "simple_grid"}
+    # tables =====================================================================
+
+    def distribution_table(self, kind: DistKind) -> str:
+        return self.draw_table(
+            f"{kind.capitalize()} Distribution ({self.data1.name})",
+            tabulate(self.distribution_grid(kind), **self.tb_option),
         )
+
+    @property
+    def celestial_body_table(self) -> str:
+        return self.draw_table(
+            f"Celestial Bodies ({self.data1.name})",
+            tabulate(self.celestial_body_grid, **self.tb_option),
+        )
+
+    @property
+    def house_table(self) -> str:
+        return self.draw_table(
+            f"Houses ({self.data1.name})",
+            tabulate(self.house_grid, **self.tb_option),
+        )
+
+    @property
+    def quadrant_table(self) -> str:
+        return self.draw_table(
+            f"Quadrants ({self.data1.name})",
+            tabulate(self.quadrant_grid, **self.tb_option),
+        )
+
+    @property
+    def sides_table(self) -> str:
+        return self.draw_table(
+            f"Sides ({self.data1.name})",
+            tabulate(self.sides_grid, **self.tb_option),
+        )
+
+    @property
+    def data1_aspect_table(self) -> str:
+        return self.draw_table(
+            f"Aspects ({self.data1.name})",
+            tabulate(self.data1_aspect_grid, **self.tb_option),
+        )
+
+    @property
+    def composite_aspect_table(self) -> str:
+        return self.draw_table(
+            f"Aspects of {self.data2.name} vs {self.data1.name}",
+            tabulate(
+                self.composite_aspect_grid,
+                **self.tb_option,
+                colalign=("left", "center", "left", "center"),
+            ),
+        )
+
+    @property
+    def data2_celestial_body_table(self) -> str:
+        return self.draw_table(
+            f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart",
+            tabulate(self.data2_celestial_body_grid, **self.tb_option),
+        )
+
+    @property
+    def aspect_cross_ref_table(self) -> str:
+        name = (
+            f"{self.data2.name} vs {self.data1.name}" if self.data2 else self.data1.name
+        )
+        return self.draw_table(
+            f"Aspect Cross Reference ({name})",
+            tabulate(
+                self.aspect_cross_ref_grid,
+                stralign="center",
+                **self.tb_option | {"tablefmt": "simple_grid"},
+            ),
+        )
+
+    # output =====================================================================
+
+    @property
+    def full_report(self) -> str:
+        output = "\n"
+        for dist in ["element", "quality", "polarity"]:
+            output += self.distribution_table(dist)
+        output += self.celestial_body_table
+        output += self.house_table
+        output += self.quadrant_table
+        output += self.sides_table
+        if self.data2:
+            output += self.data2_celestial_body_table
+            output += self.composite_aspect_table
+        else:
+            output += self.data1_aspect_table
+        output += self.aspect_cross_ref_table
+        return output
+
+    # utils ======================================================================
+
+    def draw_table(self, title: str, table: str) -> str:
+        output = f"# {title}\n\n"
+        output += table
+        output += "\n\n\n"
+        return output
+
+    def _aspect_grid(self, aspects: list[Aspect], headers: list[str]) -> Grid:
+        grid = [headers]
+        for aspect in aspects:
+            degree = floor(aspect.orb)
+            minutes = round((aspect.orb - degree) * 60)
+            grid.append(
+                (
+                    aspect.body1.name,
+                    aspect.aspect_member.symbol,
+                    aspect.body2.name,
+                    "> <" if aspect.applying else "<->",
+                    f"{degree}° {minutes:02d}'",
+                )
+            )
+        return grid
 
 
 # for quick testing
 if __name__ == "__main__":
-    from tests import config, person1, person2
+    from tests import person1, person2
 
-    shing = Data(**person1, config=config)
-    belle = Data(**person2, config=config)
-    stats = Stats(data1=belle, data2=None)
+    shing = Data(**person1)
+    belle = Data(**person2)
+    stats = Stats(data1=belle, data2=shing)
     print(stats.full_report)
