@@ -1,15 +1,27 @@
-from math import radians, cos, sin
-from natal.data import Data
-from ptag import Tag, svg, path, circle, text, line
-from natal.config import Config, load_config, Orb
-from natal.const import SIGN_MEMBERS
-from natal.utils import DotDict
-from natal.classes import Aspect
+"""
+This module provides the Chart class for generating SVG representations of natal charts.
+It includes functionality for creating sign wheels, house wheels, body placements,
+and aspect lines for both single and composite charts.
+"""
+
 from functools import cached_property
+from math import cos, radians, sin
+from natal.classes import Aspect
+from natal.config import Config, Orb, load_config
+from natal.const import SIGN_MEMBERS
+from natal.data import Data
+from natal.utils import DotDict
+from ptag import Tag, circle, line, path, svg, text
 
 
 class Chart(DotDict):
-    """SVG representation of natal chart."""
+    """
+    SVG representation of a natal chart.
+
+    This class generates the visual components of an astrological chart,
+    including sign wheels, house wheels, planet placements, and aspect lines.
+    It supports both single and composite charts.
+    """
 
     def __init__(
         self,
@@ -19,6 +31,16 @@ class Chart(DotDict):
         data2: Data | None = None,
         config: Config = load_config(),
     ):
+        """
+        Initialize a Chart object.
+
+        Args:
+            data1 (Data): Primary chart data.
+            width (int): Width of the SVG.
+            height (int | None): Height of the SVG. If None, set to width.
+            data2 (Data | None): Secondary chart data for composite charts.
+            config (Config): Configuration settings for the chart.
+        """
         self.data1 = data1
         self.data2 = data2
         self.width = width
@@ -36,8 +58,12 @@ class Chart(DotDict):
 
     @property
     def svg_root(self) -> Tag:
-        """Generate an SVG element with sensible defaults"""
+        """
+        Generate an SVG root element with sensible defaults.
 
+        Returns:
+            Tag: An SVG root element.
+        """
         return svg(
             "",
             height=self.height,
@@ -57,8 +83,21 @@ class Chart(DotDict):
         stroke_width: float = 1,
         stroke_opacity: float = 1,
     ) -> Tag:
-        """Creates a sector shape in SVG format."""
+        """
+        Create a sector shape in SVG format.
 
+        Args:
+            radius (int): Radius of the sector.
+            start_deg (float): Starting angle in degrees.
+            end_deg (float): Ending angle in degrees.
+            fill (str): Fill color of the sector.
+            stroke_color (str): Stroke color of the sector.
+            stroke_width (float): Width of the stroke.
+            stroke_opacity (float): Opacity of the stroke.
+
+        Returns:
+            Tag: An SVG path element representing the sector.
+        """
         start_rad = radians(start_deg)
         end_rad = radians(end_deg)
         start_x = self.cx - radius * cos(start_rad)
@@ -88,10 +127,25 @@ class Chart(DotDict):
         )
 
     def background(self, radius: float, **kwargs) -> Tag:
+        """
+        Create a background circle for the chart.
+
+        Args:
+            radius (float): Radius of the background circle.
+            **kwargs: Additional attributes for the circle element.
+
+        Returns:
+            Tag: An SVG circle element representing the background.
+        """
         return circle(cx=self.cx, cy=self.cy, r=radius, **kwargs)
 
     def sign_wheel(self) -> list[Tag]:
+        """
+        Generate the zodiac sign wheel.
 
+        Returns:
+            list[Tag]: A list of SVG elements representing the sign wheel.
+        """
         radius = self.max_radius
 
         wheel = [self.background(radius=radius, fill=self.config.theme.background)]
@@ -131,6 +185,12 @@ class Chart(DotDict):
         return wheel
 
     def house_wheel(self) -> list[Tag]:
+        """
+        Generate the house wheel.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing the house wheel.
+        """
         radius = self.max_radius - self.ring_thickness
         wheel = [self.background(radius, fill=self.config.theme.background)]
 
@@ -170,6 +230,12 @@ class Chart(DotDict):
         return wheel
 
     def vertex_line(self) -> list[Tag]:
+        """
+        Generate vertex lines for the chart.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing vertex lines.
+        """
         vertex_radius = self.max_radius + self.ring_thickness
         house_radius = self.max_radius - 2 * self.ring_thickness
         body_radius = self.max_radius - 3 * self.ring_thickness
@@ -183,7 +249,7 @@ class Chart(DotDict):
             ),
             self.background(
                 body_radius,
-                fill="#88888800",
+                fill="#88888800",  # transparent
                 stroke=self.config.theme.dim,
                 stroke_width=self.config.chart.stroke_width,
             ),
@@ -216,11 +282,24 @@ class Chart(DotDict):
         return lines
 
     def outer_body_wheel(self) -> list[Tag]:
+        """
+        Generate the outer body wheel for single or composite charts.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing the outer body wheel.
+        """
         radius = self.max_radius - 3 * self.ring_thickness
         data = self.data2 or self.data1
         return self.body_wheel(radius, data, self.config.chart.outer_min_degree)
 
     def inner_body_wheel(self) -> list[Tag] | None:
+        """
+        Generate the inner body wheel for composite charts.
+
+        Returns:
+            list[Tag] | None: A list of SVG elements representing the inner body wheel,
+            or None for single charts.
+        """
         if self.data2 is None:
             return
         radius = self.max_radius - 4 * self.ring_thickness
@@ -228,6 +307,12 @@ class Chart(DotDict):
         return self.body_wheel(radius, data, self.config.chart.inner_min_degree)
 
     def outer_aspect(self) -> list[Tag]:
+        """
+        Generate aspect lines for the outer wheel in single charts.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing aspect lines.
+        """
         if self.data2 is not None:
             return []
         radius = self.max_radius - 3 * self.ring_thickness
@@ -236,6 +321,12 @@ class Chart(DotDict):
         return self.aspect_lines(radius, orb, aspects)
 
     def inner_aspect(self) -> list[Tag]:
+        """
+        Generate aspect lines for the inner wheel in composite charts.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing aspect lines.
+        """
         if self.data2 is None:
             return []
         radius = self.max_radius - 4 * self.ring_thickness
@@ -246,10 +337,37 @@ class Chart(DotDict):
         )
         return self.aspect_lines(radius, orb, aspects)
 
+    @property
+    def svg(self) -> str:
+        """
+        Generate the SVG representation of the chart.
+
+        Returns:
+            str: SVG content.
+        """
+        with self.svg_root as canvas:
+            self.sign_wheel()
+            self.house_wheel()
+            self.vertex_line()
+            self.outer_body_wheel()
+            self.inner_body_wheel()
+            self.outer_aspect()
+            self.inner_aspect()
+        return str(canvas)
+
     # utils ======================================================
 
     def adjusted_degrees(self, degrees: list[float], min_degree: float) -> list[float]:
-        """adjust spacing between celestial bodies to avoid overlap"""
+        """
+        Adjust spacing between celestial bodies to avoid overlap.
+
+        Args:
+            degrees (list[float]): Original degrees of celestial bodies.
+            min_degree (float): Minimum allowed degree separation.
+
+        Returns:
+            list[float]: Adjusted degrees of celestial bodies.
+        """
         step = min_degree + 0.1  # prevent overlap for float precision
         n = len(degrees)
         fwd_degs = degrees.copy()
@@ -294,6 +412,16 @@ class Chart(DotDict):
         return avg_adj
 
     def fill_color(self, sign_no: int, bg: bool = False) -> str:
+        """
+        Get the fill color for a zodiac sign.
+
+        Args:
+            sign_no (int): Index of the zodiac sign.
+            bg (bool): If True, return a transparent version of the color.
+
+        Returns:
+            str: Hexadecimal color code.
+        """
         fill_hex = getattr(self.config.theme, SIGN_MEMBERS[sign_no].color)
         if not bg:
             return fill_hex
@@ -301,7 +429,17 @@ class Chart(DotDict):
         return trans_fill_hex
 
     def body_wheel(self, wheel_radius: float, data: Data, min_degree: float):
-        """common steps for drawing inner and outer body wheel"""
+        """
+        Generate elements for both inner and outer body wheels.
+
+        Args:
+            wheel_radius (float): Radius of the wheel.
+            data (Data): Chart data to use.
+            min_degree (float): Minimum degree separation between bodies.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing the body wheel.
+        """
         norm_deg = lambda x: self.data1.normalize(x.degree)
 
         sorted_norm_bodies = sorted(data.aspectables, key=norm_deg)
@@ -381,8 +519,17 @@ class Chart(DotDict):
         return output
 
     def aspect_lines(self, radius: float, orb: Orb, aspects: list[Aspect]) -> list[Tag]:
-        """draw aspect lines between aspectables"""
+        """
+        Draw aspect lines between aspectable celestial bodies.
 
+        Args:
+            radius (float): Radius of the aspect wheel.
+            orb (Orb): Orb configuration for aspects.
+            aspects (list[Aspect]): List of aspects to draw.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing aspect lines.
+        """
         output = [
             self.background(
                 radius,
@@ -413,6 +560,12 @@ class Chart(DotDict):
 
     @cached_property
     def house_vertices(self) -> list[tuple[float, float]]:
+        """
+        Calculate the vertices (start and end degrees) of each house.
+
+        Returns:
+            list[tuple[float, float]]: A list of tuples containing start and end degrees for each house.
+        """
         vertices = []
         for i in range(12):
             next_i = (i + 1) % 12

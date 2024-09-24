@@ -1,38 +1,96 @@
+"""
+Constants and utility functions for the natal package.
+"""
+
 from natal.utils import DotDict
 
 
 class Body(DotDict):
+    """
+    Represents a celestial body in raw data.
+    Base class for all members.
+    """
+
     name: str
     symbol: str
     value: int
     color: str
 
 
-class PlanetMember(Body): ...
+class PlanetMember(Body):
+    """
+    Represents a planet in raw data.
+    """
+
+    ...
 
 
-class AspectMember(Body): ...
+class AspectMember(Body):
+    """
+    Represents an aspect in raw data.
+    (conjunction, opposition, trine, square, sextile)
+    """
+
+    ...
 
 
-class ElementMember(Body): ...
+class ElementMember(Body):
+    """
+    Represents an element in raw data.
+    (fire, earth, air, water)
+    """
+
+    ...
 
 
-class QualityMember(Body): ...
+class QualityMember(Body):
+    """
+    Represents a quality in raw data.
+    (cardinal, fixed, mutable)
+    """
+
+    ...
 
 
-class PolarityMember(Body): ...
+class PolarityMember(Body):
+    """
+    Represents a polarity in raw data.
+    (positive, negative)
+    """
+
+    ...
 
 
-class HouseMember(Body): ...
+class HouseMember(Body):
+    """
+    Represents a house in raw data.
+    """
+
+    ...
 
 
-class ExtraMember(Body): ...
+class ExtraMember(Body):
+    """
+    Represents an extra celestial body in raw data.
+    (e.g. asteroids, nodes)
+    """
+
+    ...
 
 
-class VertexMember(Body): ...
+class VertexMember(Body):
+    """
+    Represents a vertex in raw data (asc, ic, dsc, mc).
+    """
+
+    ...
 
 
 class SignMember(Body):
+    """
+    Represents a zodiac sign in raw data.
+    """
+
     ruler: str
     classic_ruler: str
     quality: str
@@ -44,12 +102,31 @@ class SignMember(Body):
 
 
 def get_member(raw_data: dict, name: str) -> DotDict:
+    """
+    Get a member from raw data by name.
+
+    Args:
+        raw_data (dict): The raw data dictionary.
+        name (str): The name of the member.
+
+    Returns:
+        DotDict: The member as a DotDict.
+    """
     idx = raw_data["name"].index(name)
     member = {key: raw_data[key][idx] for key in raw_data.keys()}
     return DotDict(**member)
 
 
 def get_members(raw_data: dict) -> list[DotDict]:
+    """
+    Get all members from raw data.
+
+    Args:
+        raw_data (dict): The raw data dictionary.
+
+    Returns:
+        list[DotDict]: A list of members as DotDicts.
+    """
     return [get_member(raw_data, name) for name in raw_data["name"]]
 
 

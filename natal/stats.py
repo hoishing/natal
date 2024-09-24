@@ -1,22 +1,36 @@
+"""
+This module provides statistical analysis for natal charts.
+
+It contains the Stats class, which calculates and presents various astrological statistics
+for a single natal chart or a comparison between two charts.
+"""
+
 from collections import defaultdict
 from math import floor
 from natal.classes import Aspect
 from natal.data import Data
 from tabulate import SEPARATING_LINE, tabulate
-from typing import Literal, Iterable
+from typing import Iterable, Literal
 
 DistKind = Literal["element", "quality", "polarity"]
 Grid = list[Iterable[str | int]]
 
 
 class Stats:
-    """Statistics for a natal chart data"""
+    """
+    Statistics for a natal chart data.
+
+    This class calculates and presents various astrological statistics for a single natal chart
+    or a comparison between two charts.
+
+    Attributes:
+        data1 (Data): The primary natal chart data.
+        data2 (Data | None): The secondary natal chart data for comparisons (optional).
+        tb_option (dict): Default options for table formatting.
+    """
 
     data1: Data
     data2: Data | None = None
-    element_counts: Grid = None
-    quality_counts: Grid = None
-    polarity_counts: Grid = None
     tb_option = dict(
         tablefmt="github",
         numalign="center",
@@ -24,6 +38,13 @@ class Stats:
     )
 
     def __init__(self, data1: Data, data2: Data = None) -> None:
+        """
+        Initialize the Stats object with one or two natal chart data sets.
+
+        Args:
+            data1 (Data): The primary natal chart data.
+            data2 (Data, optional): The secondary natal chart data for comparisons.
+        """
         self.data1 = data1
         self.data2 = data2
         if self.data2:
@@ -35,6 +56,15 @@ class Stats:
     # data grids =================================================================
 
     def distribution_grid(self, kind: DistKind) -> Grid:
+        """
+        Generate a grid of distribution data for elements, qualities, or polarities.
+
+        Args:
+            kind (DistKind): The type of distribution to calculate ("element", "quality", or "polarity").
+
+        Returns:
+            Grid: A grid containing the distribution data.
+        """
         bodies = defaultdict(lambda: [0, []])
         for body in self.data1.aspectables:
             key = body.sign[kind]
@@ -47,6 +77,12 @@ class Stats:
 
     @property
     def celestial_body_grid(self) -> Grid:
+        """
+        Generate a grid of celestial body positions for the primary chart.
+
+        Returns:
+            Grid: A grid containing celestial body data (name, sign, and house).
+        """
         grid = [("body", "sign", "house")]
         for body in self.data1.aspectables:
             grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
@@ -54,7 +90,12 @@ class Stats:
 
     @property
     def data2_celestial_body_grid(self) -> Grid:
-        """distribution of data2 movable bodies"""
+        """
+        Generate a grid of celestial body positions for the secondary chart.
+
+        Returns:
+            Grid: A grid containing celestial body data (name, sign, and house) for the secondary chart.
+        """
         grid = [(self.data2.name, "sign", "house")]
         for body in self.data2.aspectables:
             grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
@@ -62,6 +103,12 @@ class Stats:
 
     @property
     def house_grid(self) -> Grid:
+        """
+        Generate a grid of house data for the primary chart.
+
+        Returns:
+            Grid: A grid containing house data (name, sign, ruler, ruler sign, and ruler house).
+        """
         grid = [("house", "sign", "ruler", "ruler sign", "ruler house")]
         for house in self.data1.houses:
             grid.append(
@@ -77,7 +124,12 @@ class Stats:
 
     @property
     def quadrant_grid(self) -> Grid:
-        """distribution of celestial bodies in quadrants"""
+        """
+        Generate a grid of celestial body distribution in quadrants.
+
+        Returns:
+            Grid: A grid containing quadrant distribution data.
+        """
         quad_names = ["first", "second", "third", "fourth"]
         quadrants = defaultdict(lambda: [0, []])
         for i, quad in enumerate(self.data1.quadrants):
@@ -97,6 +149,12 @@ class Stats:
 
     @property
     def hemisphere_grid(self) -> Grid:
+        """
+        Generate a grid of celestial body distribution in hemispheres.
+
+        Returns:
+            Grid: A grid containing hemisphere distribution data.
+        """
         grid = [("hemisphere", "count", "bodies")]
         data = self.quadrant_grid[1:]
         eastern = ("eastern", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
@@ -107,16 +165,34 @@ class Stats:
 
     @property
     def data1_aspect_grid(self) -> Grid:
+        """
+        Generate a grid of aspects for the primary chart.
+
+        Returns:
+            Grid: A grid containing aspect data for the primary chart.
+        """
         headers = ["body 1", "aspect", "body 2", "phase", "orb"]
         return self._aspect_grid(self.data1.aspects, headers)
 
     @property
     def composite_aspect_grid(self) -> Grid:
+        """
+        Generate a grid of composite aspects between two charts.
+
+        Returns:
+            Grid: A grid containing composite aspect data.
+        """
         headers = [self.data2.name, "aspect", self.data1.name, "phase", "orb"]
         return self._aspect_grid(self.composite_aspects, headers)
 
     @property
     def aspect_cross_ref_grid(self) -> Grid:
+        """
+        Generate a grid for aspect cross-reference between charts or within a single chart.
+
+        Returns:
+            Grid: A grid containing aspect cross-reference data.
+        """
         aspectable1 = self.data1.aspectables
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         aspects = self.composite_aspects if self.data2 else self.data1.aspects
@@ -148,6 +224,15 @@ class Stats:
     # tables =====================================================================
 
     def distribution_table(self, kind: DistKind) -> str:
+        """
+        Generate a formatted table of distribution data.
+
+        Args:
+            kind (DistKind): The type of distribution to display ("element", "quality", or "polarity").
+
+        Returns:
+            str: A formatted string containing the distribution table.
+        """
         return self.draw_table(
             f"{kind.capitalize()} Distribution ({self.data1.name})",
             tabulate(self.distribution_grid(kind), **self.tb_option),
@@ -155,6 +240,12 @@ class Stats:
 
     @property
     def celestial_body_table(self) -> str:
+        """
+        Generate a formatted table of celestial body positions for the primary chart.
+
+        Returns:
+            str: A formatted string containing the celestial body table.
+        """
         return self.draw_table(
             f"Celestial Bodies ({self.data1.name})",
             tabulate(self.celestial_body_grid, **self.tb_option),
@@ -162,6 +253,12 @@ class Stats:
 
     @property
     def house_table(self) -> str:
+        """
+        Generate a formatted table of house data for the primary chart.
+
+        Returns:
+            str: A formatted string containing the house table.
+        """
         return self.draw_table(
             f"Houses ({self.data1.name})",
             tabulate(self.house_grid, **self.tb_option),
@@ -169,6 +266,12 @@ class Stats:
 
     @property
     def quadrant_table(self) -> str:
+        """
+        Generate a formatted table of quadrant distribution data.
+
+        Returns:
+            str: A formatted string containing the quadrant distribution table.
+        """
         return self.draw_table(
             f"Quadrants ({self.data1.name})",
             tabulate(self.quadrant_grid, **self.tb_option),
@@ -176,6 +279,12 @@ class Stats:
 
     @property
     def hemisphere_table(self) -> str:
+        """
+        Generate a formatted table of hemisphere distribution data.
+
+        Returns:
+            str: A formatted string containing the hemisphere distribution table.
+        """
         return self.draw_table(
             f"Hemispheres ({self.data1.name})",
             tabulate(self.hemisphere_grid, **self.tb_option),
@@ -183,6 +292,12 @@ class Stats:
 
     @property
     def data1_aspect_table(self) -> str:
+        """
+        Generate a formatted table of aspects for the primary chart.
+
+        Returns:
+            str: A formatted string containing the aspect table for the primary chart.
+        """
         return self.draw_table(
             f"Aspects ({self.data1.name})",
             tabulate(self.data1_aspect_grid, **self.tb_option),
@@ -190,6 +305,12 @@ class Stats:
 
     @property
     def composite_aspect_table(self) -> str:
+        """
+        Generate a formatted table of composite aspects between two charts.
+
+        Returns:
+            str: A formatted string containing the composite aspect table.
+        """
         return self.draw_table(
             f"Aspects of {self.data2.name} vs {self.data1.name}",
             tabulate(
@@ -201,6 +322,12 @@ class Stats:
 
     @property
     def data2_celestial_body_table(self) -> str:
+        """
+        Generate a formatted table of celestial body positions for the secondary chart.
+
+        Returns:
+            str: A formatted string containing the celestial body table for the secondary chart.
+        """
         return self.draw_table(
             f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart",
             tabulate(self.data2_celestial_body_grid, **self.tb_option),
@@ -208,6 +335,12 @@ class Stats:
 
     @property
     def aspect_cross_ref_table(self) -> str:
+        """
+        Generate a formatted table for aspect cross-reference.
+
+        Returns:
+            str: A formatted string containing the aspect cross-reference table.
+        """
         name = (
             f"{self.data2.name}(cols) vs {self.data1.name}(rows)"
             if self.data2
@@ -226,6 +359,12 @@ class Stats:
 
     @property
     def full_report(self) -> str:
+        """
+        Generate a full report containing all statistical tables.
+
+        Returns:
+            str: A formatted string containing the full statistical report.
+        """
         output = "\n"
         for dist in ["element", "quality", "polarity"]:
             output += self.distribution_table(dist)
@@ -244,12 +383,32 @@ class Stats:
     # utils ======================================================================
 
     def draw_table(self, title: str, table: str) -> str:
+        """
+        Format a table with a title.
+
+        Args:
+            title (str): The title of the table.
+            table (str): The table content as a string.
+
+        Returns:
+            str: A formatted string containing the titled table.
+        """
         output = f"# {title}\n\n"
         output += table
         output += "\n\n\n"
         return output
 
     def _aspect_grid(self, aspects: list[Aspect], headers: list[str]) -> Grid:
+        """
+        Generate a grid of aspect data.
+
+        Args:
+            aspects (list[Aspect]): A list of Aspect objects.
+            headers (list[str]): The headers for the aspect grid.
+
+        Returns:
+            Grid: A grid containing aspect data.
+        """
         grid = [headers]
         for aspect in aspects:
             degree = floor(aspect.orb)

@@ -1,16 +1,17 @@
-"""package configuration module
+"""
+package configuration module
 
-- load natal_config.yml config file if exists
-- provide default config file does not exist
-- generate json schema for the configuration
+- Load natal_config.yml config file if exists.
+- Provide default config file if it does not exist.
+- Generate JSON schema for the configuration.
 """
 
 import yaml
-from pydantic import BaseModel
-from typing import Any, Mapping, Iterator, Literal
-from pathlib import Path
-from io import IOBase
 from darkdetect import isDark
+from io import IOBase
+from pathlib import Path
+from pydantic import BaseModel
+from typing import Any, Iterator, Literal, Mapping
 
 
 class ModelDict(BaseModel, Mapping):
@@ -38,7 +39,9 @@ class Orb(ModelDict):
 
 
 class CompositeOrb(Orb):
-    """default orb for composite chart"""
+    """
+    Default orb for composite chart.
+    """
 
     conjunction: int = 2
     opposition: int = 2
@@ -48,7 +51,9 @@ class CompositeOrb(Orb):
 
 
 class Theme(ModelDict):
-    """default colors"""
+    """
+    Default colors for the chart.
+    """
 
     fire: str = "#ef476f"  # fire, square, Asc
     earth: str = "#ffd166"  # earth, MC
@@ -66,7 +71,9 @@ class Theme(ModelDict):
 
 
 class LightTheme(Theme):
-    """default light colors"""
+    """
+    Default light colors.
+    """
 
     foreground: str = "#758492"
     background: str = "#FFFDF1"
@@ -74,7 +81,9 @@ class LightTheme(Theme):
 
 
 class DarkTheme(Theme):
-    """default dark colors"""
+    """
+    Default dark colors.
+    """
 
     foreground: str = "#F7F3F0"
     background: str = "#343a40"
@@ -82,7 +91,9 @@ class DarkTheme(Theme):
 
 
 class Display(ModelDict):
-    """display the celestial bodies or not"""
+    """
+    Display settings for celestial bodies.
+    """
 
     sun: bool = True
     moon: bool = True
@@ -112,7 +123,9 @@ class Display(ModelDict):
 
 
 class Chart(ModelDict):
-    """chart configuration"""
+    """
+    Chart configuration settings.
+    """
 
     stroke_width: int = 1
     stroke_opacity: float = 1
@@ -125,7 +138,9 @@ class Chart(ModelDict):
 
 
 class Config(ModelDict):
-    """package configuration model"""
+    """
+    Package configuration model.
+    """
 
     theme_type: Literal["light", "dark", "mono", "auto"] = "auto"
     orb: Orb = Orb()
@@ -137,7 +152,12 @@ class Config(ModelDict):
 
     @property
     def theme(self) -> Theme:
-        """return light or dark theme colors"""
+        """
+        Return theme colors based on the theme type.
+
+        Returns:
+            Theme: The theme colors.
+        """
         match self.theme_type:
             case "light":
                 return self.light_theme
@@ -153,7 +173,15 @@ class Config(ModelDict):
 
 
 def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:
-    """load configuration file"""
+    """
+    Load configuration file.
+
+    Args:
+        file (str | Path | IOBase): The configuration file path or file object.
+
+    Returns:
+        Config: The loaded configuration.
+    """
     if isinstance(file, IOBase):
         obj = yaml.safe_load(file)
         return Config(**obj)
@@ -170,6 +198,7 @@ def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:
 if "__main__" == __name__:
     import json
 
+    # generate json schema for the config file
     schema = Config.model_json_schema()
     with open("natal/data/natal_schema.json", "w") as f:
         json.dump(schema, f, indent=2)

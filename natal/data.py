@@ -24,7 +24,9 @@ swe.set_ephe_path("natal/data")
 
 
 class Data(DotDict):
-    """Data object for a natal chart"""
+    """
+    Data object for a natal chart.
+    """
 
     def __init__(
         self,
@@ -62,7 +64,12 @@ class Data(DotDict):
 
     @property
     def julian_day(self) -> float:
-        # Convert dt to UTC
+        """
+        Convert dt to UTC and return Julian day.
+
+        Returns:
+            float: The Julian day.
+        """
         local_tz = ZoneInfo(self.timezone)
         local_dt = self.dt.replace(tzinfo=local_tz)
         utc_dt = local_dt.astimezone(ZoneInfo("UTC"))
@@ -71,9 +78,9 @@ class Data(DotDict):
         )[1]
 
     def set_lat_lon(self):
-        """set the geographical information of a city."""
-
-        # fields: name, ascii_name, pop, timezone, country, lat, lon
+        """
+        Set the geographical information of a city.
+        """
         cities = pd.read_csv("natal/data/cities.csv")
         info = cities[cities["ascii_name"].str.lower() == self.city.lower()].iloc[0]
         self.lat = float(info["lat"])
@@ -81,14 +88,16 @@ class Data(DotDict):
         self.timezone = info["timezone"]
 
     def set_movable_bodies(self):
-        """Set the positions of the planets and other celestial bodies."""
-
+        """
+        Set the positions of the planets and other celestial bodies.
+        """
         self.planets = self.set_positions(PLANET_MEMBERS)
         self.extras = self.set_positions(EXTRA_MEMBERS)
 
     def set_houses_vertices(self) -> None:
-        """Calculate the cusps of the houses."""
-
+        """
+        Calculate the cusps of the houses.
+        """
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
             self.julian_day,
             self.lat,
@@ -114,6 +123,9 @@ class Data(DotDict):
             setattr(self, v.name, v)
 
     def set_aspectable(self):
+        """
+        Set the aspectable celestial bodies.
+        """
         self.aspectables = [
             body
             for body in (self.planets + self.extras + self.vertices)
@@ -121,27 +133,35 @@ class Data(DotDict):
         ]
 
     def set_signs(self):
-        """Set the signs of the zodiac."""
+        """
+        Set the signs of the zodiac.
+        """
         for i, sign_member in enumerate(SIGN_MEMBERS):
             sign = Sign(
                 **sign_member,
-                # degree=(i * 30 + (360 - self.asc.degree)) % 360,
                 degree=i * 30,
             )
             self.signs.append(sign)
 
     def set_aspects(self):
-        """Set the aspects between the planets."""
+        """
+        Set the aspects between the planets.
+        """
         body_pairs = pairs(self.aspectables)
         self.aspects = self.calculate_aspects(body_pairs, self.config.orb)
 
     def set_normalized_degrees(self):
-        """Normalize the positions of celestial bodies relative to the first house"""
+        """
+        Normalize the positions of celestial bodies relative to the first house.
+        """
         bodies = self.signs + self.planets + self.extras + self.vertices + self.houses
         for body in bodies:
             body.normalized_degree = self.normalize(body.degree)
 
     def set_rulers(self):
+        """
+        Set the rulers for each house.
+        """
         for house in self.houses:
             ruler = getattr(self, house.sign.ruler)
             classic_ruler = getattr(self, house.sign.classic_ruler)
@@ -155,6 +175,9 @@ class Data(DotDict):
             house.classic_ruler_house = self.house_of(classic_ruler)
 
     def set_quadrants(self):
+        """
+        Set the distribution of celestial bodies in quadrants.
+        """
         bodies = self.planets + self.extras
         _, ic, dsc, mc = [v.normalized_degree for v in self.vertices]
 
@@ -165,6 +188,12 @@ class Data(DotDict):
         self.quadrants = [first, second, third, fourth]
 
     def __str__(self):
+        """
+        String representation of the Data object.
+
+        Returns:
+            str: The string representation.
+        """
         op = ""
         op += f"Name: {self.name}\n"
         op += f"City: {self.city}\n"
@@ -194,7 +223,15 @@ class Data(DotDict):
     # utils ===============================
 
     def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
-        """Set the positions of the planets and other celestial bodies."""
+        """
+        Set the positions of the planets and other celestial bodies.
+
+        Args:
+            bodies (list[Body]): The list of celestial bodies.
+
+        Returns:
+            list[Aspectable]: The list of aspectable bodies with positions set.
+        """
         output = []
         for body in bodies:
             ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, body.value)
@@ -208,7 +245,15 @@ class Data(DotDict):
         return output
 
     def house_of(self, body: Body) -> int:
-        """House of a celestial body."""
+        """
+        Get the house of a celestial body.
+
+        Args:
+            body (Body): The celestial body.
+
+        Returns:
+            int: The house number.
+        """
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
             if body.degree >= house.degree:
@@ -216,7 +261,15 @@ class Data(DotDict):
         return sorted_houses[0].value
 
     def normalize(self, degree: float) -> float:
-        """degree relative to the first house."""
+        """
+        Normalize the degree relative to the first house.
+
+        Args:
+            degree (float): The degree to normalize.
+
+        Returns:
+            float: The normalized degree.
+        """
         return (degree - self.asc.degree + 360) % 360
 
     @staticmethod
@@ -224,10 +277,20 @@ class Data(DotDict):
         body_pairs: Iterable[tuple[Aspectable, Aspectable]],
         orb: Orb,
     ) -> list[Aspect]:
+        """
+        Calculate the aspects between pairs of celestial bodies.
+
+        Args:
+            body_pairs (Iterable[tuple[Aspectable, Aspectable]]): The pairs of celestial bodies.
+            orb (Orb): The orb configuration.
+
+        Returns:
+            list[Aspect]: The list of aspects.
+        """
         output = []
         for b1, b2 in body_pairs:
-            ordered = sorted([b1, b2], key=lambda x: x.degree)
-            org_angle = ordered[1].degree - ordered[0].degree
+            sorted_bodies = sorted([b1, b2], key=lambda x: x.degree)
+            org_angle = sorted_bodies[1].degree - sorted_bodies[0].degree
             # get the smaller angle
             angle = 360 - org_angle if org_angle > 180 else org_angle
             for aspect_member in ASPECT_MEMBERS:
@@ -235,11 +298,9 @@ class Data(DotDict):
                 max_orb = aspect_member.value + orb_val
                 min_orb = aspect_member.value - orb_val
                 if min_orb <= angle <= max_orb:
-                    # decreasing angle approach aspect
-                    applying = ordered[0].speed > ordered[1].speed
+                    applying = sorted_bodies[0].speed > sorted_bodies[1].speed
                     if angle < aspect_member.value:
-                        applying = not applying  # increasing angle approach aspect
-                    # reverse if org_angle is reflex angle
+                        applying = not applying
                     applying = not applying if org_angle > 180 else applying
                     output.append(
                         Aspect(
@@ -257,4 +318,14 @@ class Data(DotDict):
         data1: Self,
         data2: Self,
     ) -> Iterable[tuple[Aspectable, Aspectable]]:
+        """
+        Generate pairs of aspectable bodies for composite chart.
+
+        Args:
+            data1 (Self): The first data object.
+            data2 (Self): The second data object.
+
+        Returns:
+            Iterable[tuple[Aspectable, Aspectable]]: The pairs of aspectable bodies.
+        """
         return itertools.product(data1.aspectables, data2.aspectables)
