@@ -25,7 +25,7 @@
 - docs with examples
 - tested with `pytest`
 
-## sample charts
+## Sample Charts
 
 - default dark theme
 
@@ -42,13 +42,13 @@
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [GeoNames]: https://www.geonames.org
 
-## Usage
+## Quick Start
 
 - installation
 
 `pip install natal`
 
-- quick start
+- generate a chart
 
 ```python
 from natal import Data, Chart
@@ -87,7 +87,7 @@ following SVG chart will be produced:
 
 <img src="https://bit.ly/3MX7H8e" width=600/>
 
-### Data Object
+## Data Object
 
 ```python
 ## -- retrieve natal chart properties -- ##
@@ -131,10 +131,9 @@ aspect.applying # False
 aspect.orb # 3.3424
 ```
 
-### Stats
+## Stats
 
 - statistics of Data object in tabular form
-- Note: fonts with double space char support is suggested for better ascii table display eg. `Sarasa Mono TC`
 
 ```python
 from natal import Data, Stats
@@ -155,8 +154,12 @@ current = Data(
 stats = Stats(data1=mimi, data2=current)
 
 print(stats.full_report)
+```
 
-# following ascii report will be created
+- following ascii report will be created
+- Note: fonts with double space char support is suggested for better ascii table display eg. `Sarasa Mono TC`
+
+```text
 
 # Element Distribution (MiMi)
 
@@ -316,7 +319,34 @@ print(stats.full_report)
 
 ```
 
-read the [docs] for chart configuration and other details
+## Configuration
+
+- create a `natal_config.yml` file in project root to override the defaults in `config.py`
+- a sample config as follow:
+
+```yaml
+theme_type: light
+
+light_theme:
+    fire: "#ff0000"
+    earth: "#ffff00"
+    air: "#00ff00"
+    water: "#0000ff"
+    points: "#00ffff"
+
+display:
+    mean_node: True
+    chiron: True
+
+orb:
+    conjunction: 8
+    opposition: 8
+    trine: 6
+    square: 6
+    sextile: 6
+```
+
+read the [docs] for complete references
 
 [docs]: https://hoishing.github.io/natal
 
