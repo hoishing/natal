@@ -89,7 +89,7 @@ def quadrant_grid():
         ("quadrant", "count", "bodies"),
         ("first", 4, "☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node"),
         ("second", 1, "♀ venus"),
-        ("third", 5, "☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron"),
+        ("third", 4, "☉ sun, ☿ mercury, ♂ mars, ♃ jupiter"),
         ("fourth", 2, "♄ saturn, ♇ pluto"),
     ]
 
@@ -98,8 +98,8 @@ def hemisphere_grid():
     return [
         ('hemisphere', 'count', 'bodies'),
         ('eastern', 6, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♄ saturn, ♇ pluto'),
-        ('western', 6, '♀ venus, ☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron'),
-        ('northern', 7, '☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ⚷ chiron, ♄ saturn, ♇ pluto'),
+        ('western', 5, '♀ venus, ☉ sun, ☿ mercury, ♂ mars, ♃ jupiter'),
+        ('northern', 6, '☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ♄ saturn, ♇ pluto'),
         ('southern', 5, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♀ venus'),
     ]
 

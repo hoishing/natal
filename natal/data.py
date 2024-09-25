@@ -178,7 +178,7 @@ class Data(DotDict):
         """
         Set the distribution of celestial bodies in quadrants.
         """
-        bodies = self.planets + self.extras
+        bodies = [b for b in self.aspectables if b not in self.vertices]
         _, ic, dsc, mc = [v.normalized_degree for v in self.vertices]
 
         first = [b for b in bodies if b.normalized_degree < ic]

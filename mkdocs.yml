@@ -40,9 +40,21 @@ theme:
         - navigation.tracking
         # - navigation.sections
         # - navigation.expand
-        - toc.integrate
+        # - toc.integrate
+
+extra:
+    social:
+        - icon: fontawesome/brands/linkedin
+          link: https://www.linkedin.com/in/hoishing
+        - icon: fontawesome/brands/x-twitter
+          link: https://x.com/hoishing
+        - icon: fontawesome/brands/github
+          link: https://github.com/hoishing
+        - icon: fontawesome/brands/dev
+          link: https://dev.to/hoishing
 
 plugins:
+    - social
     - search:
           lang: en
     - mkdocstrings:
@@ -59,7 +71,6 @@ markdown_extensions:
     - pymdownx.inlinehilite
     - pymdownx.superfences
     - pymdownx.snippets
-
 
 nav:
     - Quick Start: index.md
