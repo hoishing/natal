@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.1.0"
+version = "0.1.1"
 description = "create SVG natal chart in python with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
@@ -16,7 +16,7 @@ ptag = "^0.1.1"
 pydantic = "^2.8.2"
 pyyaml = "^6.0.2"
 pandas = "^2.2.2"
-tabulate2 = {extras = ["widechars"], version = "^1.9.0"}
+tabulate2 = { extras = ["widechars"], version = "^1.9.0" }
 darkdetect = "^0.8.0"
 
 [tool.poetry.group.dev]
@@ -24,9 +24,10 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
-mkdocs-material = {extras = ["imaging"], version = "^9.5.36"}
+mkdocs-material = { extras = ["imaging"], version = "^9.5.36" }
 mkdocstrings = { extras = ["python"], version = "^0.25.2" }
 pytest = "^8.3.2"
+toml = "^0.10.2"
 
 [build-system]
 requires = ["poetry-core"]

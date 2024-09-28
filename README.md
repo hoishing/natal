@@ -1,6 +1,6 @@
 # Natal
 
-[![MIT-badge]][MIT-url] [![black-badge]][black-url]
+[![ci-badge]][ci-url] [![pypi-badge]][pypi-url] [![MIT-badge]][MIT-url] [![black-badge]][black-url]
 
 > create SVG natal chart in python with ease
 
@@ -356,10 +356,14 @@ read the [docs] for complete references
 - [pyswisseph] python extension to the Swiss Ephemeris
 - [mkdocs-material] for docs site generation
 
-[ptag]: https://github.com/hoishing/ptag
-[pyswisseph]: https://github.com/astrorigin/pyswisseph
-[mkdocs-material]: https://github.com/squidfunk/mkdocs-material
-[MIT-badge]: https://img.shields.io/github/license/hoishing/natal
-[MIT-url]: https://opensource.org/licenses/MIT
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-url]: https://github.com/psf/black
+[ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
+[MIT-badge]: https://img.shields.io/github/license/hoishing/natal
+[MIT-url]: https://opensource.org/licenses/MIT
+[mkdocs-material]: https://github.com/squidfunk/mkdocs-material
+[ptag]: https://github.com/hoishing/ptag
+[pypi-badge]: https://img.shields.io/pypi/v/natal
+[pypi-url]: https://pypi.org/project/natal
+[pyswisseph]: https://github.com/astrorigin/pyswisseph
