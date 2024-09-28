@@ -42,8 +42,8 @@ jobs:
       - id: pump
         if: steps.build.conclusion == 'success'
         run: |
-          git config --global user.email "hoishing@gmail.com"
-          git config --global user.name "Kelvin Ng"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag ${{ steps.check_version.outputs.new_version }}
           git push --tag -f
 

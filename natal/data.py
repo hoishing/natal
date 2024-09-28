@@ -1,4 +1,5 @@
 import itertools
+import pathlib
 import pandas as pd
 import swisseph as swe
 from datetime import datetime
@@ -20,13 +21,17 @@ from natal.utils import pairs, str_to_dt
 from typing import Iterable, Self
 from zoneinfo import ZoneInfo
 
-swe.set_ephe_path("natal/data")
+
+data_folder = pathlib.Path(__file__).parent / "data"
+swe.set_ephe_path(str(data_folder))
 
 
 class Data(DotDict):
     """
     Data object for a natal chart.
     """
+
+    cities = pd.read_csv(data_folder / "cities.csv")
 
     def __init__(
         self,
@@ -81,8 +86,9 @@ class Data(DotDict):
         """
         Set the geographical information of a city.
         """
-        cities = pd.read_csv("natal/data/cities.csv")
-        info = cities[cities["ascii_name"].str.lower() == self.city.lower()].iloc[0]
+        info = self.cities[
+            self.cities["ascii_name"].str.lower() == self.city.lower()
+        ].iloc[0]
         self.lat = float(info["lat"])
         self.lon = float(info["lon"])
         self.timezone = info["timezone"]

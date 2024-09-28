@@ -1,5 +1,6 @@
 # todo
 
+- config schema
 - docs
     - font of ascii report
 - front end
