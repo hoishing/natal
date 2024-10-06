@@ -1279,13 +1279,13 @@ test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 
 [[package]]
 name = "ptag"
-version = "0.1.2"
+version = "0.2.1"
 description = "pythonic way to create HTML/XML/SVG tags"
 optional = false
 python-versions = "<4.0,>=3.12"
 files = [
-    {file = "ptag-0.1.2-py3-none-any.whl", hash = "sha256:db77ee46794ce0f4501271a691feecf38acc3e4106fa5f2014afc7c7fbe0dfc0"},
-    {file = "ptag-0.1.2.tar.gz", hash = "sha256:8c30284d8eda227f05b9ba6c2234f1dd0aaf2df4c97b83362b2704789b6f7837"},
+    {file = "ptag-0.2.1-py3-none-any.whl", hash = "sha256:b62a84fab5be1bfe5346517ae6ff8458cda45011051212938aedc5b2f2279661"},
+    {file = "ptag-0.2.1.tar.gz", hash = "sha256:9cf31c2277aae8813d50a1ade04cb00908b88a32cc549d4e1df59115f8e2eee1"},
 ]
 
 [[package]]
@@ -1969,6 +1969,17 @@ test = ["numpy", "pandas", "pytest", "wcwidth"]
 widechars = ["wcwidth"]
 
 [[package]]
+name = "tagit"
+version = "0.6.1"
+description = "simple and pythonic way to write html/svg tags"
+optional = false
+python-versions = "<4.0,>=3.12"
+files = [
+    {file = "tagit-0.6.1-py3-none-any.whl", hash = "sha256:3794488bae23772f16f1b485e19ef6278dde158fc8410c04c989fbcf582bde4f"},
+    {file = "tagit-0.6.1.tar.gz", hash = "sha256:72c385381c83aa74c9bf85e57068a2b51ff4e083919d9cffb3f75a12e6883564"},
+]
+
+[[package]]
 name = "tinycss2"
 version = "1.3.0"
 description = "A tiny CSS parser"
@@ -2138,4 +2149,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "550f1d42fa11ab2a8739d0d85efe4059009f09a08b1387841f90cfb067df220d"
+content-hash = "2deeef805f5167de8208787b03fd1e7ccc31a268b35d5469d0f99aadde9b06bd"

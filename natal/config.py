@@ -13,6 +13,8 @@ from pathlib import Path
 from pydantic import BaseModel
 from typing import Any, Iterator, Literal, Mapping
 
+ThemeType = Literal["auto", "light", "dark", "mono"]
+
 
 class ModelDict(BaseModel, Mapping):
     def __getitem__(self, key: str):
@@ -138,7 +140,7 @@ class Config(ModelDict):
     Package configuration model.
     """
 
-    theme_type: Literal["light", "dark", "mono", "auto"] = "auto"
+    theme_type: ThemeType = "auto"
     orb: Orb = Orb()
     composite_orb: CompositeOrb = CompositeOrb()
     light_theme: LightTheme = LightTheme()

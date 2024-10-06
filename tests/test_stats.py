@@ -87,20 +87,20 @@ def data2_celestial_body_grid():
 def quadrant_grid():
     return [
         ("quadrant", "count", "bodies"),
-        ("first", 4, "☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node"),
-        ("second", 1, "♀ venus"),
-        ("third", 4, "☉ sun, ☿ mercury, ♂ mars, ♃ jupiter"),
-        ("fourth", 2, "♄ saturn, ♇ pluto"),
+        ("first", 4, "moon, uranus, neptune, mean_node"),
+        ("second", 1, "venus"),
+        ("third", 4, "sun, mercury, mars, jupiter"),
+        ("fourth", 2, "saturn, pluto"),
     ]
 
 @fixture
 def hemisphere_grid():
     return [
         ('hemisphere', 'count', 'bodies'),
-        ('eastern', 6, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♄ saturn, ♇ pluto'),
-        ('western', 5, '♀ venus, ☉ sun, ☿ mercury, ♂ mars, ♃ jupiter'),
-        ('northern', 6, '☉ sun, ☿ mercury, ♂ mars, ♃ jupiter, ♄ saturn, ♇ pluto'),
-        ('southern', 5, '☽ moon, ♅ uranus, ♆ neptune, ☊ mean_node, ♀ venus'),
+        ('eastern', 6, "moon, uranus, neptune, mean_node, saturn, pluto"),
+        ('western', 5, "venus, sun, mercury, mars, jupiter"),
+        ('northern', 6, "sun, mercury, mars, jupiter, saturn, pluto"),
+        ('southern', 5, "moon, uranus, neptune, mean_node, venus"),
     ]
 
 @fixture
@@ -175,80 +175,80 @@ def composite_aspect_grid():
 def data1_cross_ref_grid():
     return [
         ["", "☉", "☽", "☿", "♀", "♂", "♃", "♄", "♅", "♆", "♇", "☊", "Asc", "MC", "Total"],
-        ["☉", None, None, None, None, None, "☌", "□", "☍", None, None, None, None, None, "3"],
-        ["☽", None, None, "△", "□", "☍", None, None, None, None, None, None, "□", "☍", "5"],
-        ["☿", None, "△", None, None, "⚹", None, None, None, None, None, "☍", None, "⚹", "4"],
-        ["♀", None, "□", None, None, "□", None, None, None, "△", "☍", None, "☍", "□", "6"],
-        ["♂", None, "☍", "⚹", "□", None, None, None, None, None, None, "△", "□", "☌", "6"],
-        ["♃", "☌", None, None, None, None, None, None, "☍", None, None, None, None, None, "2"],
-        ["♄", "□", None, None, None, None, None, None, None, None, None, None, "□", "☌", "3"],
-        ["♅", "☍", None, None, None, None, "☍", None, None, None, None, None, None, None, "2"],
-        ["♆", None, None, None, "△", None, None, None, None, None, "⚹", None, None, None, "2"],
-        ["♇", None, None, None, "☍", None, None, None, None, "⚹", None, None, None, None, "2"],
-        ["☊", None, None, "☍", None, "△", None, None, None, None, None, None, None, None, "2"],
-        ["Asc", None, "□", None, "☍", "□", None, "□", None, None, None, None, None, "□", "5"],
-        ["MC", None, "☍", "⚹", "□", "☌", None, "☌", None, None, None, None, "□", None, "6"]
+        ["☉", "", "", "", "", "", "☌", "□", "☍", "", "", "", "", "", "3"],
+        ["☽", "", "", "△", "□", "☍", "", "", "", "", "", "", "□", "☍", "5"],
+        ["☿", "", "△", "", "", "⚹", "", "", "", "", "", "☍", "", "⚹", "4"],
+        ["♀", "", "□", "", "", "□", "", "", "", "△", "☍", "", "☍", "□", "6"],
+        ["♂", "", "☍", "⚹", "□", "", "", "", "", "", "", "△", "□", "☌", "6"],
+        ["♃", "☌", "", "", "", "", "", "", "☍", "", "", "", "", "", "2"],
+        ["♄", "□", "", "", "", "", "", "", "", "", "", "", "□", "☌", "3"],
+        ["♅", "☍", "", "", "", "", "☍", "", "", "", "", "", "", "", "2"],
+        ["♆", "", "", "", "△", "", "", "", "", "", "⚹", "", "", "", "2"],
+        ["♇", "", "", "", "☍", "", "", "", "", "⚹", "", "", "", "", "2"],
+        ["☊", "", "", "☍", "", "△", "", "", "", "", "", "", "", "", "2"],
+        ["Asc", "", "□", "", "☍", "□", "", "□", "", "", "", "", "", "□", "5"],
+        ["MC", "", "☍", "⚹", "□", "☌", "", "☌", "", "", "", "", "□", "", "6"]
     ]
 
 @fixture
 def composite_cross_ref_grid():
     return [
         ['', '☉', '☽', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇', '☊', 'Asc', 'MC', 'Total'],
-        ['☉', None, None, None, None, None, None, None, None, None, None, '△', '⚹', None, '2'],
-        ['☽', None, None, None, None, None, None, None, None, None, None, None, None, None, '0'],
-        ['☿', None, None, None, None, None, None, None, None, None, None, None, None, None, '0'],
-        ['♀', None, None, None, '△', None, None, None, None, None, None, None, None, None, '1'],
-        ['♂', None, '⚹', None, None, None, None, '□', None, None, None, None, None, None, '2'],
-        ['♃', None, None, None, None, '□', None, None, None, None, '△', None, None, None, '2'],
-        ['♄', None, None, None, None, None, None, None, '△', None, None, None, None, None, '1'],
-        ['♅', None, None, None, None, '□', None, None, None, None, '⚹', None, None, None, '2'],
-        ['♆', None, None, None, None, None, None, None, None, None, None, None, None, None, '0'],
-        ['♇', None, None, None, None, None, None, None, None, None, None, None, None, '⚹', '1'],
-        ['☊', None, None, None, None, None, None, None, None, None, None, None, None, None, '0'],
-        ['Asc', None, None, None, None, None, None, None, None, None, None, None, None, None, '0'],
-        ['MC', None, None, None, None, None, None, None, None, None, None, None, None, None, '0']
+        ['☉', "", "", "", "", "", "", "", "", "", "", '△', '⚹', "", '2'],
+        ['☽', "", "", "", "", "", "", "", "", "", "", "", "", "", '0'],
+        ['☿', "", "", "", "", "", "", "", "", "", "", "", "", "", '0'],
+        ['♀', "", "", "", '△', "", "", "", "", "", "", "", "", "", '1'],
+        ['♂', "", '⚹', "", "", "", "", '□', "", "", "", "", "", "", '2'],
+        ['♃', "", "", "", "", '□', "", "", "", "", '△', "", "", "", '2'],
+        ['♄', "", "", "", "", "", "", "", '△', "", "", "", "", "", '1'],
+        ['♅', "", "", "", "", '□', "", "", "", "", '⚹', "", "", "", '2'],
+        ['♆', "", "", "", "", "", "", "", "", "", "", "", "", "", '0'],
+        ['♇', "", "", "", "", "", "", "", "", "", "", "", "", '⚹', '1'],
+        ['☊', "", "", "", "", "", "", "", "", "", "", "", "", "", '0'],
+        ['Asc', "", "", "", "", "", "", "", "", "", "", "", "", "", '0'],
+        ['MC', "", "", "", "", "", "", "", "", "", "", "", "", "", '0']
     ]
 
 # fmt: on
 
 
 def test_distribution_grid(stats, element_grid, quality_grid, polarity_grid):
-    assert stats.distribution_grid("element") == element_grid
-    assert stats.distribution_grid("quality") == quality_grid
-    assert stats.distribution_grid("polarity") == polarity_grid
+    assert stats.distribution("element").grid == element_grid
+    assert stats.distribution("quality").grid == quality_grid
+    assert stats.distribution("polarity").grid == polarity_grid
 
 
 def test_celestial_body_grid(stats, celestial_body_grid):
-    assert stats.celestial_body_grid == celestial_body_grid
+    assert stats.celestial_body.grid == celestial_body_grid
 
 
 def test_data2_celestial_body_grid(composite_stats, data2_celestial_body_grid):
-    assert composite_stats.data2_celestial_body_grid == data2_celestial_body_grid
+    assert composite_stats.data2_celestial_body.grid == data2_celestial_body_grid
 
 
 def test_quadrant_grid(stats, quadrant_grid):
-    assert stats.quadrant_grid == quadrant_grid
+    assert stats.quadrant.grid == quadrant_grid
 
 
 def test_hemisphere_grid(stats, hemisphere_grid):
-    assert stats.hemisphere_grid == hemisphere_grid
+    assert stats.hemisphere.grid == hemisphere_grid
 
 
 def test_house_grid(stats, house_grid):
-    assert stats.house_grid == house_grid
+    assert stats.house.grid == house_grid
 
 
 def test_data1_aspect_grid(stats, data1_aspect_grid):
-    assert stats.data1_aspect_grid == data1_aspect_grid
+    assert stats.aspect.grid == data1_aspect_grid
 
 
 def test_composite_aspect_grid(composite_stats, composite_aspect_grid):
-    assert composite_stats.composite_aspect_grid == composite_aspect_grid
+    assert composite_stats.composite_aspect.grid == composite_aspect_grid
 
 
 def test_data1_cross_ref_grid(stats, data1_cross_ref_grid):
-    assert stats.aspect_cross_ref_grid == data1_cross_ref_grid
+    assert stats.cross_ref.grid == data1_cross_ref_grid
 
 
 def test_composite_cross_ref_grid(composite_stats, composite_cross_ref_grid):
-    assert composite_stats.aspect_cross_ref_grid == composite_cross_ref_grid
+    assert composite_stats.cross_ref.grid == composite_cross_ref_grid

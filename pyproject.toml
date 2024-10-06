@@ -12,12 +12,13 @@ packages = [{ include = "natal", from = "." }]
 [tool.poetry.dependencies]
 python = "^3.12"
 pyswisseph = "^2.10.3.2"
-ptag = "^0.1.1"
 pydantic = "^2.8.2"
 pyyaml = "^6.0.2"
 pandas = "^2.2.2"
 tabulate2 = { extras = ["widechars"], version = "^1.9.0" }
 darkdetect = "^0.8.0"
+tagit = "^0.6.1"
+ptag = "^0.2.1"
 
 [tool.poetry.group.dev]
 optional = true
