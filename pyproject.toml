@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.1.2"
+version = "0.2.0"
 description = "create SVG natal chart in python with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
@@ -18,7 +18,6 @@ pandas = "^2.2.2"
 tabulate2 = { extras = ["widechars"], version = "^1.9.0" }
 darkdetect = "^0.8.0"
 tagit = "^0.6.1"
-ptag = "^0.2.1"
 
 [tool.poetry.group.dev]
 optional = true

@@ -352,7 +352,7 @@ read the [docs] for complete references
 
 ## Tech Stack
 
-- [ptag] for creating and manipulating XML(SVG)
+- [tagit] for creating and manipulating SVG
 - [pyswisseph] python extension to the Swiss Ephemeris
 - [mkdocs-material] for docs site generation
 
@@ -363,7 +363,7 @@ read the [docs] for complete references
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
 [MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
-[ptag]: https://github.com/hoishing/ptag
+[tagit]: https://github.com/hoishing/tagit
 [pypi-badge]: https://img.shields.io/pypi/v/natal
 [pypi-url]: https://pypi.org/project/natal
 [pyswisseph]: https://github.com/astrorigin/pyswisseph

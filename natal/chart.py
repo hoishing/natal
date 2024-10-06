@@ -11,7 +11,7 @@ from natal.config import Config, Orb, load_config
 from natal.const import SIGN_MEMBERS
 from natal.data import Data
 from natal.utils import DotDict
-from ptag import Tag, circle, line, path, svg, text
+from tagit import circle, line, path, svg, text
 
 
 class Chart(DotDict):
@@ -56,8 +56,7 @@ class Chart(DotDict):
         self.ring_thickness = self.max_radius * config.chart.ring_thickness_fraction
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
 
-    @property
-    def svg_root(self) -> Tag:
+    def svg_root(self, content: str | list[str]) -> str:
         """
         Generate an SVG root element with sensible defaults.
 
@@ -65,7 +64,7 @@ class Chart(DotDict):
             Tag: An SVG root element.
         """
         return svg(
-            "",
+            content,
             height=self.height,
             width=self.width,
             # viewbox=None,
@@ -82,7 +81,7 @@ class Chart(DotDict):
         stroke_color: str = "black",
         stroke_width: float = 1,
         stroke_opacity: float = 1,
-    ) -> Tag:
+    ) -> str:
         """
         Create a sector shape in SVG format.
 
@@ -126,7 +125,7 @@ class Chart(DotDict):
             stroke_opacity=stroke_opacity,
         )
 
-    def background(self, radius: float, **kwargs) -> Tag:
+    def background(self, radius: float, **kwargs) -> str:
         """
         Create a background circle for the chart.
 
@@ -139,7 +138,7 @@ class Chart(DotDict):
         """
         return circle(cx=self.cx, cy=self.cy, r=radius, **kwargs)
 
-    def sign_wheel(self) -> list[Tag]:
+    def sign_wheel(self) -> list[str]:
         """
         Generate the zodiac sign wheel.
 
@@ -184,7 +183,7 @@ class Chart(DotDict):
 
         return wheel
 
-    def house_wheel(self) -> list[Tag]:
+    def house_wheel(self) -> list[str]:
         """
         Generate the house wheel.
 
@@ -229,7 +228,7 @@ class Chart(DotDict):
 
         return wheel
 
-    def vertex_line(self) -> list[Tag]:
+    def vertex_line(self) -> list[str]:
         """
         Generate vertex lines for the chart.
 
@@ -281,7 +280,7 @@ class Chart(DotDict):
 
         return lines
 
-    def outer_body_wheel(self) -> list[Tag]:
+    def outer_body_wheel(self) -> list[str]:
         """
         Generate the outer body wheel for single or composite charts.
 
@@ -292,7 +291,7 @@ class Chart(DotDict):
         data = self.data2 or self.data1
         return self.body_wheel(radius, data, self.config.chart.outer_min_degree)
 
-    def inner_body_wheel(self) -> list[Tag] | None:
+    def inner_body_wheel(self) -> list[str] | None:
         """
         Generate the inner body wheel for composite charts.
 
@@ -306,7 +305,7 @@ class Chart(DotDict):
         data = self.data1
         return self.body_wheel(radius, data, self.config.chart.inner_min_degree)
 
-    def outer_aspect(self) -> list[Tag]:
+    def outer_aspect(self) -> list[str]:
         """
         Generate aspect lines for the outer wheel in single charts.
 
@@ -320,7 +319,7 @@ class Chart(DotDict):
         aspects = self.data1.aspects
         return self.aspect_lines(radius, orb, aspects)
 
-    def inner_aspect(self) -> list[Tag]:
+    def inner_aspect(self) -> list[str]:
         """
         Generate aspect lines for the inner wheel in composite charts.
 
@@ -345,15 +344,17 @@ class Chart(DotDict):
         Returns:
             str: SVG content.
         """
-        with self.svg_root as canvas:
-            self.sign_wheel()
-            self.house_wheel()
-            self.vertex_line()
-            self.outer_body_wheel()
-            self.inner_body_wheel()
-            self.outer_aspect()
-            self.inner_aspect()
-        return str(canvas)
+        return self.svg_root(
+            [
+                self.sign_wheel(),
+                self.house_wheel(),
+                self.vertex_line(),
+                self.outer_body_wheel(),
+                self.inner_body_wheel(),
+                self.outer_aspect(),
+                self.inner_aspect(),
+            ]
+        )
 
     # utils ======================================================
 
@@ -518,7 +519,7 @@ class Chart(DotDict):
             )
         return output
 
-    def aspect_lines(self, radius: float, orb: Orb, aspects: list[Aspect]) -> list[Tag]:
+    def aspect_lines(self, radius: float, orb: Orb, aspects: list[Aspect]) -> list[str]:
         """
         Draw aspect lines between aspectable celestial bodies.
 

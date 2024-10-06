@@ -1278,17 +1278,6 @@ files = [
 test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 
 [[package]]
-name = "ptag"
-version = "0.2.1"
-description = "pythonic way to create HTML/XML/SVG tags"
-optional = false
-python-versions = "<4.0,>=3.12"
-files = [
-    {file = "ptag-0.2.1-py3-none-any.whl", hash = "sha256:b62a84fab5be1bfe5346517ae6ff8458cda45011051212938aedc5b2f2279661"},
-    {file = "ptag-0.2.1.tar.gz", hash = "sha256:9cf31c2277aae8813d50a1ade04cb00908b88a32cc549d4e1df59115f8e2eee1"},
-]
-
-[[package]]
 name = "ptyprocess"
 version = "0.7.0"
 description = "Run a subprocess in a pseudo terminal"
@@ -2149,4 +2138,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2deeef805f5167de8208787b03fd1e7ccc31a268b35d5469d0f99aadde9b06bd"
+content-hash = "7e18d8302f7aa502ec773bfa0a33bb2a9dbf13afcd8ce2f73552450a46df48c7"

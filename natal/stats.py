@@ -9,7 +9,7 @@ from collections import defaultdict
 from math import floor
 from natal.classes import Aspect
 from natal.data import Data
-from ptag import div, h4
+from tagit import div, h4
 from tabulate import tabulate
 from typing import Iterable, Literal, NamedTuple
 
@@ -253,7 +253,9 @@ class Stats:
         output += self.table_of("hemisphere", kind)
         if self.data2:
             output += self.table_of("data2_celestial_body", kind)
-            output += self.table_of("composite_aspect", kind, colalign=("left", "center", "left", "center"))
+            output += self.table_of(
+                "composite_aspect", kind, colalign=("left", "center", "left", "center")
+            )
         else:
             output += self.table_of("aspect", kind)
         output += self.table_of("cross_ref", kind, tablefmt="rounded_grid")
@@ -280,15 +282,19 @@ class Stats:
         base_option = dict(headers="firstrow")
 
         if kind == "ascii":
-            options = base_option | {"tablefmt": "github", "numalign": "center"} | ascii_options
+            options = (
+                base_option
+                | {"tablefmt": "github", "numalign": "center"}
+                | ascii_options
+            )
             output = f"# {stat.title}\n\n"
             output += tabulate(stat.grid, **options)
             output += "\n\n\n"
             return output
         elif kind == "html":
             options = base_option | {"tablefmt": "html"}
-            output = div(h4(stat.title), class_=f"tabulate {fn_name}")
-            output.add(tabulate(stat.grid, **options))
+            tb = tabulate(stat.grid, **options)
+            output = div([h4(stat.title), tb], class_=f"tabulate {fn_name}")
             return str(output)
 
 
