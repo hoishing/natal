@@ -139,7 +139,7 @@ aspect.orb # 3.3424
 from natal import Data, Stats
 from datetime import datetime
 
-mimi = Data(x
+mimi = Data(
     name = "MiMi",
     city = "Taipei",
     dt = "1980-04-20 14:30"
@@ -153,7 +153,7 @@ current = Data(
 
 stats = Stats(data1=mimi, data2=current)
 
-print(stats.full_report)
+print(stats.full_report("ascii"))
 ```
 
 - following ascii report will be created
@@ -227,97 +227,98 @@ print(stats.full_report)
 
 # Quadrants (MiMi)
 
-| quadrant   |  count  | bodies                                          |
-| :--------- | :-----: | :---------------------------------------------- |
-| first      |    3    | ♄ saturn, ♅ uranus, ♇ pluto                     |
-| second     |    1    | ♆ neptune                                       |
-| third      |    3    | ☉ sun, ☿ mercury, ⚷ chiron                      |
-| fourth     |    5    | ☽ moon, ♀ venus, ♂ mars, ♃ jupiter, ☊ mean_node |
+| quadrant   |  count  | bodies                                |
+| :--------- | :-----: | :------------------------------------ |
+| first      |    3    | saturn, uranus, pluto                 |
+| second     |    1    | neptune                               |
+| third      |    2    | sun, mercury                          |
+| fourth     |    5    | moon, venus, mars, jupiter, mean_node |
 
 
 # Hemispheres (MiMi)
 
-| hemisphere   |  count  | bodies                                                                       |
-| :----------- | :-----: | :--------------------------------------------------------------------------- |
-| eastern      |    8    | ♄ saturn, ♅ uranus, ♇ pluto, ☽ moon, ♀ venus, ♂ mars, ♃ jupiter, ☊ mean_node |
-| western      |    4    | ♆ neptune, ☉ sun, ☿ mercury, ⚷ chiron                                        |
-| northern     |    8    | ☉ sun, ☿ mercury, ⚷ chiron, ☽ moon, ♀ venus, ♂ mars, ♃ jupiter, ☊ mean_node  |
-| southern     |    4    | ♄ saturn, ♅ uranus, ♇ pluto, ♆ neptune                                       |
+| hemisphere   |  count  | bodies                                                       |
+| :----------- | :-----: | :----------------------------------------------------------- |
+| eastern      |    8    | saturn, uranus, pluto, moon, venus, mars, jupiter, mean_node |
+| western      |    3    | neptune, sun, mercury                                        |
+| northern     |    7    | sun, mercury, moon, venus, mars, jupiter, mean_node          |
+| southern     |    4    | saturn, uranus, pluto, neptune                               |
 
 
 # Celestial Bodies of Current in MiMi's chart
 
 | Current   | sign      |  house  |
 | :-------- | :-------- | :-----: |
-| sun       | 01°♎05'  |    1    |
-| moon      | 16°♊47'  |   10    |
-| mercury   | 25°♍01'  |    1    |
-| venus     | 00°♏38'  |    2    |
-| mars      | 10°♋53'  |   11    |
-| jupiter   | 20°♊55'  |   10    |
-| saturn    | 14°♓52'℞ |    7    |
-| uranus    | 27°♉03'℞ |    9    |
-| neptune   | 28°♓26'℞ |    7    |
-| pluto     | 29°♑43'℞ |    5    |
-| mean_node | 06°♈45'℞ |    7    |
-| asc       | 05°♋23'  |   10    |
-| mc        | 23°♓43'  |    7    |
+| sun       | 14°♎18'  |    2    |
+| moon      | 01°♐13'  |    3    |
+| mercury   | 18°♎55'  |    2    |
+| venus     | 17°♏00'  |    3    |
+| mars      | 17°♋58'  |   11    |
+| jupiter   | 21°♊19'  |   10    |
+| saturn    | 13°♓58'℞ |    7    |
+| uranus    | 26°♉45'℞ |    9    |
+| neptune   | 28°♓04'℞ |    7    |
+| pluto     | 29°♑38'℞ |    5    |
+| mean_node | 06°♈02'℞ |    7    |
+| asc       | 08°♐43'  |    3    |
+| mc        | 16°♍40'  |    1    |
 
 
 # Aspects of Current vs MiMi
 
 | Current   |  aspect  | MiMi      |  phase  | orb    |
 | :-------- | :------: | :-------- | :-----: | :----- |
-| moon      |    ☌     | venus     |   <->   | 1° 35' |
-| mercury   |    ⚹     | uranus    |   <->   | 0° 30' |
-| venus     |    ☍     | sun       |   <->   | 0° 19' |
-| venus     |    ⚹     | jupiter   |   <->   | 0° 21' |
-| jupiter   |    □     | saturn    |   > <   | 0° 08' |
-| jupiter   |    ☍     | neptune   |   > <   | 1° 33' |
-| jupiter   |    △     | pluto     |   <->   | 0° 49' |
-| saturn    |    □     | venus     |   <->   | 0° 20' |
-| uranus    |    □     | mars      |   > <   | 0° 04' |
-| uranus    |    □     | mean_node |   <->   | 1° 00' |
-| pluto     |    □     | sun       |   <->   | 0° 37' |
-| mean_node |    □     | moon      |   <->   | 1° 44' |
-| mean_node |    ☌     | mercury   |   <->   | 1° 43' |
-| mc        |    △     | uranus    |   > <   | 0° 47' |
-| mc        |    □     | neptune   |   <->   | 1° 15' |
+| sun       |    △     | venus     |   > <   | 0° 54' |
+| moon      |    □     | jupiter   |   <->   | 0° 56' |
+| mercury   |    ☌     | pluto     |   > <   | 1° 11' |
+| jupiter   |    □     | saturn    |   <->   | 0° 16' |
+| jupiter   |    ☍     | neptune   |   > <   | 1° 09' |
+| jupiter   |    △     | pluto     |   <->   | 1° 13' |
+| saturn    |    □     | venus     |   <->   | 1° 14' |
+| uranus    |    □     | mars      |   <->   | 0° 14' |
+| uranus    |    □     | mean_node |   <->   | 0° 42' |
+| pluto     |    □     | sun       |   <->   | 0° 41' |
+| asc       |    △     | mercury   |   > <   | 0° 15' |
+| asc       |    □     | asc       |   > <   | 0° 59' |
+| asc       |    ☍     | mc        |   > <   | 0° 30' |
+| mc        |    □     | venus     |   > <   | 1° 28' |
 
 
 # Aspect Cross Reference of Current(cols) vs MiMi(rows)
 
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───────┬──────┬─────────┐
-│     │  ☉  │  ☽  │  ☿  │  ♀  │  ♂  │  ♃  │  ♄  │  ♅  │  ♆  │  ♇  │  ☊  │  Asc  │  MC  │  Total  │
+╭─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───────┬──────┬─────────╮
+│     │ ☉   │ ☽   │ ☿   │ ♀   │ ♂   │ ♃   │ ♄   │ ♅   │ ♆   │ ♇   │ ☊   │ Asc   │ MC   │  Total  │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ☉  │     │     │     │  ☍  │     │     │     │     │     │  □  │     │       │      │    2    │
+│ ☉   │     │     │     │     │     │     │     │     │     │ □   │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ☽  │     │     │     │     │     │     │     │     │     │     │  □  │       │      │    1    │
+│ ☽   │     │     │     │     │     │     │     │     │     │     │     │       │      │    0    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ☿  │     │     │     │     │     │     │     │     │     │     │  ☌  │       │      │    1    │
+│ ☿   │     │     │     │     │     │     │     │     │     │     │     │ △     │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♀  │     │  ☌  │     │     │     │     │  □  │     │     │     │     │       │      │    2    │
+│ ♀   │ △   │     │     │     │     │     │ □   │     │     │     │     │       │ □    │    3    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♂  │     │     │     │     │     │     │     │  □  │     │     │     │       │      │    1    │
+│ ♂   │     │     │     │     │     │     │     │ □   │     │     │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♃  │     │     │     │  ⚹  │     │     │     │     │     │     │     │       │      │    1    │
+│ ♃   │     │ □   │     │     │     │     │     │     │     │     │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♄  │     │     │     │     │     │  □  │     │     │     │     │     │       │      │    1    │
+│ ♄   │     │     │     │     │     │ □   │     │     │     │     │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♅  │     │     │  ⚹  │     │     │     │     │     │     │     │     │       │  △   │    2    │
+│ ♅   │     │     │     │     │     │     │     │     │     │     │     │       │      │    0    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♆  │     │     │     │     │     │  ☍  │     │     │     │     │     │       │  □   │    2    │
+│ ♆   │     │     │     │     │     │ ☍   │     │     │     │     │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ♇  │     │     │     │     │     │  △  │     │     │     │     │     │       │      │    1    │
+│ ♇   │     │     │ ☌   │     │     │ △   │     │     │     │     │     │       │      │    2    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│  ☊  │     │     │     │     │     │     │     │  □  │     │     │     │       │      │    1    │
+│ ☊   │     │     │     │     │     │     │     │ □   │     │     │     │       │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ Asc │     │     │     │     │     │     │     │     │     │     │     │       │      │    0    │
+│ Asc │     │     │     │     │     │     │     │     │     │     │     │ □     │      │    1    │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ MC  │     │     │     │     │     │     │     │     │     │     │     │       │      │    0    │
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴───────┴──────┴─────────┘
+│ MC  │     │     │     │     │     │     │     │     │     │     │     │ ☍     │      │    1    │
+╰─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴───────┴──────┴─────────╯
 
 ```
+
+- for html report, see [demo.ipynb]
 
 ## Configuration
 
@@ -360,6 +361,7 @@ read the [docs] for complete references
 [black-url]: https://github.com/psf/black
 [ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
+[demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
 [MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
