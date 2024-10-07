@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.2.1"
+version = "0.2.2"
 description = "create natal chart in python with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
@@ -15,9 +15,9 @@ pyswisseph = "^2.10.3.2"
 pydantic = "^2.8.2"
 pyyaml = "^6.0.2"
 pandas = "^2.2.2"
-tabulate2 = { extras = ["widechars"], version = "^1.9.0" }
 darkdetect = "^0.8.0"
 tagit = "^0.6.1"
+tabulate = "^0.9.0"
 
 [tool.poetry.group.dev]
 optional = true
