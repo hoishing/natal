@@ -2,7 +2,7 @@
 
 [![ci-badge]][ci-url] [![pypi-badge]][pypi-url] [![MIT-badge]][MIT-url] [![black-badge]][black-url]
 
-> create SVG natal chart in python with ease
+> create Natal Chart with ease
 
 ## Features
 

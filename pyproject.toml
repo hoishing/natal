@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "natal"
 version = "0.2.2"
-description = "create natal chart in python with ease"
+description = "create Natal Chart with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
 documentation = "https://hoishing.github.io/natal"
