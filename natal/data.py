@@ -173,7 +173,7 @@ class Data(DotDict):
             ruler = getattr(self, house.sign.ruler)
             classic_ruler = getattr(self, house.sign.classic_ruler)
             house.ruler = ruler.name
-            house.ruler_sign = f"{ruler.sign.symbol} {ruler.sign.name}"
+            house.ruler_sign = f"{ruler.sign.symbol}"
             house.ruler_house = self.house_of(ruler)
             house.classic_ruler = classic_ruler.name
             house.classic_ruler_sign = (

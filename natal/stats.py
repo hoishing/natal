@@ -119,7 +119,7 @@ class Stats:
         for house in self.data1.houses:
             grid.append(
                 (
-                    house.name,
+                    house.value,
                     house.signed_dms,
                     house.ruler,
                     house.ruler_sign,
@@ -137,7 +137,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of quadrant distribution data.
         """
         title = f"Quadrants ({self.data1.name})"
-        quad_names = ["first", "second", "third", "fourth"]
+        quad_names = ["1st ◵", "2nd ◶", "3rd ◷", "4th ◴"]
         quadrants = defaultdict(lambda: [0, []])
         for i, quad in enumerate(self.data1.quadrants):
             if quad:
@@ -165,11 +165,11 @@ class Stats:
         title = f"Hemispheres ({self.data1.name})"
         grid = [("hemisphere", "count", "bodies")]
         data = self.quadrant.grid[1:]
-        eastern = ("eastern", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
-        western = ("western", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
-        northern = ("northern", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
-        southern = ("southern", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
-        return StatData(title, grid + [eastern, western, northern, southern])
+        left = ("←", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
+        right = ("→", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
+        top = ("↑", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
+        bottom = ("↓", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
+        return StatData(title, grid + [left, right, top, bottom])
 
     @property
     def aspect(self) -> StatData:
@@ -279,14 +279,10 @@ class Stats:
         stat = getattr(self, fn_name)
         if fn_args:
             stat = stat(*fn_args)
-        base_option = dict(headers="firstrow")
+        base_option = dict(headers="firstrow", numalign="center")
 
         if kind == "ascii":
-            options = (
-                base_option
-                | {"tablefmt": "github", "numalign": "center"}
-                | ascii_options
-            )
+            options = base_option | {"tablefmt": "github"} | ascii_options
             output = f"# {stat.title}\n\n"
             output += tabulate(stat.grid, **options)
             output += "\n\n\n"
@@ -321,7 +317,7 @@ def _aspect_grid(aspects: list[Aspect], headers: list[str]) -> Grid:
                 aspect.body1.name,
                 aspect.aspect_member.symbol,
                 aspect.body2.name,
-                "> <" if aspect.applying else "<->",
+                "→ ←" if aspect.applying else "← →",
                 f"{degree}° {minutes:02d}'",
             )
         )
