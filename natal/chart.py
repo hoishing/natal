@@ -60,8 +60,11 @@ class Chart(DotDict):
         """
         Generate an SVG root element with sensible defaults.
 
+        Args:
+            content (str | list[str]): The content to be included in the SVG root.
+
         Returns:
-            Tag: An SVG root element.
+            str: An SVG root element as a string.
         """
         return svg(
             content,
@@ -329,12 +332,10 @@ class Chart(DotDict):
         if self.data2 is None:
             return []
         radius = self.max_radius - 4 * self.ring_thickness
-        orb = self.config.composite_orb
-        aspects = Data.calculate_aspects(
-            Data.composite_aspects_pairs(self.data1, self.data2),
-            orb=orb,
+        aspects = self.data1.calculate_aspects(
+            self.data1.composite_aspects_pairs(self.data2)
         )
-        return self.aspect_lines(radius, orb, aspects)
+        return self.aspect_lines(radius, aspects)
 
     @property
     def svg(self) -> str:

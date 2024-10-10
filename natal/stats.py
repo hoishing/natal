@@ -50,10 +50,8 @@ class Stats:
         self.data1 = data1
         self.data2 = data2
         if self.data2:
-            self.composite_pairs = Data.composite_aspects_pairs(self.data2, self.data1)
-            self.composite_aspects = Data.calculate_aspects(
-                self.composite_pairs, self.data1.config.composite_orb
-            )
+            self.composite_pairs = data2.composite_aspects_pairs(self.data1)
+            self.composite_aspects = data1.calculate_aspects(self.composite_pairs)
 
     # data grids =================================================================
 

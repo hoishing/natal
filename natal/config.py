@@ -40,18 +40,6 @@ class Orb(ModelDict):
     sextile: int = 5
 
 
-class CompositeOrb(Orb):
-    """
-    Default orb for composite chart.
-    """
-
-    conjunction: int = 2
-    opposition: int = 2
-    trine: int = 2
-    square: int = 2
-    sextile: int = 1
-
-
 class Theme(ModelDict):
     """
     Default colors for the chart.
@@ -142,7 +130,6 @@ class Config(ModelDict):
 
     theme_type: ThemeType = "auto"
     orb: Orb = Orb()
-    composite_orb: CompositeOrb = CompositeOrb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()

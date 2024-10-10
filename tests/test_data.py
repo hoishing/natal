@@ -69,7 +69,7 @@ def signs() -> dict:
 
 @fixture(scope="module")
 def aspects_pairs(data1: Data, data2: Data):
-    return list(Data.composite_aspects_pairs(data1, data2))
+    return list(data1.composite_aspects_pairs(data2))
 
 
 @fixture(scope="module")
@@ -138,13 +138,3 @@ def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
     assert len(aspects_pairs) == 169
     name_pairs = [f"{a.name} {b.name}" for a, b in aspects_pairs]
     assert name_pairs[::20] == aspects_pair_names_sample
-
-
-# def test_calculate_aspects(aspects_pairs) -> None:
-#     aspects = Data.calculate_aspects(aspects_pairs, orb=1)
-#     assert len(aspects) == 144
-#     assert aspects == [
-#         Aspect(data1.sun, data1.moon, 1, True),
-#         Aspect(data1.sun, data1.mercury, 1, True),
-#         Aspect(data1.sun, data1.venus, 1, True),
-#         Aspect(data1.sun, data1.mars, 1, True),

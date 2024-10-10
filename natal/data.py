@@ -15,12 +15,13 @@ from natal.classes import (
     Sign,
     Vertex,
 )
-from natal.config import Config, Orb, load_config
+from natal.config import Config, load_config
 from natal.const import *
 from natal.utils import pairs, str_to_dt
 from typing import Iterable, Self
 from zoneinfo import ZoneInfo
 
+type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
 data_folder = pathlib.Path(__file__).parent / "data"
 swe.set_ephe_path(str(data_folder))
@@ -103,7 +104,7 @@ class Data(DotDict):
 
     def set_houses_vertices(self) -> None:
         """
-        Calculate the cusps of the houses.
+        Calculate the cusps of the houses and set the vertices.
         """
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
             self.julian_day,
@@ -131,7 +132,7 @@ class Data(DotDict):
 
     def set_aspectable(self):
         """
-        Set the aspectable celestial bodies.
+        Set the aspectable celestial bodies based on the display configuration.
         """
         self.aspectables = [
             body
@@ -152,10 +153,10 @@ class Data(DotDict):
 
     def set_aspects(self):
         """
-        Set the aspects between the planets.
+        Set the aspects between the aspectable celestial bodies.
         """
         body_pairs = pairs(self.aspectables)
-        self.aspects = self.calculate_aspects(body_pairs, self.config.orb)
+        self.aspects = self.calculate_aspects(body_pairs)
 
     def set_normalized_degrees(self):
         """
@@ -279,17 +280,12 @@ class Data(DotDict):
         """
         return (degree - self.asc.degree + 360) % 360
 
-    @staticmethod
-    def calculate_aspects(
-        body_pairs: Iterable[tuple[Aspectable, Aspectable]],
-        orb: Orb,
-    ) -> list[Aspect]:
+    def calculate_aspects(self, body_pairs: BodyPairs) -> list[Aspect]:
         """
         Calculate the aspects between pairs of celestial bodies.
 
         Args:
-            body_pairs (Iterable[tuple[Aspectable, Aspectable]]): The pairs of celestial bodies.
-            orb (Orb): The orb configuration.
+            body_pairs (BodyPairs): The pairs of celestial bodies.
 
         Returns:
             list[Aspect]: The list of aspects.
@@ -301,7 +297,7 @@ class Data(DotDict):
             # get the smaller angle
             angle = 360 - org_angle if org_angle > 180 else org_angle
             for aspect_member in ASPECT_MEMBERS:
-                orb_val = orb[aspect_member.name]
+                orb_val = self.config.orb[aspect_member.name]
                 max_orb = aspect_member.value + orb_val
                 min_orb = aspect_member.value - orb_val
                 if min_orb <= angle <= max_orb:
@@ -320,19 +316,14 @@ class Data(DotDict):
                     )
         return output
 
-    @staticmethod
-    def composite_aspects_pairs(
-        data1: Self,
-        data2: Self,
-    ) -> Iterable[tuple[Aspectable, Aspectable]]:
+    def composite_aspects_pairs(self, data2: Self) -> BodyPairs:
         """
         Generate pairs of aspectable bodies for composite chart.
 
         Args:
-            data1 (Self): The first data object.
-            data2 (Self): The second data object.
+            data2 (Data): The second data object.
 
         Returns:
-            Iterable[tuple[Aspectable, Aspectable]]: The pairs of aspectable bodies.
+            BodyPairs: The pairs of aspectable bodies.
         """
-        return itertools.product(data1.aspectables, data2.aspectables)
+        return itertools.product(self.aspectables, data2.aspectables)
