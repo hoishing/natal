@@ -318,9 +318,8 @@ class Chart(DotDict):
         if self.data2 is not None:
             return []
         radius = self.max_radius - 3 * self.ring_thickness
-        orb = self.config.orb
         aspects = self.data1.aspects
-        return self.aspect_lines(radius, orb, aspects)
+        return self.aspect_lines(radius, aspects)
 
     def inner_aspect(self) -> list[str]:
         """
@@ -520,13 +519,12 @@ class Chart(DotDict):
             )
         return output
 
-    def aspect_lines(self, radius: float, orb: Orb, aspects: list[Aspect]) -> list[str]:
+    def aspect_lines(self, radius: float, aspects: list[Aspect]) -> list[str]:
         """
         Draw aspect lines between aspectable celestial bodies.
 
         Args:
             radius (float): Radius of the aspect wheel.
-            orb (Orb): Orb configuration for aspects.
             aspects (list[Aspect]): List of aspects to draw.
 
         Returns:
@@ -543,7 +541,7 @@ class Chart(DotDict):
         for aspect in aspects:
             start_angle = radians(self.data1.normalize(aspect.body1.degree))
             end_angle = radians(self.data1.normalize(aspect.body2.degree))
-            orb_fraction = 1 - aspect.orb / orb[aspect.aspect_member.name]
+            orb_fraction = 1 - aspect.orb / self.config.orb[aspect.aspect_member.name]
             opacity_factor = (
                 1 if aspect.aspect_member.name == "conjunction" else orb_fraction
             )
