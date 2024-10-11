@@ -363,7 +363,7 @@ class Chart(DotDict):
         Adjust spacing between celestial bodies to avoid overlap.
 
         Args:
-            degrees (list[float]): Original degrees of celestial bodies.
+            degrees (list[float]): sorted normalized degrees of celestial bodies.
             min_degree (float): Minimum allowed degree separation.
 
         Returns:
@@ -371,6 +371,25 @@ class Chart(DotDict):
         """
         step = min_degree + 0.1  # prevent overlap for float precision
         n = len(degrees)
+
+        # def adjust(org_degs: list[float], forward: bool):
+        #     degs = org_degs.copy() if forward else org_degs[::-1]
+        #     direction = 1 if forward else -1
+        #     changed = True
+        #     while changed:
+        #         changed = False
+        #         for i in range(n):
+        #             prev = (i - 1) % n
+        #             prev_deg = degs[prev] if prev < i else degs[prev] - 360
+
+        #             delta = abs(degs[i] - prev_deg)
+        #             diff = min(delta, 360 - delta)
+        #             if degs[i] < prev_deg or diff < min_degree:
+        #                 degs[i] = (prev_deg + direction * step) % 360
+        #                 changed = True
+        #     return degs if forward else degs[::-1]
+
+        # forward adjustment
         fwd_degs = degrees.copy()
         bwd_degs = degrees[::-1]
 
@@ -379,12 +398,11 @@ class Chart(DotDict):
         while changed:
             changed = False
             for i in range(n):
-                prev = (i - 1) % n
-                diff = fwd_degs[i] - fwd_degs[prev]
-                if diff < -180:
-                    diff += 360
-                if diff < min_degree:
-                    fwd_degs[i] = (fwd_degs[prev] + step) % 360
+                prev_deg = fwd_degs[n - 1] - 360 if i == 0 else fwd_degs[i - 1]
+                delta = fwd_degs[i] - prev_deg
+                diff = min(delta, 360 - delta)
+                if (fwd_degs[i] < prev_deg) or (diff < min_degree):
+                    fwd_degs[i] = (prev_deg + step) % 360
                     changed = True
 
         # Backward adjustment
@@ -392,12 +410,11 @@ class Chart(DotDict):
         while changed:
             changed = False
             for i in range(n):
-                prev = (i - 1) % n
-                diff = bwd_degs[prev] - bwd_degs[i]
-                if diff < -180:
-                    diff += 360
-                if diff < min_degree:
-                    bwd_degs[i] = (bwd_degs[prev] - step) % 360
+                prev_deg = bwd_degs[n - 1] + 360 if i == 0 else bwd_degs[i - 1]
+                delta = prev_deg - bwd_degs[i]
+                diff = min(delta, 360 - delta)
+                if (prev_deg < bwd_degs[i]) or (diff < min_degree):
+                    bwd_degs[i] = (prev_deg - step) % 360
                     changed = True
         bwd_degs.reverse()
 

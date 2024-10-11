@@ -6,7 +6,7 @@ from math import floor
 
 
 @fixture(scope="module")
-def chart(data1, data2):
+def chart(data1, data2) -> Chart:
     return Chart(data1=data1, data2=data2, width=500)
 
 
@@ -59,6 +59,29 @@ def test_adjusted_inner_degrees(chart, adj_inner_degs):
     assert floor_degs == adj_inner_degs
 
 
-def test_aspect_lines():
-    # refer test_data.py -> test_composite_aspects_pairs and test_calculate_aspects
-    pass
+def test_fix_wrong_bodies_position():
+    d1 = Data("d1", "Hong Kong", "1988-04-20 14:30")
+    d2 = Data("d2", "Hong Kong", "2025-02-25 12:00")
+
+    chart1 = Chart(data1=d1, data2=d2, width=600)
+    input_degs = sorted(
+        chart1.data1.normalize(asp.degree) for asp in chart1.data2.aspectables
+    )
+    org = [146, 150, 174, 184, 197, 197, 205, 206, 217, 260, 277, 279, 314]
+    assert [int(d) for d in input_degs] == org
+    adj_degs = chart1.adjusted_degrees(input_degs, chart1.config.chart.outer_min_degree)
+    adj_degs_int = [int(d) for d in adj_degs]
+    avg = [144, 151, 172, 180, 190, 198, 205, 212, 221, 260, 275, 282, 314]
+    assert adj_degs_int == avg
+
+
+def test_fix_crowded_bodies():
+    crowded = Data("Crowded", "Hong Kong", "2025-03-26 12:00")
+    chart = Chart(data1=crowded, width=600)
+    input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
+    org = [0, 14, 205, 223, 256, 259, 260, 262, 263, 265, 268, 317, 337]
+    assert [int(d) for d in input_degs] == org
+    avg = [0, 14, 205, 220, 240, 248, 255, 262, 269, 276, 283, 317, 337]
+    adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
+    adj_degs_int = [int(d) for d in adj_degs]
+    assert adj_degs_int == avg

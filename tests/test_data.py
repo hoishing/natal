@@ -138,3 +138,14 @@ def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
     assert len(aspects_pairs) == 169
     name_pairs = [f"{a.name} {b.name}" for a, b in aspects_pairs]
     assert name_pairs[::20] == aspects_pair_names_sample
+
+
+def test_normalize(data1: Data) -> None:
+    data = Data(data1.name, data1.city, data1.dt)  # Create a new Data object
+    data.asc.degree = 0
+    assert data.normalize(10) == 10
+    assert data.normalize(350) == 350
+    data.asc.degree = 10
+    assert data.normalize(10) == 0
+    assert data.normalize(350) == 340
+    assert data.normalize(30) == 20
