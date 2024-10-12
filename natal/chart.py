@@ -372,24 +372,6 @@ class Chart(DotDict):
         step = min_degree + 0.1  # prevent overlap for float precision
         n = len(degrees)
 
-        # def adjust(org_degs: list[float], forward: bool):
-        #     degs = org_degs.copy() if forward else org_degs[::-1]
-        #     direction = 1 if forward else -1
-        #     changed = True
-        #     while changed:
-        #         changed = False
-        #         for i in range(n):
-        #             prev = (i - 1) % n
-        #             prev_deg = degs[prev] if prev < i else degs[prev] - 360
-
-        #             delta = abs(degs[i] - prev_deg)
-        #             diff = min(delta, 360 - delta)
-        #             if degs[i] < prev_deg or diff < min_degree:
-        #                 degs[i] = (prev_deg + direction * step) % 360
-        #                 changed = True
-        #     return degs if forward else degs[::-1]
-
-        # forward adjustment
         fwd_degs = degrees.copy()
         bwd_degs = degrees[::-1]
 
@@ -398,11 +380,11 @@ class Chart(DotDict):
         while changed:
             changed = False
             for i in range(n):
-                prev_deg = fwd_degs[n - 1] - 360 if i == 0 else fwd_degs[i - 1]
+                prev_deg = fwd_degs[-1] - 360 if i == 0 else fwd_degs[i - 1]
                 delta = fwd_degs[i] - prev_deg
                 diff = min(delta, 360 - delta)
                 if (fwd_degs[i] < prev_deg) or (diff < min_degree):
-                    fwd_degs[i] = (prev_deg + step) % 360
+                    fwd_degs[i] = prev_deg + step
                     changed = True
 
         # Backward adjustment
@@ -410,17 +392,20 @@ class Chart(DotDict):
         while changed:
             changed = False
             for i in range(n):
-                prev_deg = bwd_degs[n - 1] + 360 if i == 0 else bwd_degs[i - 1]
+                prev_deg = bwd_degs[-1] + 360 if i == 0 else bwd_degs[i - 1]
                 delta = prev_deg - bwd_degs[i]
                 diff = min(delta, 360 - delta)
                 if (prev_deg < bwd_degs[i]) or (diff < min_degree):
-                    bwd_degs[i] = (prev_deg - step) % 360
+                    bwd_degs[i] = prev_deg - step
                     changed = True
+
         bwd_degs.reverse()
 
         # average forward and backward adjustments
         avg_adj = []
         for fwd, bwd in zip(fwd_degs, bwd_degs):
+            fwd %= 360
+            bwd %= 360
             if abs(fwd - bwd) < 180:
                 avg = (fwd + bwd) / 2
             else:

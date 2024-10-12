@@ -85,3 +85,15 @@ def test_fix_crowded_bodies():
     adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
     assert adj_degs_int == avg
+
+
+def test_fix_infinite_loop():
+    inf_loop = Data("Inf Loop", "Hong Kong", "2000-01-12 12:00")
+    chart = Chart(data1=inf_loop, width=600)
+    input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
+    org = [0, 5, 20, 104, 231, 234, 264, 268, 271, 283, 295, 316, 332]
+    assert [int(d) for d in input_degs] == org
+    avg = [359, 6, 20, 104, 229, 236, 260, 267, 274, 284, 295, 316, 332]
+    adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
+    adj_degs_int = [int(d) for d in adj_degs]
+    assert adj_degs_int == avg
