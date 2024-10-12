@@ -1,5 +1,5 @@
 import itertools
-import pathlib
+from pathlib import Path
 import pandas as pd
 import swisseph as swe
 from datetime import datetime
@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
-data_folder = pathlib.Path(__file__).parent.absolute() / "data"
+data_folder = Path(__file__).parent.absolute() / "data"
 swe.set_ephe_path(str(data_folder))
 
 
@@ -32,7 +32,7 @@ class Data(DotDict):
     Data object for a natal chart.
     """
 
-    cities = pd.read_csv(data_folder / "cities.csv")
+    cities = pd.read_csv(data_folder / "cities.csv.gz")
 
     def __init__(
         self,
