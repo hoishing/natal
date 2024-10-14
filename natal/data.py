@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
-data_folder = Path(__file__).parent.absolute() / "data"
+data_folder = Path(__file__).parent.absolute() / "sweph"
 swe.set_ephe_path(str(data_folder))
 
 
