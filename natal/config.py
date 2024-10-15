@@ -7,7 +7,6 @@ package configuration module
 """
 
 import yaml
-from darkdetect import isDark
 from io import IOBase
 from pathlib import Path
 from pydantic import BaseModel
@@ -128,7 +127,7 @@ class Config(ModelDict):
     Package configuration model.
     """
 
-    theme_type: ThemeType = "auto"
+    theme_type: ThemeType = "dark"
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
@@ -153,8 +152,6 @@ class Config(ModelDict):
                 kwargs["background"] = "white"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)
-            case "auto":
-                return self.dark_theme if isDark() else self.light_theme
 
 
 def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:
