@@ -12,7 +12,7 @@ from pathlib import Path
 from pydantic import BaseModel
 from typing import Any, Iterator, Literal, Mapping
 
-ThemeType = Literal["auto", "light", "dark", "mono"]
+ThemeType = Literal["light", "dark", "mono"]
 
 
 class ModelDict(BaseModel, Mapping):
