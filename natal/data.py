@@ -15,7 +15,7 @@ from natal.classes import (
     Sign,
     Vertex,
 )
-from natal.config import Config, load_config
+from natal.config import Config
 from natal.const import *
 from natal.utils import pairs, str_to_dt
 from typing import Iterable, Self
@@ -40,7 +40,7 @@ class Data(DotDict):
         city: str,
         dt: datetime | str,
         house_sys: HouseSys = HouseSys.Placidus,
-        config: Config = load_config(),
+        config: Config = Config(),
     ):
         self.name = name
         self.city = city

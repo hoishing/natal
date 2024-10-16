@@ -7,7 +7,6 @@ and aspect lines for both single and composite charts.
 from functools import cached_property
 from math import cos, radians, sin
 from natal.classes import Aspect
-from natal.config import Config, Orb, load_config
 from natal.const import SIGN_MEMBERS
 from natal.data import Data
 from natal.utils import DotDict
@@ -29,7 +28,6 @@ class Chart(DotDict):
         width: int,
         height: int | None = None,
         data2: Data | None = None,
-        config: Config = load_config(),
     ):
         """
         Initialize a Chart object.
@@ -39,7 +37,6 @@ class Chart(DotDict):
             width (int): Width of the SVG.
             height (int | None): Height of the SVG. If None, set to width.
             data2 (Data | None): Secondary chart data for composite charts.
-            config (Config): Configuration settings for the chart.
         """
         self.data1 = data1
         self.data2 = data2
@@ -50,10 +47,10 @@ class Chart(DotDict):
         self.cx = self.width / 2
         self.cy = self.height / 2
 
-        self.config = config
-        margin = min(self.width, self.height) * config.chart.margin_factor
+        self.config = self.data1.config
+        margin = min(self.width, self.height) * self.config.chart.margin_factor
         self.max_radius = min(self.width - margin, self.height - margin) // 2
-        self.ring_thickness = self.max_radius * config.chart.ring_thickness_fraction
+        self.ring_thickness = self.max_radius * self.config.chart.ring_thickness_fraction
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
 
     def svg_root(self, content: str | list[str]) -> str:

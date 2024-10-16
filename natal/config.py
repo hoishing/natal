@@ -1,14 +1,3 @@
-"""
-package configuration module
-
-- Load natal_config.yml config file if exists.
-- Provide default config file if it does not exist.
-- Generate JSON schema for the configuration.
-"""
-
-import yaml
-from io import IOBase
-from pathlib import Path
 from pydantic import BaseModel
 from typing import Any, Iterator, Literal, Mapping
 
@@ -152,35 +141,3 @@ class Config(ModelDict):
                 kwargs["background"] = "white"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)
-
-
-def load_config(file: str | Path | IOBase = "natal_config.yml") -> Config:
-    """
-    Load configuration file.
-
-    Args:
-        file (str | Path | IOBase): The configuration file path or file object.
-
-    Returns:
-        Config: The loaded configuration.
-    """
-    if isinstance(file, IOBase):
-        obj = yaml.safe_load(file)
-        return Config(**obj)
-
-    path = Path(file)
-    if not path.exists():
-        return Config()
-
-    with open(path, "r") as f:
-        obj = yaml.safe_load(f)
-        return Config(**obj)
-
-
-if "__main__" == __name__:
-    import json
-
-    # generate json schema for the config file
-    schema = Config.model_json_schema()
-    with open("natal/data/natal_schema.json", "w") as f:
-        json.dump(schema, f, indent=2)

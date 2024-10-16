@@ -8,7 +8,7 @@
 
 - SVG natal chart generation in pure python
     - light, dark or auto theme based on user's computer settings
-    - printing friednly mono theme
+    - printing friendly mono theme
 - highly configurable with yaml file
     - all planets, asteroids, vertices can be enabled / disabled
     - orbs for each apect
@@ -18,12 +18,11 @@
 - timezone, latitude and longitude database from [GeoNames]
     - auto aware of daylight saving for given time and location
 - natal chart data statistics
-    - element, qauality, and polarity counts
+    - element, quality, and polarity counts
     - planets in each houses
     - aspect pair counts
     - aspects cross reference table
-- docs with examples
-- tested with `pytest`
+- thoroughly tested with `pytest`
 
 ## Sample Charts
 

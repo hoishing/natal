@@ -1,7 +1,7 @@
 """utility functions for natal"""
 
 from datetime import datetime
-from natal.config import Config, load_config
+from natal.config import Config
 from types import SimpleNamespace
 from typing import Any, Iterable, Mapping
 
@@ -24,7 +24,7 @@ class DotDict(SimpleNamespace, Mapping):
         return len(self.__dict__)
 
 
-def color_hex(name: str, config: Config = load_config()) -> str:
+def color_hex(name: str, config: Config = Config()) -> str:
     """
     Get color hex from name and Config instance, default to 'natal_config.yml'.
 
