@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
-data_folder = Path(__file__).parent.absolute() / "sweph"
+data_folder = Path(__file__).parent.absolute() / "data"
 swe.set_ephe_path(str(data_folder))
 
 
@@ -89,7 +89,7 @@ class Data(DotDict):
         Set the geographical information of a city.
         """
         info = self.cities[
-            self.cities["ascii_name"].str.lower() == self.city.lower()
+            self.cities["name"].str.lower() == self.city.lower()
         ].iloc[0]
         self.lat = float(info["lat"])
         self.lon = float(info["lon"])
