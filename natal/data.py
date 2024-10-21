@@ -88,9 +88,7 @@ class Data(DotDict):
         """
         Set the geographical information of a city.
         """
-        info = self.cities[
-            self.cities["name"].str.lower() == self.city.lower()
-        ].iloc[0]
+        info = self.cities[self.cities["name"].str.lower() == self.city.lower()].iloc[0]
         self.lat = float(info["lat"])
         self.lon = float(info["lon"])
         self.timezone = info["timezone"]

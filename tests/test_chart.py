@@ -3,6 +3,7 @@ from natal.chart import Chart
 from natal.data import Data
 from tests import data1, data2
 from math import floor
+from natal.config import Display, Config
 
 
 @fixture(scope="module")
@@ -97,3 +98,17 @@ def test_fix_infinite_loop():
     adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
     assert adj_degs_int == avg
+
+
+def test_adj_degs_len():
+    info = ["test", "Hong Kong", "2024-01-01 00:00"]
+    bodies = Display.model_fields.keys()
+    values = [False] * len(bodies)
+
+    for i in range(3):
+        values[:i] = [True] * i
+        display = Display(**dict(zip(bodies, values)))
+        d = Data(*info, config=Config(display=display))
+        chart = Chart(data1=d, width=600)
+        _ = chart.svg
+        assert chart.adj_degs_len == i

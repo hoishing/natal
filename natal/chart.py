@@ -50,7 +50,9 @@ class Chart(DotDict):
         self.config = self.data1.config
         margin = min(self.width, self.height) * self.config.chart.margin_factor
         self.max_radius = min(self.width - margin, self.height - margin) // 2
-        self.ring_thickness = self.max_radius * self.config.chart.ring_thickness_fraction
+        self.ring_thickness = (
+            self.max_radius * self.config.chart.ring_thickness_fraction
+        )
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
 
     def svg_root(self, content: str | list[str]) -> str:
@@ -446,7 +448,13 @@ class Chart(DotDict):
         sorted_norm_degs = [norm_deg(b) for b in sorted_norm_bodies]
 
         # Calculate adjusted positions
-        adj_norm_degs = self.adjusted_degrees(sorted_norm_degs, min_degree)
+        adj_norm_degs = (
+            self.adjusted_degrees(sorted_norm_degs, min_degree)
+            if len(sorted_norm_bodies) > 1
+            else sorted_norm_degs
+        )
+        # for tests only
+        self.adj_degs_len = len(adj_norm_degs)
 
         output = []
         for body, adj_deg in zip(sorted_norm_bodies, adj_norm_degs):
