@@ -1,4 +1,5 @@
 from natal.data import Data
+from natal.config import Orb, Config
 from datetime import datetime
 from pytest import fixture
 from . import data1, data2
@@ -149,3 +150,10 @@ def test_normalize(data1: Data) -> None:
     assert data.normalize(10) == 0
     assert data.normalize(350) == 340
     assert data.normalize(30) == 20
+
+
+def test_fix_orb_eq_0(data1: Data) -> None:
+    orb = Orb(conjunction=0, opposition=0)
+    data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
+    assert len(data1.aspects) == 24
+    assert len(data.aspects) == 14

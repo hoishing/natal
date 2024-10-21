@@ -3,7 +3,7 @@ from natal.chart import Chart
 from natal.data import Data
 from tests import data1, data2
 from math import floor
-from natal.config import Display, Config
+from natal.config import Display, Config, Orb
 
 
 @fixture(scope="module")
@@ -112,3 +112,14 @@ def test_adj_degs_len():
         chart = Chart(data1=d, width=600)
         _ = chart.svg
         assert chart.adj_degs_len == i
+
+
+def test_fix_orb_eq_0(data1: Data) -> None:
+    org_chart = Chart(data1=data1, width=600)
+    orb = Orb(conjunction=0, opposition=0)
+    data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
+    chart = Chart(data1=data, width=600)
+    _ = org_chart.svg
+    _ = chart.svg
+    assert chart.aspect_lines_len == 14
+    assert org_chart.aspect_lines_len == 24

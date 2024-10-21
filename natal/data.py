@@ -296,6 +296,8 @@ class Data(DotDict):
             angle = 360 - org_angle if org_angle > 180 else org_angle
             for aspect_member in ASPECT_MEMBERS:
                 orb_val = self.config.orb[aspect_member.name]
+                if not orb_val:
+                    continue
                 max_orb = aspect_member.value + orb_val
                 min_orb = aspect_member.value - orb_val
                 if min_orb <= angle <= max_orb:

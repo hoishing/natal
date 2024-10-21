@@ -537,7 +537,7 @@ class Chart(DotDict):
         Returns:
             list[Tag]: A list of SVG elements representing aspect lines.
         """
-        output = [
+        bg = [
             self.background(
                 radius,
                 fill=self.config.theme.background,
@@ -545,14 +545,18 @@ class Chart(DotDict):
                 stroke_width=self.config.chart.stroke_width,
             )
         ]
+        aspect_lines = []
         for aspect in aspects:
             start_angle = radians(self.data1.normalize(aspect.body1.degree))
             end_angle = radians(self.data1.normalize(aspect.body2.degree))
-            orb_fraction = 1 - aspect.orb / self.config.orb[aspect.aspect_member.name]
+            orb_config = self.config.orb[aspect.aspect_member.name]
+            if not orb_config:
+                continue
+            orb_fraction = 1 - aspect.orb / orb_config
             opacity_factor = (
                 1 if aspect.aspect_member.name == "conjunction" else orb_fraction
             )
-            output.append(
+            aspect_lines.append(
                 line(
                     x1=self.cx - radius * cos(start_angle),
                     y1=self.cy + radius * sin(start_angle),
@@ -563,7 +567,9 @@ class Chart(DotDict):
                     stroke_opacity=self.config.chart.stroke_opacity * opacity_factor,
                 )
             )
-        return output
+
+        self.aspect_lines_len = len(aspect_lines)  # for test only
+        return bg + aspect_lines
 
     @cached_property
     def house_vertices(self) -> list[tuple[float, float]]:
