@@ -7,7 +7,7 @@ and aspect lines for both single and composite charts.
 from functools import cached_property
 from math import cos, radians, sin
 from natal.classes import Aspect
-from natal.const import SIGN_MEMBERS
+from natal.const import SIGN_MEMBERS, VERTEX_NAMES
 from natal.data import Data
 from natal.utils import DotDict
 from tagit import circle, line, path, svg, text
@@ -461,8 +461,8 @@ class Chart(DotDict):
             font_size = self.font_size
             text_opt = {}
 
-            # special handling for asc and mc
-            if body.name in ["asc", "mc"]:
+            # special handling for asc, ic, dsc and mc
+            if body.name in VERTEX_NAMES:
                 text_opt = {
                     "lengthAdjust": "spacingAndGlyphs",
                     "textLength": self.font_size * 0.7,
