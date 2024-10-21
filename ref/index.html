@@ -3820,8 +3820,8 @@ It supports both single and composite charts.</p>
 <a id="__codelineno-0-461" name="__codelineno-0-461"></a>            <span class="n">font_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span>
 <a id="__codelineno-0-462" name="__codelineno-0-462"></a>            <span class="n">text_opt</span> <span class="o">=</span> <span class="p">{}</span>
 <a id="__codelineno-0-463" name="__codelineno-0-463"></a>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="c1"># special handling for asc and mc</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>            <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;asc&quot;</span><span class="p">,</span> <span class="s2">&quot;mc&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="c1"># special handling for asc, ic, dsc and mc</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>            <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
 <a id="__codelineno-0-466" name="__codelineno-0-466"></a>                <span class="n">text_opt</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-467" name="__codelineno-0-467"></a>                    <span class="s2">&quot;lengthAdjust&quot;</span><span class="p">:</span> <span class="s2">&quot;spacingAndGlyphs&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-468" name="__codelineno-0-468"></a>                    <span class="s2">&quot;textLength&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">,</span>
@@ -4906,8 +4906,8 @@ It supports both single and composite charts.</p>
 <a id="__codelineno-0-461" name="__codelineno-0-461"></a>        <span class="n">font_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span>
 <a id="__codelineno-0-462" name="__codelineno-0-462"></a>        <span class="n">text_opt</span> <span class="o">=</span> <span class="p">{}</span>
 <a id="__codelineno-0-463" name="__codelineno-0-463"></a>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="c1"># special handling for asc and mc</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;asc&quot;</span><span class="p">,</span> <span class="s2">&quot;mc&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="c1"># special handling for asc, ic, dsc and mc</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
 <a id="__codelineno-0-466" name="__codelineno-0-466"></a>            <span class="n">text_opt</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-467" name="__codelineno-0-467"></a>                <span class="s2">&quot;lengthAdjust&quot;</span><span class="p">:</span> <span class="s2">&quot;spacingAndGlyphs&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-468" name="__codelineno-0-468"></a>                <span class="s2">&quot;textLength&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">,</span>
