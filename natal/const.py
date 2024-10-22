@@ -134,7 +134,7 @@ def get_members(raw_data: dict) -> list[DotDict]:
 
 # fmt: off
 PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
-EXTRA_NAMES = ["mean_node", "chiron", "pholus", "ceres", "pallas", "juno", "vesta"]
+EXTRA_NAMES = ["mean_node", "chiron", "ceres", "pallas", "juno", "vesta"]
 ELEMENT_NAMES = ["fire", "earth", "air", "water"]
 QUALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
@@ -200,9 +200,9 @@ HOUSES = dict(
 
 EXTRAS = dict(
     name=EXTRA_NAMES,
-    symbol="☊⚷⯛⚳⚴⚵⚶",
-    value=[10, 15, 16, 17, 18, 19, 20],
-    color=["points"] + ["asteroids"] * 6,
+    symbol="☊⚷⚳⚴⚵⚶",
+    value=[10, 15, 17, 18, 19, 20],
+    color=["points"] + ["asteroids"] * 5,
 )
 
 VERTICES = dict(

@@ -9,7 +9,7 @@ def test_const():
     assert len(POLARITY_MEMBERS) == 2
     assert len(SIGN_MEMBERS) == 12
     assert len(HOUSE_MEMBERS) == 12
-    assert len(EXTRA_MEMBERS) == 7
+    assert len(EXTRA_MEMBERS) == 6
     assert len(VERTEX_MEMBERS) == 4
 
 
@@ -40,7 +40,7 @@ def test_extra_member():
     assert chiron.name == "chiron"
     assert chiron["color"] == "asteroids"
     assert chiron["symbol"] == "⚷"
-    ceres = EXTRA_MEMBERS[3]
+    ceres = EXTRA_MEMBERS[2]
     assert ceres.name == "ceres"
     assert ceres["color"] == "asteroids"
     assert ceres["symbol"] == "⚳"

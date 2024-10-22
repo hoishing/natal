@@ -465,7 +465,7 @@ class Chart(DotDict):
             if body.name in VERTEX_NAMES:
                 text_opt = {
                     "lengthAdjust": "spacingAndGlyphs",
-                    "textLength": self.font_size * 0.7,
+                    "textLength": self.font_size * (0.7 if body.name != "ic" else 0.55),
                 }
                 font_size = self.font_size * 0.85
 
