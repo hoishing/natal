@@ -12474,7 +12474,7 @@ or a comparison between two charts.</p>
 <a id="__codelineno-0-210" name="__codelineno-0-210"></a>        <span class="n">aspectable1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">aspectables</span>
 <a id="__codelineno-0-211" name="__codelineno-0-211"></a>        <span class="n">aspectable2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data2</span><span class="o">.</span><span class="n">aspectables</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data2</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">aspectables</span>
 <a id="__codelineno-0-212" name="__codelineno-0-212"></a>        <span class="n">aspects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_aspects</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data2</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">aspects</span>
-<a id="__codelineno-0-213" name="__codelineno-0-213"></a>        <span class="n">body_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">aspectable1</span><span class="p">]</span>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>        <span class="n">body_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">aspectable2</span><span class="p">]</span>
 <a id="__codelineno-0-214" name="__codelineno-0-214"></a>        <span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">body_symbols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">]]</span>  <span class="c1"># Header row with Total column</span>
 <a id="__codelineno-0-215" name="__codelineno-0-215"></a>        <span class="k">for</span> <span class="n">body1</span> <span class="ow">in</span> <span class="n">aspectable1</span><span class="p">:</span>
 <a id="__codelineno-0-216" name="__codelineno-0-216"></a>            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">body1</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
@@ -12530,7 +12530,7 @@ or a comparison between two charts.</p>
 <a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">        Format a table with a title.</span>
 <a id="__codelineno-0-267" name="__codelineno-0-267"></a>
 <a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">            stat (StatData): A named tuple containing the title and the table.</span>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">            fn_name (str): The name of the function to call.</span>
 <a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">            kind (ReportKind): The kind of report to generate (&quot;ascii&quot; or &quot;html&quot;).</span>
 <a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">            fmt (str): The format of the table (&quot;github&quot; or &quot;html&quot;).</span>
 <a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">            options (dict): Additional options for `tabulate`.</span>
@@ -13237,13 +13237,13 @@ or a comparison between two charts.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>stat</code></td>
+            <td><code>fn_name</code></td>
             <td>
-                  <code><span title="natal.stats.StatData">StatData</span></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A named tuple containing the title and the table.</p>
+                <p>The name of the function to call.</p>
               </div>
             </td>
             <td>
@@ -13357,7 +13357,7 @@ or a comparison between two charts.</p>
 <a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">    Format a table with a title.</span>
 <a id="__codelineno-0-267" name="__codelineno-0-267"></a>
 <a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">        stat (StatData): A named tuple containing the title and the table.</span>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">        fn_name (str): The name of the function to call.</span>
 <a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">        kind (ReportKind): The kind of report to generate (&quot;ascii&quot; or &quot;html&quot;).</span>
 <a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">        fmt (str): The format of the table (&quot;github&quot; or &quot;html&quot;).</span>
 <a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">        options (dict): Additional options for `tabulate`.</span>
