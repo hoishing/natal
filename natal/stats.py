@@ -210,7 +210,7 @@ class Stats:
         aspectable1 = self.data1.aspectables
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         aspects = self.composite_aspects if self.data2 else self.data1.aspects
-        body_symbols = [body.symbol for body in aspectable1]
+        body_symbols = [body.symbol for body in aspectable2]
         grid = [[""] + body_symbols + ["Total"]]  # Header row with Total column
         for body1 in aspectable1:
             row = [body1.symbol]
@@ -266,7 +266,7 @@ class Stats:
         Format a table with a title.
 
         Args:
-            stat (StatData): A named tuple containing the title and the table.
+            fn_name (str): The name of the function to call.
             kind (ReportKind): The kind of report to generate ("ascii" or "html").
             fmt (str): The format of the table ("github" or "html").
             options (dict): Additional options for `tabulate`.

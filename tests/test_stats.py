@@ -1,6 +1,7 @@
-from natal.stats import Stats
+from natal.stats import Stats, Data
+from natal.config import Display, Config
 from pytest import fixture
-from . import data1, data2
+from . import data1, data2, person1, person2
 
 
 @fixture(scope="module")
@@ -239,6 +240,17 @@ def composite_cross_ref_grid():
         ["MC","","⚹","","","","","□","","","","","","","2"],
     ]
 
+@fixture
+def inner_planets_cross_ref_grid():
+    return [
+        ["","☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","Asc","MC","Total"],
+        ["☉","□","","","","□","","","","⚹","△","△","⚹","","6"],
+        ["☽","","△","","","","","□","","","","","","","2"],
+        ["☿","","△","","","","","","","","","","","","1"],
+        ["♀","","","□","△","","","☍","","","","","","△","4"],
+        ["♂","","⚹","☍","","","","□","","","","","","","3"],
+    ]
+
 # fmt: on
 
 
@@ -282,3 +294,11 @@ def test_data1_cross_ref_grid(stats, data1_cross_ref_grid):
 
 def test_composite_cross_ref_grid(composite_stats, composite_cross_ref_grid):
     assert composite_stats.cross_ref.grid == composite_cross_ref_grid
+
+def test_inner_planets_cross_ref_grid(inner_planets_cross_ref_grid):
+    inner = dict(sun=True, moon=True, mercury=True, venus=True, mars=True)
+    display = Display(**(dict.fromkeys(Display(), False) | inner))
+    d1 = Data(**person1, config=Config(display=display))
+    d2 = Data(**person2)
+    stats = Stats(data1=d1, data2=d2)
+    assert stats.cross_ref.grid == inner_planets_cross_ref_grid
