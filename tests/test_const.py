@@ -33,7 +33,7 @@ def test_house_member():
 
 def test_extra_member():
     node = EXTRA_MEMBERS[0]
-    assert node.name == "mean_node"
+    assert node.name == "asc_node"
     assert node["color"] == "points"
     assert node["symbol"] == "☊"
     chiron = EXTRA_MEMBERS[1]

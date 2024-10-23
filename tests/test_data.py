@@ -43,7 +43,7 @@ def houses() -> dict[str, str]:
 def others() -> dict[str, str]:
     return dict(
         chiron="27°♈49'",
-        mean_node="13°♏25'℞",
+        asc_node="13°♏25'℞",
         asc="20°♎32'",
         mc="20°♋36'",
         house_sys="P",
@@ -83,7 +83,7 @@ def aspects_pair_names_sample():
         "saturn mercury",
         "uranus pluto",
         "pluto venus",
-        "mean_node mean_node",
+        "asc_node asc_node",
         "mc mars",
     ]
 
@@ -115,7 +115,7 @@ def test_asc_mc(data1: Data, others: dict[str, str]) -> None:
     assert data1.asc.signed_dms == others["asc"]
     assert data1.mc.signed_dms == others["mc"]
     assert data1.chiron.signed_dms == others["chiron"]
-    assert data1.mean_node.signed_dms == others["mean_node"]
+    assert data1.asc_node.signed_dms == others["asc_node"]
     assert data1.house_sys == others["house_sys"]
 
 

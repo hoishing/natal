@@ -22,7 +22,7 @@ def element_grid():
         ("element", "count", "bodies"),
         ("earth", 4, "sun ♉, moon ♑, mercury ♉, jupiter ♉"),
         ("fire", 2, "venus ♈, neptune ♐"),
-        ("water", 5, "mars ♋, saturn ♋, uranus ♏, mean_node ♏, mc ♋"),
+        ("water", 5, "mars ♋, saturn ♋, uranus ♏, asc_node ♏, mc ♋"),
         ("air", 2, "pluto ♎, asc ♎"),
     ]
 
@@ -31,7 +31,7 @@ def element_grid():
 def quality_grid():
     return [
         ("quality", "count", "bodies"),
-        ("fixed", 5, "sun ♉, mercury ♉, jupiter ♉, uranus ♏, mean_node ♏"),
+        ("fixed", 5, "sun ♉, mercury ♉, jupiter ♉, uranus ♏, asc_node ♏"),
         ("cardinal", 7, "moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, asc ♎, mc ♋"),
         ("mutable", 1, "neptune ♐"),
     ]
@@ -41,7 +41,7 @@ def quality_grid():
 def polarity_grid():
     return [
         ("polarity", "count", "bodies"),
-        ("negative", 9, "sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, mean_node ♏, mc ♋",),
+        ("negative", 9, "sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, asc_node ♏, mc ♋",),
         ("positive", 4, "venus ♈, neptune ♐, pluto ♎, asc ♎"),
     ]
 
@@ -60,7 +60,7 @@ def celestial_body_grid():
         ("uranus", "05°♏19'℞", 1),
         ("neptune", "13°♐38'℞", 2),
         ("pluto", "09°♎47'℞", 12),
-        ("mean_node", "13°♏25'℞", 1),
+        ("asc_node", "13°♏25'℞", 1),
         ("asc", "20°♎32'", 1),
         ("mc", "20°♋36'", 10),
     ]
@@ -79,7 +79,7 @@ def data2_celestial_body_grid():
         ("uranus", "27°♓37'", 6),
         ("neptune", "27°♒26'", 5),
         ("pluto", "06°♑05'", 3),
-        ("mean_node", "01°♑08'℞", 3),
+        ("asc_node", "01°♑08'℞", 3),
         ("asc", "00°♓24'", 5),
         ("mc", "08°♐54'", 2),
     ]
@@ -88,7 +88,7 @@ def data2_celestial_body_grid():
 def quadrant_grid():
     return [
         ("quadrant", "count", "bodies"),
-        ("1st ◵", 4, "moon, uranus, neptune, mean_node"),
+        ("1st ◵", 4, "moon, uranus, neptune, asc_node"),
         ("2nd ◶", 1, "venus"),
         ("3rd ◷", 4, "sun, mercury, mars, jupiter"),
         ("4th ◴", 2, "saturn, pluto"),
@@ -98,10 +98,10 @@ def quadrant_grid():
 def hemisphere_grid():
     return [
         ('hemisphere', 'count', 'bodies'),
-        ('←', 6, "moon, uranus, neptune, mean_node, saturn, pluto"),
+        ('←', 6, "moon, uranus, neptune, asc_node, saturn, pluto"),
         ('→', 5, "venus, sun, mercury, mars, jupiter"),
         ('↑', 6, "sun, mercury, mars, jupiter, saturn, pluto"),
-        ('↓', 5, "moon, uranus, neptune, mean_node, venus"),
+        ('↓', 5, "moon, uranus, neptune, asc_node, venus"),
     ]
 
 @fixture
@@ -136,14 +136,14 @@ def data1_aspect_grid():
         ("moon", "□", "asc", "→ ←", "0° 45'"),
         ("moon", "☍", "mc", "→ ←", "0° 49'"),
         ("mercury", "⚹", "mars", "← →", "2° 36'"),
-        ("mercury", "☍", "mean_node", "← →", "5° 05'"),
+        ("mercury", "☍", "asc_node", "← →", "5° 05'"),
         ("mercury", "⚹", "mc", "→ ←", "2° 06'"),
         ("venus", "□", "mars", "→ ←", "1° 05'"),
         ("venus", "△", "neptune", "← →", "1° 11'"),
         ("venus", "☍", "pluto", "← →", "5° 02'"),
         ("venus", "☍", "asc", "→ ←", "5° 43'"),
         ("venus", "□", "mc", "→ ←", "5° 47'"),
-        ("mars", "△", "mean_node", "← →", "2° 29'"),
+        ("mars", "△", "asc_node", "← →", "2° 29'"),
         ("mars", "□", "asc", "→ ←", "4° 38'"),
         ("mars", "☌", "mc", "→ ←", "4° 42'"),
         ("jupiter", "☍", "uranus", "← →", "0° 34'"),
@@ -164,12 +164,12 @@ def composite_aspect_grid():
         ("moon","△","mercury","→ ←","2° 44'"),
         ("moon","⚹","mars","→ ←","0° 08'"),
         ("moon","□","neptune","← →","2° 08'"),
-        ("moon","⚹","mean_node","← →","2° 21'"),
+        ("moon","⚹","asc_node","← →","2° 21'"),
         ("moon","⚹","mc","→ ←","4° 50'"),
         ("mercury","□","venus","→ ←","2° 25'"),
         ("mercury","☍","mars","→ ←","3° 30'"),
         ("mercury","□","pluto","← →","2° 38'"),
-        ("mercury","⚹","mean_node","→ ←","1° 00'"),
+        ("mercury","⚹","asc_node","→ ←","1° 00'"),
         ("venus","△","venus","→ ←","1° 33'"),
         ("venus","☌","neptune","← →","2° 44'"),
         ("venus","⚹","asc","→ ←","4° 11'"),
@@ -190,9 +190,9 @@ def composite_aspect_grid():
         ("pluto","△","jupiter","→ ←","0° 13'"),
         ("pluto","⚹","uranus","← →","0° 46'"),
         ("pluto","□","pluto","→ ←","3° 41'"),
-        ("mean_node","△","sun","→ ←","0° 42'"),
-        ("mean_node","△","jupiter","← →","4° 44'"),
-        ("mean_node","⚹","uranus","← →","4° 11'"),
+        ("asc_node","△","sun","→ ←","0° 42'"),
+        ("asc_node","△","jupiter","← →","4° 44'"),
+        ("asc_node","⚹","uranus","← →","4° 11'"),
         ("asc","⚹","sun","← →","0° 02'"),
         ("asc","△","uranus","→ ←","4° 54'"),
         ("mc","△","venus","← →","5° 56'"),

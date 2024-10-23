@@ -83,7 +83,7 @@ class Display(ModelDict):
     uranus: bool = True
     neptune: bool = True
     pluto: bool = True
-    mean_node: bool = True
+    asc_node: bool = True
     chiron: bool = False
     ceres: bool = False
     pallas: bool = False

@@ -9,7 +9,7 @@ config = {
         "points": "#00ffff",
     },
     "display": {
-        "mean_node": False,
+        "asc_node": False,
         "chiron": True,
     },
     "orb": {
@@ -25,7 +25,7 @@ config = {
 def test_load_config_from_dict() -> None:
     cfg = Config(**config)
     assert cfg.light_theme.fire == "#ff0000"
-    assert cfg.display.mean_node == False
+    assert cfg.display.asc_node == False
     assert cfg.orb.opposition == 7
 
 
