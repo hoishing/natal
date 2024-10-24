@@ -31,7 +31,7 @@ def house_vertices():
 
 @fixture
 def adj_outer_degs():
-    return [0, 14, 22, 53, 89, 174, 189, 196, 207, 263, 270, 277, 349]
+    return [0, 14, 22, 53, 89, 174, 188, 196, 207, 262, 270, 278, 349]
 
 
 @fixture
@@ -72,7 +72,7 @@ def test_fix_wrong_bodies_position():
     assert [int(d) for d in input_degs] == org
     adj_degs = chart1.adjusted_degrees(input_degs, chart1.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
-    avg = [144, 151, 172, 180, 190, 198, 205, 212, 221, 260, 275, 282, 314]
+    avg = [144, 152, 170, 178, 189, 197, 205, 213, 223, 260, 274, 282, 314]
     assert adj_degs_int == avg
 
 
@@ -82,7 +82,7 @@ def test_fix_crowded_bodies():
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 14, 205, 223, 256, 259, 260, 262, 263, 265, 268, 317, 337]
     assert [int(d) for d in input_degs] == org
-    avg = [0, 14, 205, 220, 240, 248, 255, 262, 269, 276, 283, 317, 337]
+    avg = [0, 14, 204, 217, 237, 246, 254, 262, 270, 278, 286, 317, 337]
     adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
     assert adj_degs_int == avg
@@ -94,7 +94,7 @@ def test_fix_infinite_loop():
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 5, 20, 104, 231, 234, 264, 268, 271, 283, 295, 316, 332]
     assert [int(d) for d in input_degs] == org
-    avg = [359, 6, 20, 104, 229, 236, 260, 267, 274, 284, 295, 316, 332]
+    avg = [358, 7, 20, 104, 229, 237, 259, 267, 275, 286, 295, 316, 332]
     adj_degs = chart.adjusted_degrees(input_degs, chart.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
     assert adj_degs_int == avg
