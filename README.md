@@ -7,21 +7,24 @@
 ## Features
 
 - SVG natal chart generation in pure python
-    - light, dark or auto theme based on user's computer settings
-    - printing friendly mono theme
-- highly configurable with yaml file
+- composite chart (transit/synastry/sun return ... etc) generation
+- highly configurable
     - all planets, asteroids, vertices can be enabled / disabled
-    - orbs for each apect
-    - light and dark theme color definitions
+    - orbs for each aspect
+    - light, dark, or mono theme
+    - light / dark theme color definitions
     - chart stroke, opacity, font, spacing between planets ...etc
 - high precision astrological data with [Swiss Ephemeris]
 - timezone, latitude and longitude database from [GeoNames]
-    - auto aware of daylight saving for given time and location
+    - auto aware of daylight saving for a given time and location
 - natal chart data statistics
     - element, quality, and polarity counts
     - planets in each houses
+    - quadrant and hemisphere distribution
     - aspect pair counts
+    - composite chart aspects
     - aspects cross reference table
+    - generate report in markdown or html
 - thoroughly tested with `pytest`
 
 ## Sample Charts
@@ -151,57 +154,56 @@ transit = Data(
 
 stats = Stats(data1=mimi, data2=transit)
 
-print(stats.full_report("ascii"))
+print(stats.full_report(kind="markdown"))
 ```
 
-- following ascii report will be created
-- Note: fonts with double space char support is suggested for better ascii table display eg. `Sarasa Mono TC`
+- following markdown report will be produced:
 
-```text
+```markdown
 # Element Distribution (MiMi)
 
-| element   |  count  | bodies                                        |
-|-----------|---------|-----------------------------------------------|
-| earth     |    4    | sun ♉, jupiter ♍, saturn ♍, asc ♍         |
-| water     |    2    | moon ♋, uranus ♏                            |
-| fire      |    4    | mercury ♈, mars ♌, neptune ♐, mean_node ♌ |
-| air       |    3    | venus ♊, pluto ♎, mc ♊                     |
+| element   |  count  | bodies                                       |
+|-----------|---------|----------------------------------------------|
+| earth     |    4    | sun ♉, jupiter ♍, saturn ♍, asc ♍        |
+| water     |    2    | moon ♋, uranus ♏                           |
+| fire      |    4    | mercury ♈, mars ♌, neptune ♐, asc_node ♌ |
+| air       |    3    | venus ♊, pluto ♎, mc ♊                    |
 
 
 # Quality Distribution (MiMi)
 
 | quality   |  count  | bodies                                                     |
 |-----------|---------|------------------------------------------------------------|
-| fixed     |    4    | sun ♉, mars ♌, uranus ♏, mean_node ♌                   |
+| fixed     |    4    | sun ♉, mars ♌, uranus ♏, asc_node ♌                    |
 | cardinal  |    3    | moon ♋, mercury ♈, pluto ♎                              |
 | mutable   |    6    | venus ♊, jupiter ♍, saturn ♍, neptune ♐, asc ♍, mc ♊ |
 
 
 # Polarity Distribution (MiMi)
 
-| polarity   |  count  | bodies                                                                   |
-|------------|---------|--------------------------------------------------------------------------|
-| negative   |    6    | sun ♉, moon ♋, jupiter ♍, saturn ♍, uranus ♏, asc ♍                |
-| positive   |    7    | mercury ♈, venus ♊, mars ♌, neptune ♐, pluto ♎, mean_node ♌, mc ♊ |
+| polarity   |  count  | bodies                                                                  |
+|------------|---------|-------------------------------------------------------------------------|
+| negative   |    6    | sun ♉, moon ♋, jupiter ♍, saturn ♍, uranus ♏, asc ♍               |
+| positive   |    7    | mercury ♈, venus ♊, mars ♌, neptune ♐, pluto ♎, asc_node ♌, mc ♊ |
 
 
 # Celestial Bodies (MiMi)
 
-| body      | sign      |  house  |
-|-----------|-----------|---------|
-| sun       | 00°♉19'  |    8    |
-| moon      | 08°♋29'  |   10    |
-| mercury   | 08°♈28'  |    8    |
-| venus     | 15°♊12'  |   10    |
-| mars      | 26°♌59'  |   12    |
-| jupiter   | 00°♍17'℞ |   12    |
-| saturn    | 21°♍03'℞ |    1    |
-| uranus    | 24°♏31'℞ |    3    |
-| neptune   | 22°♐29'℞ |    4    |
-| pluto     | 20°♎06'℞ |    2    |
-| mean_node | 26°♌03'℞ |   12    |
-| asc       | 09°♍42'  |    1    |
-| mc        | 09°♊13'  |   10    |
+| body     | sign      |  house  |
+|----------|-----------|---------|
+| sun      | 00°♉19'  |    8    |
+| moon     | 08°♋29'  |   10    |
+| mercury  | 08°♈28'  |    8    |
+| venus    | 15°♊12'  |   10    |
+| mars     | 26°♌59'  |   12    |
+| jupiter  | 00°♍17'℞ |   12    |
+| saturn   | 21°♍03'℞ |    1    |
+| uranus   | 24°♏31'℞ |    3    |
+| neptune  | 22°♐29'℞ |    4    |
+| pluto    | 20°♎06'℞ |    2    |
+| asc_node | 26°♌03'℞ |   12    |
+| asc      | 09°♍42'  |    1    |
+| mc       | 09°♊13'  |   10    |
 
 
 # Houses (MiMi)
@@ -224,22 +226,22 @@ print(stats.full_report("ascii"))
 
 # Quadrants (MiMi)
 
-| quadrant   |  count  | bodies                                |
-|------------|---------|---------------------------------------|
-| 1st ◵      |    3    | saturn, uranus, pluto                 |
-| 2nd ◶      |    1    | neptune                               |
-| 3rd ◷      |    2    | sun, mercury                          |
-| 4th ◴      |    5    | moon, venus, mars, jupiter, mean_node |
+| quadrant   |  count  | bodies                               |
+|------------|---------|--------------------------------------|
+| 1st ◵      |    3    | saturn, uranus, pluto                |
+| 2nd ◶      |    1    | neptune                              |
+| 3rd ◷      |    2    | sun, mercury                         |
+| 4th ◴      |    5    | moon, venus, mars, jupiter, asc_node |
 
 
 # Hemispheres (MiMi)
 
-| hemisphere   |  count  | bodies                                                       |
-|--------------|---------|--------------------------------------------------------------|
-| ←            |    8    | saturn, uranus, pluto, moon, venus, mars, jupiter, mean_node |
-| →            |    3    | neptune, sun, mercury                                        |
-| ↑            |    7    | sun, mercury, moon, venus, mars, jupiter, mean_node          |
-| ↓            |    4    | saturn, uranus, pluto, neptune                               |
+| hemisphere   |  count  | bodies                                                      |
+|--------------|---------|-------------------------------------------------------------|
+| ←            |    8    | saturn, uranus, pluto, moon, venus, mars, jupiter, asc_node |
+| →            |    3    | neptune, sun, mercury                                       |
+| ↑            |    7    | sun, mercury, moon, venus, mars, jupiter, asc_node          |
+| ↓            |    4    | saturn, uranus, pluto, neptune                              |
 
 
 # Celestial Bodies of Transit in MiMi's chart
@@ -256,120 +258,119 @@ print(stats.full_report("ascii"))
 | uranus    | 26°♉39'℞ |    9    |
 | neptune   | 27°♓59'℞ |    7    |
 | pluto     | 29°♑38'℞ |    5    |
-| mean_node | 05°♈52'℞ |    7    |
+| asc_node  | 05°♈52'℞ |    7    |
 | asc       | 08°♑29'  |    4    |
 | mc        | 22°♎28'  |    2    |
 
 
 # Aspects of Transit vs MiMi
 
-| Transit   |  aspect  | MiMi      |  phase  | orb    |
-|-----------|----------|-----------|---------|--------|
-| sun       |    △     | venus     |   ← →   | 2° 08' |
-| sun       |    ☌     | pluto     |   → ←   | 2° 46' |
-| moon      |    ☍     | moon      |   → ←   | 1° 20' |
-| moon      |    □     | mercury   |   ← →   | 1° 21' |
-| moon      |    △     | asc       |   ← →   | 0° 07' |
-| mercury   |    ⚹     | mars      |   → ←   | 2° 55' |
-| mercury   |    ⚹     | neptune   |   ← →   | 1° 35' |
-| mercury   |    ☌     | pluto     |   ← →   | 3° 58' |
-| mercury   |    ⚹     | mean_node |   → ←   | 1° 59' |
-| venus     |    ⚹     | saturn    |   → ←   | 0° 19' |
-| venus     |    ☌     | uranus    |   → ←   | 3° 47' |
-| venus     |    □     | mean_node |   → ←   | 5° 19' |
-| mars      |    ⚹     | saturn    |   → ←   | 1° 34' |
-| mars      |    △     | uranus    |   → ←   | 5° 02' |
-| mars      |    □     | pluto     |   → ←   | 0° 38' |
-| jupiter   |    ☌     | venus     |   → ←   | 6° 08' |
-| jupiter   |    □     | saturn    |   ← →   | 0° 17' |
-| jupiter   |    ☍     | neptune   |   → ←   | 1° 09' |
-| jupiter   |    △     | pluto     |   ← →   | 1° 13' |
-| jupiter   |    ⚹     | mean_node |   → ←   | 4° 43' |
-| saturn    |    △     | moon      |   → ←   | 5° 18' |
-| saturn    |    □     | venus     |   ← →   | 1° 25' |
-| saturn    |    ☍     | asc       |   → ←   | 4° 05' |
-| saturn    |    □     | mc        |   → ←   | 4° 34' |
-| uranus    |    □     | mars      |   ← →   | 0° 20' |
-| uranus    |    □     | jupiter   |   ← →   | 3° 38' |
-| uranus    |    △     | saturn    |   ← →   | 5° 36' |
-| uranus    |    ☍     | uranus    |   ← →   | 2° 08' |
-| uranus    |    □     | mean_node |   ← →   | 0° 36' |
-| neptune   |    △     | uranus    |   ← →   | 3° 28' |
-| neptune   |    □     | neptune   |   → ←   | 5° 31' |
-| pluto     |    □     | sun       |   ← →   | 0° 41' |
-| mean_node |    □     | moon      |   ← →   | 2° 36' |
-| mean_node |    ☌     | mercury   |   ← →   | 2° 35' |
-| mean_node |    ⚹     | mc        |   ← →   | 3° 20' |
-| asc       |    ☍     | moon      |   → ←   | 0° 01' |
-| asc       |    □     | mercury   |   → ←   | 0° 02' |
-| asc       |    △     | asc       |   → ←   | 1° 13' |
-| mc        |    ⚹     | mars      |   ← →   | 4° 31' |
-| mc        |    ⚹     | neptune   |   → ←   | 0° 01' |
-| mc        |    ☌     | pluto     |   ← →   | 2° 22' |
-| mc        |    ⚹     | mean_node |   → ←   | 3° 35' |
+| Transit   |  aspect  | MiMi     |  phase  | orb    |
+|-----------|----------|----------|---------|--------|
+| sun       |    △     | venus    |   ← →   | 2° 08' |
+| sun       |    ☌     | pluto    |   → ←   | 2° 46' |
+| moon      |    ☍     | moon     |   → ←   | 1° 20' |
+| moon      |    □     | mercury  |   ← →   | 1° 21' |
+| moon      |    △     | asc      |   ← →   | 0° 07' |
+| mercury   |    ⚹     | mars     |   → ←   | 2° 55' |
+| mercury   |    ⚹     | neptune  |   ← →   | 1° 35' |
+| mercury   |    ☌     | pluto    |   ← →   | 3° 58' |
+| mercury   |    ⚹     | asc_node |   → ←   | 1° 59' |
+| venus     |    ⚹     | saturn   |   → ←   | 0° 19' |
+| venus     |    ☌     | uranus   |   → ←   | 3° 47' |
+| venus     |    □     | asc_node |   → ←   | 5° 19' |
+| mars      |    ⚹     | saturn   |   → ←   | 1° 34' |
+| mars      |    △     | uranus   |   → ←   | 5° 02' |
+| mars      |    □     | pluto    |   → ←   | 0° 38' |
+| jupiter   |    ☌     | venus    |   → ←   | 6° 08' |
+| jupiter   |    □     | saturn   |   ← →   | 0° 17' |
+| jupiter   |    ☍     | neptune  |   → ←   | 1° 09' |
+| jupiter   |    △     | pluto    |   ← →   | 1° 13' |
+| jupiter   |    ⚹     | asc_node |   → ←   | 4° 43' |
+| saturn    |    △     | moon     |   → ←   | 5° 18' |
+| saturn    |    □     | venus    |   ← →   | 1° 25' |
+| saturn    |    ☍     | asc      |   → ←   | 4° 05' |
+| saturn    |    □     | mc       |   → ←   | 4° 34' |
+| uranus    |    □     | mars     |   ← →   | 0° 20' |
+| uranus    |    □     | jupiter  |   ← →   | 3° 38' |
+| uranus    |    △     | saturn   |   ← →   | 5° 36' |
+| uranus    |    ☍     | uranus   |   ← →   | 2° 08' |
+| uranus    |    □     | asc_node |   ← →   | 0° 36' |
+| neptune   |    △     | uranus   |   ← →   | 3° 28' |
+| neptune   |    □     | neptune  |   → ←   | 5° 31' |
+| pluto     |    □     | sun      |   ← →   | 0° 41' |
+| asc_node  |    □     | moon     |   ← →   | 2° 36' |
+| asc_node  |    ☌     | mercury  |   ← →   | 2° 35' |
+| asc_node  |    ⚹     | mc       |   ← →   | 3° 20' |
+| asc       |    ☍     | moon     |   → ←   | 0° 01' |
+| asc       |    □     | mercury  |   → ←   | 0° 02' |
+| asc       |    △     | asc      |   → ←   | 1° 13' |
+| mc        |    ⚹     | mars     |   ← →   | 4° 31' |
+| mc        |    ⚹     | neptune  |   → ←   | 0° 01' |
+| mc        |    ☌     | pluto    |   ← →   | 2° 22' |
+| mc        |    ⚹     | asc_node |   → ←   | 3° 35' |
 
 
 # Aspect Cross Reference of Transit(cols) vs MiMi(rows)
 
-╭─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───────┬──────┬─────────╮
-│     │ ☉   │ ☽   │ ☿   │ ♀   │ ♂   │ ♃   │ ♄   │ ♅   │ ♆   │ ♇   │ ☊   │ Asc   │ MC   │  Total  │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ☉   │     │     │     │     │     │     │     │     │     │ □   │     │       │      │    1    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ☽   │     │ ☍   │     │     │     │     │ △   │     │     │     │ □   │ ☍     │      │    4    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ☿   │     │ □   │     │     │     │     │     │     │     │     │ ☌   │ □     │      │    3    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♀   │ △   │     │     │     │     │ ☌   │ □   │     │     │     │     │       │      │    3    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♂   │     │     │ ⚹   │     │     │     │     │ □   │     │     │     │       │ ⚹    │    3    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♃   │     │     │     │     │     │     │     │ □   │     │     │     │       │      │    1    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♄   │     │     │     │ ⚹   │ ⚹   │ □   │     │ △   │     │     │     │       │      │    4    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♅   │     │     │     │ ☌   │ △   │     │     │ ☍   │ △   │     │     │       │      │    4    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♆   │     │     │ ⚹   │     │     │ ☍   │     │     │ □   │     │     │       │ ⚹    │    4    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ♇   │ ☌   │     │ ☌   │     │ □   │ △   │     │     │     │     │     │       │ ☌    │    5    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ ☊   │     │     │ ⚹   │ □   │     │ ⚹   │     │ □   │     │     │     │       │ ⚹    │    5    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ Asc │     │ △   │     │     │     │     │ ☍   │     │     │     │     │ △     │      │    3    │
-├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼───────┼──────┼─────────┤
-│ MC  │     │     │     │     │     │     │ □   │     │     │     │ ⚹   │       │      │    2    │
-╰─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴───────┴──────┴─────────╯
-
+|     |  ☉  |  ☽  |  ☿  |  ♀  |  ♂  |  ♃  |  ♄  |  ♅  |  ♆  |  ♇  |  ☊  |  Asc  |  MC  |  Total  |
+|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|------|---------|
+|  ☉  |     |     |     |     |     |     |     |     |     |  □  |     |       |      |    1    |
+|  ☽  |     |  ☍  |     |     |     |     |  △  |     |     |     |  □  |   ☍   |      |    4    |
+|  ☿  |     |  □  |     |     |     |     |     |     |     |     |  ☌  |   □   |      |    3    |
+|  ♀  |  △  |     |     |     |     |  ☌  |  □  |     |     |     |     |       |      |    3    |
+|  ♂  |     |     |  ⚹  |     |     |     |     |  □  |     |     |     |       |  ⚹   |    3    |
+|  ♃  |     |     |     |     |     |     |     |  □  |     |     |     |       |      |    1    |
+|  ♄  |     |     |     |  ⚹  |  ⚹  |  □  |     |  △  |     |     |     |       |      |    4    |
+|  ♅  |     |     |     |  ☌  |  △  |     |     |  ☍  |  △  |     |     |       |      |    4    |
+|  ♆  |     |     |  ⚹  |     |     |  ☍  |     |     |  □  |     |     |       |  ⚹   |    4    |
+|  ♇  |  ☌  |     |  ☌  |     |  □  |  △  |     |     |     |     |     |       |  ☌   |    5    |
+|  ☊  |     |     |  ⚹  |  □  |     |  ⚹  |     |  □  |     |     |     |       |  ⚹   |    5    |
+| Asc |     |  △  |     |     |     |     |  ☍  |     |     |     |     |   △   |      |    3    |
+| MC  |     |     |     |     |     |     |  □  |     |     |     |  ⚹  |       |      |    2    |
 ```
 
-- for html report, see [demo.ipynb]
+- see [demo.ipynb] for the HTML output
 
 ## Configuration
 
-- create a `natal_config.yml` file in project root to override the defaults in `config.py`
+- create a `Config` object and assign it to `Data` object
+- it will override the default settings in `config.py`
 - a sample config as follow:
 
-```yaml
-theme_type: light
+```py
+from natal.config import Display, Config, Orb
 
-light_theme:
-    fire: "#ff0000"
-    earth: "#ffff00"
-    air: "#00ff00"
-    water: "#0000ff"
-    points: "#00ffff"
+# adjust which celestial bodies to display
+display = Display(
+    mc = False,
+    asc_node = False,
+    chiron = True
+)
 
-display:
-    mean_node: True
-    chiron: True
+# adjust orbs for each aspect
+orb = Orb(
+    conjunction = 8,
+    opposition = 8,
+    trine = 6,
+    square = 6,
+    sextile = 6
+)
 
-orb:
-    conjunction: 8
-    opposition: 8
-    trine: 6
-    square: 6
-    sextile: 6
+# the complete config object
+config = Config(
+    theme_type = "light", # or "dark", "mono"
+    display = display,
+    orb = orb
+)
+
+# create data object with the config
+data = Data(
+    name = "MiMi",
+    city = "Taipei",
+    dt = "1980-04-20 14:30",
+    config = config,
+)
 ```
 
 read the [docs] for complete references

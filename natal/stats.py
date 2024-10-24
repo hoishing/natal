@@ -14,7 +14,7 @@ from tabulate import tabulate
 from typing import Iterable, Literal, NamedTuple
 
 DistKind = Literal["element", "quality", "polarity"]
-ReportKind = Literal["ascii", "html"]
+ReportKind = Literal["markdown", "html"]
 Grid = list[Iterable[str | int]]
 
 
@@ -33,7 +33,6 @@ class Stats:
     Attributes:
         data1 (Data): The primary natal chart data.
         data2 (Data | None): The secondary natal chart data for comparisons (optional).
-        tb_option (dict): Default options for table formatting.
     """
 
     data1: Data
@@ -256,20 +255,20 @@ class Stats:
             )
         else:
             output += self.table_of("aspect", kind)
-        output += self.table_of("cross_ref", kind, tablefmt="rounded_grid")
+        output += self.table_of("cross_ref", kind, stralign="center")
         return output
 
     def table_of(
-        self, fn_name: str, kind: ReportKind, *fn_args, **ascii_options
+        self, fn_name: str, kind: ReportKind, *fn_args, **markdown_options
     ) -> str:
         """
         Format a table with a title.
 
         Args:
             fn_name (str): The name of the function to call.
-            kind (ReportKind): The kind of report to generate ("ascii" or "html").
-            fmt (str): The format of the table ("github" or "html").
-            options (dict): Additional options for `tabulate`.
+            kind (ReportKind): The kind of report to generate ("markdown" or "html").
+            *fn_args: Variable positional arguments passed to the function.
+            **markdown_options: Additional keyword arguments for tabulate.
 
         Returns:
             str: A formatted string containing the titled table.
@@ -279,8 +278,8 @@ class Stats:
             stat = stat(*fn_args)
         base_option = dict(headers="firstrow", numalign="center")
 
-        if kind == "ascii":
-            options = base_option | {"tablefmt": "github"} | ascii_options
+        if kind == "markdown":
+            options = base_option | {"tablefmt": "github"} | markdown_options
             output = f"# {stat.title}\n\n"
             output += tabulate(stat.grid, **options)
             output += "\n\n\n"
@@ -329,4 +328,4 @@ if __name__ == "__main__":
     shing = Data(**person1)
     belle = Data(**person2)
     stats = Stats(data1=shing, data2=belle)
-    print(stats.full_report(kind="ascii"))
+    print(stats.full_report(kind="markdown"))
