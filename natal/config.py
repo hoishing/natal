@@ -109,10 +109,8 @@ class Chart(ModelDict):
     margin_factor: float = 0.1
     ring_thickness_fraction: float = 0.15
     style: str = """
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap&text=♈♉♊♋♌♍♎♏♐♑♒♓☽♃♄♇♆♅⚷⚳⚴⚵⚶☌☍⚹🜂🜄🜁🜃");
-            @import url("https://fonts.googleapis.com/css2?family=Cardo&display=swap&text=♂♀☿☊");
-        </style>
+        @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap&text=♈♉♊♋♌♍♎♏♐♑♒♓☽♃♄♇♆♅⚷⚳⚴⚵⚶☌☍⚹🜂🜄🜁🜃");
+        @import url("https://fonts.googleapis.com/css2?family=Cardo&display=swap&text=♂♀☿☊");
     """
 
 

@@ -343,7 +343,6 @@ class Chart(DotDict):
         """
         return self.svg_root(
             [
-                self.config.chart.style,
                 self.sign_wheel(),
                 self.house_wheel(),
                 self.vertex_line(),
@@ -353,6 +352,13 @@ class Chart(DotDict):
                 self.inner_aspect(),
             ]
         )
+
+    @property
+    def styled_svg(self) -> str:
+        """
+        Generate the SVG representation of the chart with style.
+        """
+        return f"<style>{self.config.chart.style}</style>" + self.svg
 
     # utils ======================================================
 
