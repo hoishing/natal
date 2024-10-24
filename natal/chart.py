@@ -69,7 +69,7 @@ class Chart(DotDict):
             content,
             height=self.height,
             width=self.width,
-            # viewbox=None,
+            font_family=self.config.chart.font,
             version="1.1",
             xmlns="http://www.w3.org/2000/svg",
         )
@@ -176,7 +176,6 @@ class Chart(DotDict):
                     x=symbol_x,
                     y=symbol_y,
                     fill=self.fill_color(i),
-                    font_family=self.config.chart.font,
                     font_size=symbol_width,
                     text_anchor="middle",
                     dominant_baseline="central",
@@ -221,7 +220,6 @@ class Chart(DotDict):
                     x=number_x,
                     y=number_y,
                     fill=self.fill_color(i),
-                    font_family=self.config.chart.font,
                     font_size=number_width,
                     text_anchor="middle",
                     dominant_baseline="central",
@@ -345,6 +343,7 @@ class Chart(DotDict):
         """
         return self.svg_root(
             [
+                self.config.chart.style,
                 self.sign_wheel(),
                 self.house_wheel(),
                 self.vertex_line(),
@@ -516,7 +515,6 @@ class Chart(DotDict):
                         x=symbol_x,
                         y=symbol_y,
                         fill=self.config.theme[body.color],
-                        font_family=self.config.chart.font,
                         font_size=font_size,
                         text_anchor="middle",
                         dominant_baseline="central",

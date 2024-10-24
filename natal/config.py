@@ -102,12 +102,18 @@ class Chart(ModelDict):
 
     stroke_width: int = 1
     stroke_opacity: float = 1
-    font: str = "Arial Unicode MS, sans-serif"
+    font: str = "Noto Sans Symbols, Cardo, sans-serif"
     font_size_fraction: float = 0.55
     inner_min_degree: float = 9
-    outer_min_degree: float = 7
+    outer_min_degree: float = 8
     margin_factor: float = 0.1
     ring_thickness_fraction: float = 0.15
+    style: str = """
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap&text=♈♉♊♋♌♍♎♏♐♑♒♓☽♃♄♇♆♅⚷⚳⚴⚵⚶☌☍⚹🜂🜄🜁🜃");
+            @import url("https://fonts.googleapis.com/css2?family=Cardo&display=swap&text=♂♀☿☊");
+        </style>
+    """
 
 
 class Config(ModelDict):
