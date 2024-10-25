@@ -168,25 +168,42 @@ class Chart(DotDict):
                     stroke_width=self.config.chart.stroke_width,
                 )
             )
+        return wheel
 
-            # Add sign symbol
-            symbol_width = self.font_size
-            symbol_radius = radius - (self.ring_thickness / 2)
-            symbol_angle = radians(start_deg + 15)  # Center of the sector
-            symbol_x = self.cx - symbol_radius * cos(symbol_angle)
-            symbol_y = self.cy + symbol_radius * sin(symbol_angle)
-            wheel.append(
-                text(
-                    SIGN_MEMBERS[i].symbol,
-                    x=symbol_x,
-                    y=symbol_y,
-                    fill=self.fill_color(i),
-                    font_size=symbol_width,
-                    text_anchor="middle",
-                    dominant_baseline="central",
-                )
+    def sign_wheel_symbols(self) -> list[str]:
+        """
+        Generate the zodiac sign symbols for the sign wheel.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing the zodiac sign symbols.
+        """
+
+        def background(color: str) -> tuple[str, str]:
+            props = {"cx": 10, "cy": 10, "r": 12, "stroke": "none"}
+            return (
+                circle(**props, fill=self.config.theme.background),
+                circle(**props, fill=color),
             )
 
+        wheel = []
+        for i in range(12):
+            start_deg = self.data1.signs[i].normalized_degree
+            symbol_radius = self.max_radius - (self.ring_thickness / 2)
+            symbol_angle = radians(start_deg + 15)  # Center of the sector
+            symbol_x = self.cx - symbol_radius * cos(symbol_angle) - self.pos_adjustment
+            symbol_y = self.cy + symbol_radius * sin(symbol_angle) - self.pos_adjustment
+            wheel.append(
+                g(
+                    [
+                        *background(self.fill_color(i, bg=True)),
+                        self.svg_paths[SIGN_MEMBERS[i].name],
+                    ],
+                    stroke=self.fill_color(i),
+                    stroke_width=self.config.chart.stroke_width * 1.5,
+                    fill="none",
+                    transform=f"translate({symbol_x}, {symbol_y}) scale({self.scale_adjustment})",
+                )
+            )
         return wheel
 
     def house_wheel(self) -> list[str]:
@@ -351,6 +368,7 @@ class Chart(DotDict):
                 self.sign_wheel(),
                 self.house_wheel(),
                 self.vertex_line(),
+                self.sign_wheel_symbols(),
                 self.outer_body_wheel(),
                 self.inner_body_wheel(),
                 self.outer_aspect(),
