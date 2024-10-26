@@ -33,5 +33,5 @@ def test_mono_theme() -> None:
     cfg = Config(theme_type="mono")
     assert cfg.theme_type == "mono"
     assert cfg.theme.foreground == cfg.theme.fire
-    assert cfg.theme.background == "white"
+    assert cfg.theme.background == "#FFFFFF"
     assert cfg.theme.transparency == 0

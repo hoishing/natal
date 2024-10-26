@@ -159,7 +159,7 @@ class Chart(DotDict):
                     radius=radius,
                     start_deg=start_deg,
                     end_deg=end_deg,
-                    fill=self.fill_color(i, bg=True),
+                    fill=self.bg_colors[i],
                     stroke_color=self.config.theme.foreground,
                     stroke_width=self.config.chart.stroke_width,
                 )
@@ -188,13 +188,13 @@ class Chart(DotDict):
                         cy=symbol_y,
                         r=self.font_size / 2,
                         # fill="red"
-                        fill=self.fill_color(i, bg=True),
+                        fill=self.bg_colors[i],
                     ),
                     text(
                         SIGN_MEMBERS[i].symbol,
                         x=symbol_x,
                         y=symbol_y - self.font_y_adj,
-                        fill=self.fill_color(i),
+                        fill=getattr(self.config.theme, SIGN_MEMBERS[i].color),
                         font_size=self.font_size,
                         text_anchor="middle",
                         alignment_baseline="central",
@@ -220,7 +220,7 @@ class Chart(DotDict):
                     radius=radius,
                     start_deg=start_deg,
                     end_deg=end_deg,
-                    fill=self.fill_color(i, bg=True),
+                    fill=self.bg_colors[i],
                     stroke_color=self.config.theme.foreground,
                     stroke_width=self.config.chart.stroke_width,
                 )
@@ -239,7 +239,7 @@ class Chart(DotDict):
                     str(i + 1),  # House numbers start from 1
                     x=number_x,
                     y=number_y,
-                    fill=self.fill_color(i),
+                    fill=getattr(self.config.theme, SIGN_MEMBERS[i].color),
                     font_size=number_width,
                     text_anchor="middle",
                     dominant_baseline="central",
@@ -439,23 +439,6 @@ class Chart(DotDict):
 
         return avg_adj
 
-    def fill_color(self, sign_no: int, bg: bool = False) -> str:
-        """
-        Get the fill color for a zodiac sign.
-
-        Args:
-            sign_no (int): Index of the zodiac sign.
-            bg (bool): If True, return a transparent version of the color.
-
-        Returns:
-            str: Hexadecimal color code.
-        """
-        fill_hex = getattr(self.config.theme, SIGN_MEMBERS[sign_no].color)
-        if not bg:
-            return fill_hex
-        trans_fill_hex = f"{fill_hex}{int(self.config.theme.transparency * 255):02x}"
-        return trans_fill_hex
-
     def body_wheel(self, wheel_radius: float, data: Data, min_degree: float):
         """
         Generate elements for both inner and outer body wheels.
@@ -524,9 +507,10 @@ class Chart(DotDict):
                     ),
                     circle(
                         cx=symbol_x,
-                        cy=symbol_y,
+                        cy=symbol_y - self.font_y_adj,
                         r=self.font_size / 2,
                         fill=self.config.theme.background,
+                        # fill="red"
                     ),
                     line(
                         x1=degree_x,
@@ -544,7 +528,7 @@ class Chart(DotDict):
                         fill=self.config.theme[body.color],
                         font_size=font_size,
                         text_anchor="middle",
-                        dominant_baseline="central",
+                        alignment_baseline="middle",
                         **text_opt,
                     ),
                 ]
@@ -615,3 +599,30 @@ class Chart(DotDict):
             vertices.append((start_deg, end_deg))
 
         return vertices
+
+    @cached_property
+    def bg_colors(self) -> list[str]:
+        """
+        Get the background colors for each house.
+        """
+
+        def hex_to_rgb(hex_value):
+            hex_value = hex_value.lstrip("#")
+            return tuple(int(hex_value[i : i + 2], 16) for i in (0, 2, 4))
+
+        def rgb_to_hex(rgb):
+            return "#" + "".join(f"{i:02x}" for i in rgb)
+
+        trans = self.config.theme.transparency
+        output = []
+        for i in range(4):
+            hex_color = getattr(self.config.theme, SIGN_MEMBERS[i].color)
+            rgb_color = hex_to_rgb(hex_color)
+            rgb_bg = hex_to_rgb(self.config.theme.background)
+            # blend the color with the background
+            blended_rgb = tuple(
+                int(trans * rgb_color[i] + (1 - trans) * rgb_bg[i]) for i in range(3)
+            )
+            output.append(rgb_to_hex(blended_rgb))
+
+        return output * 4
