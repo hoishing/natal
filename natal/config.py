@@ -141,6 +141,6 @@ class Config(ModelDict):
                 return self.dark_theme
             case "mono":
                 kwargs = {key: "#888888" for key in self.light_theme.model_dump()}
-                kwargs["background"] = "white"
+                kwargs["background"] = "#FFFFFF"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)

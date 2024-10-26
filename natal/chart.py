@@ -54,6 +54,7 @@ class Chart(DotDict):
             self.max_radius * self.config.chart.ring_thickness_fraction
         )
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
+        self.font_y_adj = self.font_size / 10
 
     def svg_root(self, content: str | list[str]) -> str:
         """
@@ -164,22 +165,41 @@ class Chart(DotDict):
                 )
             )
 
-            # Add sign symbol
-            symbol_width = self.font_size
-            symbol_radius = radius - (self.ring_thickness / 2)
+        return wheel
+
+    def sign_wheel_symbols(self) -> list[str]:
+        """
+        Generate the zodiac sign symbols for the sign wheel.
+
+        Returns:
+            list[Tag]: A list of SVG elements representing the zodiac sign symbols.
+        """
+        wheel = []
+        for i in range(12):
+            start_deg = self.data1.signs[i].normalized_degree
+            symbol_radius = self.max_radius - (self.ring_thickness / 2)
             symbol_angle = radians(start_deg + 15)  # Center of the sector
             symbol_x = self.cx - symbol_radius * cos(symbol_angle)
             symbol_y = self.cy + symbol_radius * sin(symbol_angle)
-            wheel.append(
-                text(
-                    SIGN_MEMBERS[i].symbol,
-                    x=symbol_x,
-                    y=symbol_y,
-                    fill=self.fill_color(i),
-                    font_size=symbol_width,
-                    text_anchor="middle",
-                    dominant_baseline="central",
-                )
+            wheel.extend(
+                [
+                    circle(
+                        cx=symbol_x,
+                        cy=symbol_y,
+                        r=self.font_size / 2,
+                        # fill="red"
+                        fill=self.fill_color(i, bg=True),
+                    ),
+                    text(
+                        SIGN_MEMBERS[i].symbol,
+                        x=symbol_x,
+                        y=symbol_y - self.font_y_adj,
+                        fill=self.fill_color(i),
+                        font_size=self.font_size,
+                        text_anchor="middle",
+                        alignment_baseline="central",
+                    ),
+                ]
             )
 
         return wheel
@@ -228,7 +248,7 @@ class Chart(DotDict):
 
         return wheel
 
-    def vertex_line(self) -> list[str]:
+    def vertex_wheel(self) -> list[str]:
         """
         Generate vertex lines for the chart.
 
@@ -345,7 +365,8 @@ class Chart(DotDict):
             [
                 self.sign_wheel(),
                 self.house_wheel(),
-                self.vertex_line(),
+                self.vertex_wheel(),
+                self.sign_wheel_symbols(),
                 self.outer_body_wheel(),
                 self.inner_body_wheel(),
                 self.outer_aspect(),
