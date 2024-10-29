@@ -10,7 +10,6 @@ from natal.classes import (
     Body,
     Extra,
     House,
-    HouseSys,
     Planet,
     Sign,
     Vertex,
@@ -39,7 +38,6 @@ class Data(DotDict):
         name: str,
         city: str,
         dt: datetime | str,
-        house_sys: HouseSys = HouseSys.Placidus,
         config: Config = Config(),
     ):
         self.name = name
@@ -51,7 +49,7 @@ class Data(DotDict):
         self.lat: float = None
         self.lon: float = None
         self.timezone: str = None
-        self.house_sys = house_sys
+        self.house_sys = config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
         self.extras: list[Extra] = []

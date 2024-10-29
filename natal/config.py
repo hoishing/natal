@@ -1,7 +1,18 @@
+from enum import StrEnum
 from pydantic import BaseModel
 from typing import Any, Iterator, Literal, Mapping
 
 ThemeType = Literal["light", "dark", "mono"]
+
+
+class HouseSys(StrEnum):
+    Placidus = "P"
+    Koch = "K"
+    Equal = "E"
+    Campanus = "C"
+    Regiomontanus = "R"
+    Porphyry = "P"
+    Whole_Sign = "W"
 
 
 class ModelDict(BaseModel, Mapping):
@@ -120,6 +131,7 @@ class Config(ModelDict):
     """
 
     theme_type: ThemeType = "dark"
+    house_sys: HouseSys = HouseSys.Placidus
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()

@@ -1,5 +1,4 @@
 from natal.const import *
-from enum import StrEnum
 from math import floor
 
 
@@ -158,13 +157,3 @@ class Aspect(DotDict):
     aspect_member: AspectMember
     applying: bool = None
     orb: float = None
-
-
-class HouseSys(StrEnum):
-    Placidus = "P"
-    Koch = "K"
-    Equal = "E"
-    Campanus = "C"
-    Regiomontanus = "R"
-    Porphyry = "P"
-    Whole_Sign = "W"

@@ -157,3 +157,8 @@ def test_fix_orb_eq_0(data1: Data) -> None:
     data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
     assert len(data1.aspects) == 24
     assert len(data.aspects) == 14
+
+def test_house_sys(data1: Data) -> None:
+    data = Data(data1.name, data1.city, data1.dt, config=Config(house_sys="W"))
+    assert data.house_sys == "W"
+    assert data.house_of(data.sun) == 8
