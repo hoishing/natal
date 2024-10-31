@@ -1,4 +1,15 @@
-from natal.config import Config
+from natal.config import Config, DotDict, Orb
+from pytest import fixture
+
+
+class Foo(DotDict):
+    a: str
+
+
+@fixture(scope="module")
+def foo() -> Foo:
+    return Foo(a="bar")
+
 
 config = {
     "light_theme": {
@@ -35,3 +46,29 @@ def test_mono_theme() -> None:
     assert cfg.theme.foreground == cfg.theme.fire
     assert cfg.theme.background == "#FFFFFF"
     assert cfg.theme.transparency == 0
+
+
+def test_dot_notation(foo):
+    assert foo.a == "bar"
+
+
+def test_subscription(foo):
+    assert foo["a"] == "bar"
+
+
+def test_update(foo):
+    foo.update(a="baz")
+    foo.update({"b": "qux"})
+    assert foo.a == "baz"
+    assert foo.b == "qux"
+
+
+def test_unpacked_dict(foo):
+    foo.update(**{"c": "qux"})
+    assert foo.c == "qux"
+
+
+def test_model_dict_iter():
+    # iter of original pydantic model returns key value pairs, not keys
+    orb_keys = [key for key in Orb()]
+    assert orb_keys == ["conjunction", "opposition", "trine", "square", "sextile"]

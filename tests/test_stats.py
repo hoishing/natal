@@ -297,7 +297,8 @@ def test_composite_cross_ref_grid(composite_stats, composite_cross_ref_grid):
 
 def test_inner_planets_cross_ref_grid(inner_planets_cross_ref_grid):
     inner = dict(sun=True, moon=True, mercury=True, venus=True, mars=True)
-    display = Display(**(dict.fromkeys(Display(), False) | inner))
+    inner_only = dict.fromkeys(Display(), False) | inner
+    display = Display(**inner_only)
     d1 = Data(**person1, config=Config(display=display))
     d2 = Data(**person2)
     stats = Stats(data1=d1, data2=d2)

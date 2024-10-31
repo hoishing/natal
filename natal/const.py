@@ -2,7 +2,7 @@
 Constants and utility functions for the natal package.
 """
 
-from natal.utils import DotDict
+from natal.config import DotDict
 
 
 class Body(DotDict):

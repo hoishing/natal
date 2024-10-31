@@ -9,7 +9,7 @@ from math import cos, radians, sin
 from natal.classes import Aspect
 from natal.const import SIGN_MEMBERS, VERTEX_NAMES
 from natal.data import Data
-from natal.utils import DotDict
+from natal.config import DotDict
 from tagit import circle, line, path, svg, text
 
 

@@ -1,21 +1,16 @@
 from enum import StrEnum
 from pydantic import BaseModel
+from types import SimpleNamespace
 from typing import Any, Iterator, Literal, Mapping
 
 ThemeType = Literal["light", "dark", "mono"]
 
 
-class HouseSys(StrEnum):
-    Placidus = "P"
-    Koch = "K"
-    Equal = "E"
-    Campanus = "C"
-    Regiomontanus = "R"
-    Porphyry = "P"
-    Whole_Sign = "W"
+class Dictable(Mapping):
+    """
+    Protocols for subclasses to behave like a dict.
+    """
 
-
-class ModelDict(BaseModel, Mapping):
     def __getitem__(self, key: str):
         return getattr(self, key)
 
@@ -28,8 +23,40 @@ class ModelDict(BaseModel, Mapping):
     def __len__(self) -> int:
         return len(self.__dict__)
 
+    def update(self, other: Mapping[str, Any] | None = None, **kwargs) -> None:
+        """
+        Update the attributes with elements from another mapping or from key/value pairs.
 
-class Orb(ModelDict):
+        Args:
+            other (Mapping[str, Any] | None): A mapping object to update from.
+            **kwargs: Additional key/value pairs to update with.
+        """
+        if other is not None:
+            for key, value in other.items():
+                setattr(self, key, value)
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class DotDict(SimpleNamespace, Dictable):
+    """
+    Extends SimpleNamespace to allow for unpacking and subscript notation access.
+    """
+
+    pass
+
+
+class HouseSys(StrEnum):
+    Placidus = "P"
+    Koch = "K"
+    Equal = "E"
+    Campanus = "C"
+    Regiomontanus = "R"
+    Porphyry = "P"
+    Whole_Sign = "W"
+
+
+class Orb(Dictable, BaseModel):
     """default orb for natal chart"""
 
     conjunction: int = 7
@@ -39,7 +66,7 @@ class Orb(ModelDict):
     sextile: int = 5
 
 
-class Theme(ModelDict):
+class Theme(Dictable, BaseModel):
     """
     Default colors for the chart.
     """
@@ -79,7 +106,7 @@ class DarkTheme(Theme):
     dim: str = "#515860"
 
 
-class Display(ModelDict):
+class Display(Dictable, BaseModel):
     """
     Display settings for celestial bodies.
     """
@@ -106,7 +133,7 @@ class Display(ModelDict):
     mc: bool = True
 
 
-class Chart(ModelDict):
+class Chart(Dictable, BaseModel):
     """
     Chart configuration settings.
     """
@@ -125,7 +152,7 @@ class Chart(ModelDict):
     """
 
 
-class Config(ModelDict):
+class Config(Dictable, BaseModel):
     """
     Package configuration model.
     """

@@ -2,26 +2,7 @@
 
 from datetime import datetime
 from natal.config import Config
-from types import SimpleNamespace
-from typing import Any, Iterable, Mapping
-
-
-class DotDict(SimpleNamespace, Mapping):
-    """
-    Extends SimpleNamespace to allow for unpacking and subscript notation access.
-    """
-
-    def __getitem__(self, key):
-        return getattr(self, key)
-
-    def __setitem__(self, key, value):
-        setattr(self, key, value)
-
-    def __iter__(self):
-        return iter(self.__dict__.keys())
-
-    def __len__(self):
-        return len(self.__dict__)
+from typing import Iterable
 
 
 def color_hex(name: str, config: Config = Config()) -> str:
