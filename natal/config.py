@@ -45,6 +45,14 @@ class DotDict(SimpleNamespace, Dictable):
 
     pass
 
+class ModelDict(BaseModel, Dictable):
+    """
+    Extends BaseModel to allow for unpacking and subscript notation access.
+    """
+    # override to return keys, otherwise BaseModel.__iter__ returns key value pairs
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.__dict__)
+
 
 class HouseSys(StrEnum):
     Placidus = "P"
@@ -56,7 +64,7 @@ class HouseSys(StrEnum):
     Whole_Sign = "W"
 
 
-class Orb(Dictable, BaseModel):
+class Orb(ModelDict):
     """default orb for natal chart"""
 
     conjunction: int = 7
@@ -66,7 +74,7 @@ class Orb(Dictable, BaseModel):
     sextile: int = 5
 
 
-class Theme(Dictable, BaseModel):
+class Theme(ModelDict):
     """
     Default colors for the chart.
     """
@@ -106,7 +114,7 @@ class DarkTheme(Theme):
     dim: str = "#515860"
 
 
-class Display(Dictable, BaseModel):
+class Display(ModelDict):
     """
     Display settings for celestial bodies.
     """
@@ -133,7 +141,7 @@ class Display(Dictable, BaseModel):
     mc: bool = True
 
 
-class Chart(Dictable, BaseModel):
+class Chart(ModelDict):
     """
     Chart configuration settings.
     """
@@ -152,7 +160,7 @@ class Chart(Dictable, BaseModel):
     """
 
 
-class Config(Dictable, BaseModel):
+class Config(ModelDict):
     """
     Package configuration model.
     """
