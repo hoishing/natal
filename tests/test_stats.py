@@ -303,3 +303,11 @@ def test_inner_planets_cross_ref_grid(inner_planets_cross_ref_grid):
     d2 = Data(**person2)
     stats = Stats(data1=d1, data2=d2)
     assert stats.cross_ref.grid == inner_planets_cross_ref_grid
+
+def test_display_no_entities():
+    display = Display(**dict.fromkeys(Display(), False))
+    stats = Stats(data1=Data(**person1, config=Config(display=display)))
+    assert stats.quadrant.grid[1][1] == 0
+    assert stats.quadrant.grid[1][2] == ""
+    assert stats.hemisphere.grid[1][1] == 0
+    assert stats.hemisphere.grid[1][2] == ""

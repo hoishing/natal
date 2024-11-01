@@ -162,10 +162,11 @@ class Stats:
         title = f"Hemispheres ({self.data1.name})"
         grid = [("hemisphere", "count", "bodies")]
         data = self.quadrant.grid[1:]
-        left = ("←", data[0][1] + data[3][1], f"{data[0][2]}, {data[3][2]}")
-        right = ("→", data[1][1] + data[2][1], f"{data[1][2]}, {data[2][2]}")
-        top = ("↑", data[2][1] + data[3][1], f"{data[2][2]}, {data[3][2]}")
-        bottom = ("↓", data[0][1] + data[1][1], f"{data[0][2]}, {data[1][2]}")
+        formatter = lambda a, b: (data[a][2] + ", " + data[b][2]).strip(" ,")
+        left = ("←", data[0][1] + data[3][1], formatter(0, 3))
+        right = ("→", data[1][1] + data[2][1], formatter(1, 2))
+        top = ("↑", data[2][1] + data[3][1], formatter(2, 3))
+        bottom = ("↓", data[0][1] + data[1][1], formatter(0, 1))
         return StatData(title, grid + [left, right, top, bottom])
 
     @property
