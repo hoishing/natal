@@ -45,10 +45,12 @@ class DotDict(SimpleNamespace, Dictable):
 
     pass
 
+
 class ModelDict(BaseModel, Dictable):
     """
     Extends BaseModel to allow for unpacking and subscript notation access.
     """
+
     # override to return keys, otherwise BaseModel.__iter__ returns key value pairs
     def __iter__(self) -> Iterator[str]:
         return iter(self.__dict__)
@@ -148,16 +150,16 @@ class Chart(ModelDict):
 
     stroke_width: int = 1
     stroke_opacity: float = 1
-    font: str = "Noto Sans Symbols, Cardo, sans-serif"
+    font: str = "sans-serif"
     font_size_fraction: float = 0.55
     inner_min_degree: float = 9
     outer_min_degree: float = 8
     margin_factor: float = 0.1
     ring_thickness_fraction: float = 0.15
-    style: str = """
-        @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap&text=♈♉♊♋♌♍♎♏♐♑♒♓☽♃♄♇♆♅⚷⚳⚴⚵⚶☌☍⚹🜂🜄🜁🜃");
-        @import url("https://fonts.googleapis.com/css2?family=Cardo&display=swap&text=♂♀☿☊");
-    """
+    # hard-coded 2.2 and 600 due to the original symbol svg size = 20x20
+    scale_adj_factor: float = 600
+    pos_adj_factor: float = 2.2
+
 
 
 class Config(ModelDict):

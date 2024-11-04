@@ -10,7 +10,8 @@ from natal.classes import Aspect
 from natal.const import SIGN_MEMBERS, VERTEX_NAMES
 from natal.data import Data
 from natal.config import DotDict
-from tagit import circle, line, path, svg, text
+from tagit import circle, line, path, svg, text, g
+from pathlib import Path
 
 
 class Chart(DotDict):
@@ -54,7 +55,8 @@ class Chart(DotDict):
             self.max_radius * self.config.chart.ring_thickness_fraction
         )
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
-        self.font_y_adj = self.font_size / 10
+        self.scale_adjustment = self.width / self.config.chart.scale_adj_factor
+        self.pos_adjustment = self.font_size / self.config.chart.pos_adj_factor
 
     def svg_root(self, content: str | list[str]) -> str:
         """
@@ -164,7 +166,6 @@ class Chart(DotDict):
                     stroke_width=self.config.chart.stroke_width,
                 )
             )
-
         return wheel
 
     def sign_wheel_symbols(self) -> list[str]:
@@ -174,34 +175,33 @@ class Chart(DotDict):
         Returns:
             list[Tag]: A list of SVG elements representing the zodiac sign symbols.
         """
+
         wheel = []
         for i in range(12):
             start_deg = self.data1.signs[i].normalized_degree
             symbol_radius = self.max_radius - (self.ring_thickness / 2)
             symbol_angle = radians(start_deg + 15)  # Center of the sector
-            symbol_x = self.cx - symbol_radius * cos(symbol_angle)
-            symbol_y = self.cy + symbol_radius * sin(symbol_angle)
-            wheel.extend(
-                [
-                    circle(
-                        cx=symbol_x,
-                        cy=symbol_y,
-                        r=self.font_size / 2,
-                        # fill="red"
-                        fill=self.bg_colors[i],
-                    ),
-                    text(
-                        SIGN_MEMBERS[i].symbol,
-                        x=symbol_x,
-                        y=symbol_y - self.font_y_adj,
-                        fill=getattr(self.config.theme, SIGN_MEMBERS[i].color),
-                        font_size=self.font_size,
-                        text_anchor="middle",
-                        alignment_baseline="central",
-                    ),
-                ]
+            symbol_x = self.cx - symbol_radius * cos(symbol_angle) - self.pos_adjustment
+            symbol_y = self.cy + symbol_radius * sin(symbol_angle) - self.pos_adjustment
+            wheel.append(
+                g(
+                    [
+                        circle(
+                            cx=10,
+                            cy=10,
+                            r=12,
+                            stroke="none",
+                            # fill="red",
+                            fill=self.bg_colors[i],
+                        ),
+                        self.svg_paths[SIGN_MEMBERS[i].name],
+                    ],
+                    stroke=self.config.theme[SIGN_MEMBERS[i].color],
+                    stroke_width=self.config.chart.stroke_width * 1.5,
+                    fill="none",
+                    transform=f"translate({symbol_x}, {symbol_y}) scale({self.scale_adjustment})",
+                )
             )
-
         return wheel
 
     def house_wheel(self) -> list[str]:
@@ -374,13 +374,6 @@ class Chart(DotDict):
             ]
         )
 
-    @property
-    def styled_svg(self) -> str:
-        """
-        Generate the SVG representation of the chart with style.
-        """
-        return f"<style>{self.config.chart.style}</style>" + self.svg
-
     # utils ======================================================
 
     def adjusted_degrees(self, degrees: list[float], min_degree: float) -> list[float]:
@@ -467,16 +460,16 @@ class Chart(DotDict):
 
         output = []
         for body, adj_deg in zip(sorted_norm_bodies, adj_norm_degs):
-            font_size = self.font_size
-            text_opt = {}
+            g_opt = {
+                "fill": "none",
+                "stroke": self.config.theme[body.color],
+                "stroke_width": self.config.chart.stroke_width * 1.5,
+            }
 
             # special handling for asc, ic, dsc and mc
             if body.name in VERTEX_NAMES:
-                text_opt = {
-                    "lengthAdjust": "spacingAndGlyphs",
-                    "textLength": self.font_size * (0.7 if body.name != "ic" else 0.55),
-                }
-                font_size = self.font_size * 0.85
+                g_opt["fill"] = self.config.theme[body.color]
+                g_opt["stroke"] = "none"
 
             symbol_radius = wheel_radius + (self.ring_thickness / 2)
 
@@ -507,10 +500,10 @@ class Chart(DotDict):
                     ),
                     circle(
                         cx=symbol_x,
-                        cy=symbol_y - self.font_y_adj,
+                        cy=symbol_y,
                         r=self.font_size / 2,
+                        # fill="red",  # for testing only
                         fill=self.config.theme.background,
-                        # fill="red"
                     ),
                     line(
                         x1=degree_x,
@@ -521,15 +514,10 @@ class Chart(DotDict):
                         stroke_width=self.config.chart.stroke_width / 2,
                         stroke_dasharray=self.ring_thickness / 11,
                     ),
-                    text(
-                        body.symbol,
-                        x=symbol_x,
-                        y=symbol_y,
-                        fill=self.config.theme[body.color],
-                        font_size=font_size,
-                        text_anchor="middle",
-                        alignment_baseline="middle",
-                        **text_opt,
+                    g(
+                        self.svg_paths[body.name],
+                        transform=f"translate({symbol_x - self.pos_adjustment}, {symbol_y - self.pos_adjustment}) scale({self.scale_adjustment})",
+                        **g_opt,
                     ),
                 ]
             )
@@ -626,3 +614,8 @@ class Chart(DotDict):
             output.append(rgb_to_hex(blended_rgb))
 
         return output * 4
+
+    @cached_property
+    def svg_paths(self) -> dict:
+        folder = Path(__file__).parent.absolute() / "svg_paths"
+        return {svg.stem: svg.read_text() for svg in folder.glob("*.svg")}
