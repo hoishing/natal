@@ -1,6 +1,5 @@
 {
-    "search.exclude": {
-        "docs/*.md": true
-    },
-    "python.analysis.extraPaths": ["./natal"]
+  "search.exclude": {
+    "docs/*.md": true
+  }
 }

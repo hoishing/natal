@@ -14,6 +14,14 @@ from tagit import circle, line, path, svg, text, g
 from pathlib import Path
 
 
+def _svg_paths() -> dict:
+    folder = Path(__file__).parent.absolute() / "svg_paths"
+    return {svg.stem: svg.read_text() for svg in folder.glob("*.svg")}
+
+
+svg_paths = _svg_paths()
+
+
 class Chart(DotDict):
     """
     SVG representation of a natal chart.
@@ -194,7 +202,7 @@ class Chart(DotDict):
                             # fill="red",
                             fill=self.bg_colors[i],
                         ),
-                        self.svg_paths[SIGN_MEMBERS[i].name],
+                        svg_paths[SIGN_MEMBERS[i].name],
                     ],
                     stroke=self.config.theme[SIGN_MEMBERS[i].color],
                     stroke_width=self.config.chart.stroke_width * 1.5,
@@ -515,7 +523,7 @@ class Chart(DotDict):
                         stroke_dasharray=self.ring_thickness / 11,
                     ),
                     g(
-                        self.svg_paths[body.name],
+                        svg_paths[body.name],
                         transform=f"translate({symbol_x - self.pos_adjustment}, {symbol_y - self.pos_adjustment}) scale({self.scale_adjustment})",
                         **g_opt,
                     ),
@@ -614,8 +622,3 @@ class Chart(DotDict):
             output.append(rgb_to_hex(blended_rgb))
 
         return output * 4
-
-    @cached_property
-    def svg_paths(self) -> dict:
-        folder = Path(__file__).parent.absolute() / "svg_paths"
-        return {svg.stem: svg.read_text() for svg in folder.glob("*.svg")}
