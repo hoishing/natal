@@ -7,7 +7,7 @@ for a single natal chart or a comparison between two charts.
 
 from collections import defaultdict
 from math import floor
-from natal.classes import Aspect
+from natal.classes import Aspect, Aspectable
 from natal.data import Data
 from tagit import div, h4
 from tabulate import tabulate
@@ -84,9 +84,16 @@ class Stats:
             StatData: A named tuple containing the title and grid of celestial body data.
         """
         title = f"Celestial Bodies ({self.data1.name})"
-        grid = [("body", "sign", "house")]
+        grid = [("body", "sign", "house", "dignity")]
         for body in self.data1.aspectables:
-            grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
+            grid.append(
+                (
+                    body.name,
+                    body.signed_dms,
+                    self.data1.house_of(body),
+                    dignity_of(body),
+                )
+            )
         return StatData(title, grid)
 
     @property
@@ -112,7 +119,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of house data.
         """
         title = f"Houses ({self.data1.name})"
-        grid = [("house", "sign", "ruler", "ruler sign", "ruler house")]
+        grid = [("house", "cusp", "ruler", "ruler sign", "ruler house")]
         for house in self.data1.houses:
             grid.append(
                 (
@@ -320,6 +327,27 @@ def _aspect_grid(aspects: list[Aspect], headers: list[str]) -> Grid:
             )
         )
     return grid
+
+
+def dignity_of(body: Aspectable) -> str:
+    """
+    Get the dignity of a celestial body.
+
+    Args:
+        body (Aspectable): The celestial body.
+
+    Returns:
+        str: The dignity of the celestial body.
+    """
+    if body.name == (body.sign.classic_ruler or body.sign.ruler):
+        return "domicile"
+    if body.name == (body.sign.classic_detriment or body.sign.detriment):
+        return "detriment"
+    if body.name == body.sign.exaltation:
+        return "exaltation"
+    if body.name == body.sign.fall:
+        return "fall"
+    return ""
 
 
 # for quick testing

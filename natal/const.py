@@ -1,3 +1,4 @@
+
 """
 Constants and utility functions for the natal package.
 """
@@ -92,7 +93,11 @@ class SignMember(Body):
     """
 
     ruler: str
+    detriment: str
+    exaltation: str
+    fall: str
     classic_ruler: str
+    classic_detriment: str
     quality: str
     element: str
     polarity: str
@@ -185,7 +190,11 @@ SIGNS = dict(
     value=list(range(1, 13)),
     color=["fire", "earth", "air", "water"] * 3,
     ruler="mars venus mercury moon sun mercury venus pluto jupiter saturn uranus neptune".split(),
+    detriment="venus pluto jupiter saturn uranus neptune mars venus mercury moon sun mercury".split(),
+    exaltation=['sun', 'moon', '', 'jupiter', '', 'mercury', 'saturn', '', '', 'mars', '', 'venus'],
+    fall=['saturn', '', '', 'mars', '', 'venus', 'sun', 'moon', '', 'jupiter', '', 'mercury'],
     classic_ruler="mars venus mercury moon sun mercury venus mars jupiter saturn saturn jupiter".split(),
+    classic_detriment="venus mars jupiter saturn saturn jupiter mars venus mercury moon sun mercury".split(),
     quality=list(QUALITY["name"]) * 4,
     element=list(ELEMENTS["name"]) * 3,
     polarity=list(POLARITY["name"]) * 6,

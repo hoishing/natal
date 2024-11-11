@@ -122,16 +122,12 @@ class Aspectable(MovableBody):
     ...
 
 
-class Sign(MovableBody):
+class Sign(SignMember):
     """
-    Represents a zodiac sign.
+    alias to SignMember
     """
 
-    ruler: str
-    classic_ruler: str
-    quality: str
-    element: str
-    polarity: str
+    ...
 
 
 class House(MovableBody):

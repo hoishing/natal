@@ -49,20 +49,20 @@ def polarity_grid():
 @fixture
 def celestial_body_grid():
     return [
-        ("body", "sign", "house"),
-        ("sun", "00°♉26'", 7),
-        ("moon", "19°♑47'", 3),
-        ("mercury", "18°♉30'", 7),
-        ("venus", "14°♈49'", 6),
-        ("mars", "15°♋54'", 9),
-        ("jupiter", "05°♉52'", 7),
-        ("saturn", "26°♋31'", 10),
-        ("uranus", "05°♏19'℞", 1),
-        ("neptune", "13°♐38'℞", 2),
-        ("pluto", "09°♎47'℞", 12),
-        ("asc_node", "13°♏25'℞", 1),
-        ("asc", "20°♎32'", 1),
-        ("mc", "20°♋36'", 10),
+        ("body", "sign", "house", "dignity"),
+        ("sun", "00°♉26'", 7, ""),
+        ("moon", "19°♑47'", 3, "detriment"),
+        ("mercury", "18°♉30'", 7, ""),
+        ("venus", "14°♈49'", 6, "detriment"),
+        ("mars", "15°♋54'", 9, "fall"),
+        ("jupiter", "05°♉52'", 7, ""),
+        ("saturn", "26°♋31'", 10, "detriment"),
+        ("uranus", "05°♏19'℞", 1, ""),
+        ("neptune", "13°♐38'℞", 2, ""),
+        ("pluto", "09°♎47'℞", 12, ""),
+        ("asc_node", "13°♏25'℞", 1, ""),
+        ("asc", "20°♎32'", 1, ""),
+        ("mc", "20°♋36'", 10, ""),
     ]
 
 @fixture
@@ -107,7 +107,7 @@ def hemisphere_grid():
 @fixture
 def house_grid():
     return [
-        ("house", "sign", "ruler", "ruler sign", "ruler house"),
+        ("house", "cusp", "ruler", "ruler sign", "ruler house"),
         (1, "20°♎32'", "venus", "♈", 6),
         (2, "19°♏43'", "pluto", "♎", 12),
         (3, "19°♐49'", "jupiter", "♉", 7),
