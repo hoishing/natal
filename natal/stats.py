@@ -105,9 +105,16 @@ class Stats:
             StatData: A named tuple containing the title and grid of celestial body data.
         """
         title = f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart"
-        grid = [(self.data2.name, "sign", "house")]
+        grid = [(self.data2.name, "sign", "house", "dignity")]
         for body in self.data2.aspectables:
-            grid.append((body.name, body.signed_dms, self.data1.house_of(body)))
+            grid.append(
+                (
+                    body.name,
+                    body.signed_dms,
+                    self.data1.house_of(body),
+                    dignity_of(body),
+                )
+            )
         return StatData(title, grid)
 
     @property

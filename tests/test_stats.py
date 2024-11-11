@@ -68,20 +68,20 @@ def celestial_body_grid():
 @fixture
 def data2_celestial_body_grid():
     return [
-        ("belle", "sign", "house"),
-        ("sun", "02°♒38'", 4),
-        ("moon", "15°♍46'", 11),
-        ("mercury", "12°♑25'", 3),
-        ("venus", "16°♐22'", 2),
-        ("mars", "05°♒32'", 4),
-        ("jupiter", "00°♈03'", 6),
-        ("saturn", "17°♎13'", 12),
-        ("uranus", "27°♓37'", 6),
-        ("neptune", "27°♒26'", 5),
-        ("pluto", "06°♑05'", 3),
-        ("asc_node", "01°♑08'℞", 3),
-        ("asc", "00°♓24'", 5),
-        ("mc", "08°♐54'", 2),
+        ("belle", "sign", "house", "dignity"),
+        ("sun", "02°♒38'", 4, "detriment"),
+        ("moon", "15°♍46'", 11, ""),
+        ("mercury", "12°♑25'", 3, ""),
+        ("venus", "16°♐22'", 2, ""),
+        ("mars", "05°♒32'", 4, ""),
+        ("jupiter", "00°♈03'", 6, ""),
+        ("saturn", "17°♎13'", 12, "exaltation"),
+        ("uranus", "27°♓37'", 6, ""),
+        ("neptune", "27°♒26'", 5, ""),
+        ("pluto", "06°♑05'", 3, ""),
+        ("asc_node", "01°♑08'℞", 3, ""),
+        ("asc", "00°♓24'", 5, ""),
+        ("mc", "08°♐54'", 2, ""),
     ]
 
 @fixture
