@@ -19,7 +19,7 @@ def composite_stats(data1, data2):
 @fixture
 def element_grid():
     return [
-        ("element", "count", "bodies"),
+        ("element", "sum", "bodies"),
         ("earth", 4, "sun ♉, moon ♑, mercury ♉, jupiter ♉"),
         ("fire", 2, "venus ♈, neptune ♐"),
         ("water", 5, "mars ♋, saturn ♋, uranus ♏, asc_node ♏, mc ♋"),
@@ -30,7 +30,7 @@ def element_grid():
 @fixture
 def quality_grid():
     return [
-        ("quality", "count", "bodies"),
+        ("quality", "sum", "bodies"),
         ("fixed", 5, "sun ♉, mercury ♉, jupiter ♉, uranus ♏, asc_node ♏"),
         ("cardinal", 7, "moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, asc ♎, mc ♋"),
         ("mutable", 1, "neptune ♐"),
@@ -40,7 +40,7 @@ def quality_grid():
 @fixture
 def polarity_grid():
     return [
-        ("polarity", "count", "bodies"),
+        ("polarity", "sum", "bodies"),
         ("negative", 9, "sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, asc_node ♏, mc ♋",),
         ("positive", 4, "venus ♈, neptune ♐, pluto ♎, asc ♎"),
     ]
@@ -87,7 +87,7 @@ def data2_celestial_body_grid():
 @fixture
 def quadrant_grid():
     return [
-        ("quadrant", "count", "bodies"),
+        ("quadrant", "sum", "bodies"),
         ("1st ◵", 4, "moon, uranus, neptune, asc_node"),
         ("2nd ◶", 1, "venus"),
         ("3rd ◷", 4, "sun, mercury, mars, jupiter"),
@@ -97,11 +97,11 @@ def quadrant_grid():
 @fixture
 def hemisphere_grid():
     return [
-        ('hemisphere', 'count', 'bodies'),
-        ('←', 6, "moon, uranus, neptune, asc_node, saturn, pluto"),
-        ('→', 5, "venus, sun, mercury, mars, jupiter"),
-        ('↑', 6, "sun, mercury, mars, jupiter, saturn, pluto"),
-        ('↓', 5, "moon, uranus, neptune, asc_node, venus"),
+        ("hemisphere", "sum", "bodies"),
+        ("←", 6, "moon, uranus, neptune, asc_node, saturn, pluto"),
+        ("→", 5, "venus, sun, mercury, mars, jupiter"),
+        ("↑", 6, "sun, mercury, mars, jupiter, saturn, pluto"),
+        ("↓", 5, "moon, uranus, neptune, asc_node, venus"),
     ]
 
 @fixture
@@ -205,7 +205,7 @@ def composite_aspect_grid():
 @fixture
 def data1_cross_ref_grid():
     return [
-        ["", "☉", "☽", "☿", "♀", "♂", "♃", "♄", "♅", "♆", "♇", "☊", "Asc", "MC", "Total"],
+        ["", "☉", "☽", "☿", "♀", "♂", "♃", "♄", "♅", "♆", "♇", "☊", "Asc", "MC", "sum"],
         ["☉", "", "", "", "", "", "☌", "□", "☍", "", "", "", "", "", "3"],
         ["☽", "", "", "△", "□", "☍", "", "", "", "", "", "", "□", "☍", "5"],
         ["☿", "", "△", "", "", "⚹", "", "", "", "", "", "☍", "", "⚹", "4"],
@@ -224,7 +224,7 @@ def data1_cross_ref_grid():
 @fixture
 def composite_cross_ref_grid():
     return [
-        ["","☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","Asc","MC","Total"],
+        ["","☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","Asc","MC","sum"],
         ["☉","□","","","","□","","","","⚹","△","△","⚹","","6"],
         ["☽","","△","","","","","□","","","","","","","2"],
         ["☿","","△","","","","","","","","","","","","1"],
@@ -243,7 +243,7 @@ def composite_cross_ref_grid():
 @fixture
 def inner_planets_cross_ref_grid():
     return [
-        ["","☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","Asc","MC","Total"],
+        ["","☉","☽","☿","♀","♂","♃","♄","♅","♆","♇","☊","Asc","MC","sum"],
         ["☉","□","","","","□","","","","⚹","△","△","⚹","","6"],
         ["☽","","△","","","","","□","","","","","","","2"],
         ["☿","","△","","","","","","","","","","","","1"],

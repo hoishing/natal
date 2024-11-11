@@ -70,7 +70,7 @@ class Stats:
             key = body.sign[kind]
             bodies[key][0] += 1  # act as a counter
             bodies[key][1].append(f"{body.name} {body.sign.symbol}")
-        grid = [(kind, "count", "bodies")]
+        grid = [(kind, "sum", "bodies")]
         data = [(key, val[0], ", ".join(val[1])) for key, val in bodies.items()]
         grid.extend(data)
         return StatData(title, grid)
@@ -158,7 +158,7 @@ class Stats:
             else:
                 # no celestial body in this quadrant
                 quadrants[i][0] = 0
-        grid = [("quadrant", "count", "bodies")]
+        grid = [("quadrant", "sum", "bodies")]
         data = [
             (quad_names[quad_no], val[0], ", ".join(val[1]))
             for quad_no, val in quadrants.items()
@@ -174,7 +174,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of hemisphere distribution data.
         """
         title = f"Hemispheres ({self.data1.name})"
-        grid = [("hemisphere", "count", "bodies")]
+        grid = [("hemisphere", "sum", "bodies")]
         data = self.quadrant.grid[1:]
         formatter = lambda a, b: (data[a][2] + ", " + data[b][2]).strip(" ,")
         left = ("←", data[0][1] + data[3][1], formatter(0, 3))
@@ -225,7 +225,7 @@ class Stats:
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         aspects = self.composite_aspects if self.data2 else self.data1.aspects
         body_symbols = [body.symbol for body in aspectable2]
-        grid = [[""] + body_symbols + ["Total"]]  # Header row with Total column
+        grid = [[""] + body_symbols + ["sum"]]
         for body1 in aspectable1:
             row = [body1.symbol]
             aspect_count = 0
@@ -245,7 +245,7 @@ class Stats:
                 else:
                     row.append("")
 
-            row.append(str(aspect_count))  # Add total count to the end of the row
+            row.append(str(aspect_count))  # Add sum to the end of the row
             grid.append(row)
         return StatData(title, grid)
 
