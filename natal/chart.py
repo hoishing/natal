@@ -59,6 +59,7 @@ class Chart(DotDict):
         self.config = self.data1.config
         margin = min(self.width, self.height) * self.config.chart.margin_factor
         self.max_radius = min(self.width - margin, self.height - margin) // 2
+        self.margin = margin
         self.ring_thickness = (
             self.max_radius * self.config.chart.ring_thickness_fraction
         )
@@ -263,7 +264,7 @@ class Chart(DotDict):
         Returns:
             list[Tag]: A list of SVG elements representing vertex lines.
         """
-        vertex_radius = self.max_radius + self.ring_thickness
+        vertex_radius = self.max_radius + self.margin // 2
         house_radius = self.max_radius - 2 * self.ring_thickness
         body_radius = self.max_radius - 3 * self.ring_thickness
 
