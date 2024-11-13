@@ -25,6 +25,8 @@ optional = true
 ipykernel = "^6.29.5"
 pytest = "^8.3.2"
 toml = "^0.10.2"
+mkdocs-material = {extras = ["imaging"], version = "^9.5.44"}
+mkdocstrings = {extras = ["python"], version = "^0.27.0"}
 
 [build-system]
 requires = ["poetry-core"]
