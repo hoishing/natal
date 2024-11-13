@@ -39,7 +39,15 @@ class Data(DotDict):
         city: str,
         dt: datetime | str,
         config: Config = Config(),
-    ):
+    ) -> None:
+        """Initialize a natal chart data object.
+
+        Args:
+            name (str): The name for this chart
+            city (str): City name to lookup coordinates
+            dt (datetime | str): Date and time as datetime object or string
+            config (Config): Configuration settings
+        """
         self.name = name
         self.city = city
         if isinstance(dt, str):
@@ -69,11 +77,10 @@ class Data(DotDict):
 
     @property
     def julian_day(self) -> float:
-        """
-        Convert dt to UTC and return Julian day.
+        """Convert dt to UTC and return Julian day.
 
         Returns:
-            float: The Julian day.
+            float: The Julian day number
         """
         local_tz = ZoneInfo(self.timezone)
         local_dt = self.dt.replace(tzinfo=local_tz)
@@ -82,26 +89,20 @@ class Data(DotDict):
             utc_dt.year, utc_dt.month, utc_dt.day, utc_dt.hour + utc_dt.minute / 60
         )[1]
 
-    def set_lat_lon(self):
-        """
-        Set the geographical information of a city.
-        """
+    def set_lat_lon(self) -> None:
+        """Set the geographical information of a city."""
         info = self.cities[self.cities["name"].str.lower() == self.city.lower()].iloc[0]
         self.lat = float(info["lat"])
         self.lon = float(info["lon"])
         self.timezone = info["timezone"]
 
-    def set_movable_bodies(self):
-        """
-        Set the positions of the planets and other celestial bodies.
-        """
+    def set_movable_bodies(self) -> None:
+        """Set the positions of the planets and other celestial bodies."""
         self.planets = self.set_positions(PLANET_MEMBERS)
         self.extras = self.set_positions(EXTRA_MEMBERS)
 
     def set_houses_vertices(self) -> None:
-        """
-        Calculate the cusps of the houses and set the vertices.
-        """
+        """Calculate the cusps of the houses and set the vertices."""
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
             self.julian_day,
             self.lat,
@@ -126,20 +127,16 @@ class Data(DotDict):
         for v in self.vertices:
             setattr(self, v.name, v)
 
-    def set_aspectable(self):
-        """
-        Set the aspectable celestial bodies based on the display configuration.
-        """
+    def set_aspectable(self) -> None:
+        """Set the aspectable celestial bodies based on the display configuration."""
         self.aspectables = [
             body
             for body in (self.planets + self.extras + self.vertices)
             if self.config.display[body.name]
         ]
 
-    def set_signs(self):
-        """
-        Set the signs of the zodiac.
-        """
+    def set_signs(self) -> None:
+        """Set the signs of the zodiac."""
         for i, sign_member in enumerate(SIGN_MEMBERS):
             sign = Sign(
                 **sign_member,
@@ -147,25 +144,19 @@ class Data(DotDict):
             )
             self.signs.append(sign)
 
-    def set_aspects(self):
-        """
-        Set the aspects between the aspectable celestial bodies.
-        """
+    def set_aspects(self) -> None:
+        """Set the aspects between the aspectable celestial bodies."""
         body_pairs = pairs(self.aspectables)
         self.aspects = self.calculate_aspects(body_pairs)
 
-    def set_normalized_degrees(self):
-        """
-        Normalize the positions of celestial bodies relative to the first house.
-        """
+    def set_normalized_degrees(self) -> None:
+        """Normalize the positions of celestial bodies relative to the first house."""
         bodies = self.signs + self.planets + self.extras + self.vertices + self.houses
         for body in bodies:
             body.normalized_degree = self.normalize(body.degree)
 
-    def set_rulers(self):
-        """
-        Set the rulers for each house.
-        """
+    def set_rulers(self) -> None:
+        """Set the rulers for each house."""
         for house in self.houses:
             ruler = getattr(self, house.sign.ruler)
             classic_ruler = getattr(self, house.sign.classic_ruler)
@@ -178,10 +169,8 @@ class Data(DotDict):
             )
             house.classic_ruler_house = self.house_of(classic_ruler)
 
-    def set_quadrants(self):
-        """
-        Set the distribution of celestial bodies in quadrants.
-        """
+    def set_quadrants(self) -> None:
+        """Set the distribution of celestial bodies in quadrants."""
         bodies = [b for b in self.aspectables if b not in self.vertices]
         _, ic, dsc, mc = [v.normalized_degree for v in self.vertices]
 
@@ -191,12 +180,11 @@ class Data(DotDict):
         fourth = [b for b in bodies if mc <= b.normalized_degree]
         self.quadrants = [first, second, third, fourth]
 
-    def __str__(self):
-        """
-        String representation of the Data object.
+    def __str__(self) -> str:
+        """Get string representation of the Data object.
 
         Returns:
-            str: The string representation.
+            str: Formatted string showing chart data
         """
         op = ""
         op += f"Name: {self.name}\n"
@@ -227,14 +215,13 @@ class Data(DotDict):
     # utils ===============================
 
     def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
-        """
-        Set the positions of the planets and other celestial bodies.
+        """Set the positions of celestial bodies.
 
         Args:
-            bodies (list[Body]): The list of celestial bodies.
+            bodies (list[Body]): List of celestial body definitions
 
         Returns:
-            list[Aspectable]: The list of aspectable bodies with positions set.
+            list[Aspectable]: List of aspectable bodies with positions set
         """
         output = []
         for body in bodies:
@@ -249,14 +236,13 @@ class Data(DotDict):
         return output
 
     def house_of(self, body: Body) -> int:
-        """
-        Get the house of a celestial body.
+        """Get the house number containing a celestial body.
 
         Args:
-            body (Body): The celestial body.
+            body (Body): The celestial body to locate
 
         Returns:
-            int: The house number.
+            int: House number (1-12) containing the body
         """
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
@@ -265,26 +251,24 @@ class Data(DotDict):
         return sorted_houses[0].value
 
     def normalize(self, degree: float) -> float:
-        """
-        Normalize the degree relative to the first house.
+        """Normalize a degree relative to the Ascendant.
 
         Args:
-            degree (float): The degree to normalize.
+            degree (float): The degree to normalize
 
         Returns:
-            float: The normalized degree.
+            float: Normalized degree (0-360)
         """
         return (degree - self.asc.degree + 360) % 360
 
     def calculate_aspects(self, body_pairs: BodyPairs) -> list[Aspect]:
-        """
-        Calculate the aspects between pairs of celestial bodies.
+        """Calculate aspects between pairs of celestial bodies.
 
         Args:
-            body_pairs (BodyPairs): The pairs of celestial bodies.
+            body_pairs (BodyPairs): Pairs of bodies to check for aspects
 
         Returns:
-            list[Aspect]: The list of aspects.
+            list[Aspect]: List of aspects found between the bodies
         """
         output = []
         for b1, b2 in body_pairs:
@@ -315,13 +299,12 @@ class Data(DotDict):
         return output
 
     def composite_aspects_pairs(self, data2: Self) -> BodyPairs:
-        """
-        Generate pairs of aspectable bodies for composite chart.
+        """Generate pairs of aspectable bodies for composite chart.
 
         Args:
-            data2 (Data): The second data object.
+            data2 (Self): Second chart data to compare against
 
         Returns:
-            BodyPairs: The pairs of aspectable bodies.
+            BodyPairs: Pairs of bodies to check for aspects
         """
         return itertools.product(self.aspectables, data2.aspectables)

@@ -37,15 +37,18 @@ class Chart(DotDict):
         width: int,
         height: int | None = None,
         data2: Data | None = None,
-    ):
+    ) -> None:
         """
         Initialize a Chart object.
 
         Args:
-            data1 (Data): Primary chart data.
-            width (int): Width of the SVG.
-            height (int | None): Height of the SVG. If None, set to width.
-            data2 (Data | None): Secondary chart data for composite charts.
+            data1 (Data): Primary chart data
+            width (int): Width of the SVG
+            height (int | None): Height of the SVG. If None, set to width
+            data2 (Data | None): Secondary chart data for composite charts
+
+        Returns:
+            None
         """
         self.data1 = data1
         self.data2 = data2
@@ -72,10 +75,10 @@ class Chart(DotDict):
         Generate an SVG root element with sensible defaults.
 
         Args:
-            content (str | list[str]): The content to be included in the SVG root.
+            content (str | list[str]): The content to be included in the SVG root
 
         Returns:
-            str: An SVG root element as a string.
+            str: An SVG root element as a string
         """
         return svg(
             content,
@@ -100,16 +103,16 @@ class Chart(DotDict):
         Create a sector shape in SVG format.
 
         Args:
-            radius (int): Radius of the sector.
-            start_deg (float): Starting angle in degrees.
-            end_deg (float): Ending angle in degrees.
-            fill (str): Fill color of the sector.
-            stroke_color (str): Stroke color of the sector.
-            stroke_width (float): Width of the stroke.
-            stroke_opacity (float): Opacity of the stroke.
+            radius (int): Radius of the sector
+            start_deg (float): Starting angle in degrees
+            end_deg (float): Ending angle in degrees
+            fill (str): Fill color of the sector
+            stroke_color (str): Stroke color of the sector
+            stroke_width (float): Width of the stroke
+            stroke_opacity (float): Opacity of the stroke
 
         Returns:
-            Tag: An SVG path element representing the sector.
+            str: An SVG path element representing the sector
         """
         start_rad = radians(start_deg)
         end_rad = radians(end_deg)
@@ -157,7 +160,7 @@ class Chart(DotDict):
         Generate the zodiac sign wheel.
 
         Returns:
-            list[Tag]: A list of SVG elements representing the sign wheel.
+            list[str]: A list of SVG elements representing the sign wheel
         """
         radius = self.max_radius
 
@@ -390,11 +393,11 @@ class Chart(DotDict):
         Adjust spacing between celestial bodies to avoid overlap.
 
         Args:
-            degrees (list[float]): sorted normalized degrees of celestial bodies.
-            min_degree (float): Minimum allowed degree separation.
+            degrees (list[float]): Sorted normalized degrees of celestial bodies
+            min_degree (float): Minimum allowed degree separation
 
         Returns:
-            list[float]: Adjusted degrees of celestial bodies.
+            list[float]: Adjusted degrees of celestial bodies
         """
         step = min_degree + 0.1  # prevent overlap for float precision
         n = len(degrees)
@@ -583,7 +586,7 @@ class Chart(DotDict):
         Calculate the vertices (start and end degrees) of each house.
 
         Returns:
-            list[tuple[float, float]]: A list of tuples containing start and end degrees for each house.
+            list[tuple[float, float]]: A list of tuples containing start and end degrees for each house
         """
         vertices = []
         for i in range(12):
@@ -601,6 +604,9 @@ class Chart(DotDict):
     def bg_colors(self) -> list[str]:
         """
         Get the background colors for each house.
+
+        Returns:
+            list[str]: A list of hex color strings for house backgrounds
         """
 
         def hex_to_rgb(hex_value):

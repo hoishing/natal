@@ -3,8 +3,12 @@ from math import floor
 
 
 class MovableBody(Body):
-    """
-    Represents a movable celestial body with additional properties.
+    """A celestial body that can move and have aspects.
+
+    Attributes:
+        degree (float): Position in degrees (0-360)
+        speed (float): Movement speed (negative for retrograde)
+        normalized_degree (float): Position relative to Ascendant
     """
 
     degree: float = 0
@@ -13,21 +17,19 @@ class MovableBody(Body):
 
     @property
     def signed_deg(self) -> int:
-        """
-        Degree in sign, between 0 and 29.
+        """Get degree within current sign.
 
         Returns:
-            int: The degree in sign.
+            int: Degree position within sign (0-29)
         """
         return int(self.degree % 30)
 
     @property
     def minute(self) -> int:
-        """
-        Minute of the body, between 0 and 59.
+        """Get arc minutes of position.
 
         Returns:
-            int: The minute of the body.
+            int: Arc minutes of position (0-59)
         """
         minutes = (self.degree % 30 - self.signed_deg) * 60
         return floor(minutes)
@@ -144,12 +146,18 @@ class House(MovableBody):
 
 
 class Aspect(DotDict):
-    """
-    Represents an aspect between two celestial bodies.
+    """An aspect between two celestial bodies.
+
+    Attributes:
+        body1 (Aspectable): First body in aspect
+        body2 (Aspectable): Second body in aspect  
+        aspect_member (AspectMember): Type of aspect
+        applying (bool | None): Whether aspect is applying
+        orb (float | None): Orb in degrees from exact aspect
     """
 
     body1: Aspectable
     body2: Aspectable
     aspect_member: AspectMember
-    applying: bool = None
-    orb: float = None
+    applying: bool | None = None
+    orb: float | None = None

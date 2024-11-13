@@ -6,28 +6,26 @@ from typing import Iterable
 
 
 def color_hex(name: str, config: Config = Config()) -> str:
-    """
-    Get color hex from name and Config instance, default to 'natal_config.yml'.
+    """Get color hex code from name and config.
 
     Args:
-        name (str): The name of the color.
-        config (Config): The configuration instance.
+        name (str): Color name to look up
+        config (Config): Config containing color definitions
 
     Returns:
-        str: The hex value of the color.
+        str: Hex color code string
     """
     return getattr(config.colors, name)
 
 
 def pairs[T](iterable: Iterable[T]) -> list[tuple[T, T]]:
-    """
-    Generate pairs of elements from an iterable.
+    """Generate unique pairs of elements from an iterable.
 
     Args:
-        iterable (Iterable[T]): The input iterable.
+        iterable (Iterable[T]): Source of elements to pair
 
     Returns:
-        list[tuple[T, T]]: A list of tuples, each containing a pair of elements.
+        list[tuple[T, T]]: List of element pairs as tuples
     """
     output = []
     for i in range(len(iterable)):
@@ -37,28 +35,26 @@ def pairs[T](iterable: Iterable[T]) -> list[tuple[T, T]]:
 
 
 def member_of[T](const: list[T], name: str) -> T:
-    """
-    Get a member from a list of constants by name.
+    """Get a member from a list of constants by name.
 
     Args:
-        const (list[T]): The list of constants.
-        name (str): The name of the member.
+        const (list[T]): List of constant definitions
+        name (str): Name to look up
 
     Returns:
-        T: The member with the specified name.
+        T: Matching constant member
     """
     idx: int = const["name"].index(name)
     return {prop: const[prop][idx] for prop in const.model_fields}
 
 
 def str_to_dt(dt_str: str) -> datetime:
-    """
-    Convert a string to a datetime object.
+    """Convert string to datetime object.
 
     Args:
-        dt_str (str): The datetime string.
+        dt_str (str): Datetime string in format "YYYY-MM-DD HH:MM"
 
     Returns:
-        datetime: The corresponding datetime object.
+        datetime: Parsed datetime object
     """
     return datetime.strptime(dt_str, "%Y-%m-%d %H:%M")
