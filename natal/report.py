@@ -64,7 +64,7 @@ class Report:
                         element_count[element.name] += 1
                 row.append(symbols)
                 quality_count += count
-            row.append(str(quality_count))
+            row.append(quality_count)
             grid.append(row)
         grid.append(
             ["sum"] + list(element_count.values()) + [sum(element_count.values())]
@@ -176,7 +176,7 @@ class Report:
             row2 += section(
                 f"{self.data2.name}'s Celestial Bodies", self.celestial_body2
             )
-        row2 += section(report.cross_ref.title, report.cross_ref.grid)
+        row2 += section(self.cross_ref.title, self.cross_ref.grid)
         row3 = section("Signs", self.signs) + section("Houses", self.houses)
         css = Path(__file__).parent / "report.css"
         html = style(css.read_text()) + main(
