@@ -4,6 +4,7 @@
 .DS_Store
 try*
 ref/
+report.pdf
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
