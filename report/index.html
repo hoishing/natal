@@ -549,9 +549,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#natal.report.Report.element_vs_quality" class="md-nav__link">
+  <a href="#natal.report.Report.element_vs_modality" class="md-nav__link">
     <span class="md-ellipsis">
-      element_vs_quality
+      element_vs_modality
     </span>
   </a>
   
@@ -860,9 +860,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#natal.report.Report.element_vs_quality" class="md-nav__link">
+  <a href="#natal.report.Report.element_vs_modality" class="md-nav__link">
     <span class="md-ellipsis">
-      element_vs_quality
+      element_vs_modality
     </span>
   </a>
   
@@ -1410,34 +1410,34 @@
 <a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">output</span><span class="p">))</span>
 <a id="__codelineno-0-72" name="__codelineno-0-72"></a>
 <a id="__codelineno-0-73" name="__codelineno-0-73"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">def</span> <span class="nf">element_vs_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grid</span><span class="p">:</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">def</span> <span class="nf">element_vs_modality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grid</span><span class="p">:</span>
 <a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="sd">        Generates a grid comparing elements and qualities.</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="sd">        Generates a grid comparing elements and modalities.</span>
 <a id="__codelineno-0-77" name="__codelineno-0-77"></a>
 <a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="sd">            A grid comparing elements and qualities.</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="sd">            A grid comparing elements and modalities.</span>
 <a id="__codelineno-0-80" name="__codelineno-0-80"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="n">aspectable1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">aspectables</span>
 <a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="n">element_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">svg_of</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">ELEMENTS</span><span class="p">]</span>
 <a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">element_symbols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]]</span>
 <a id="__codelineno-0-84" name="__codelineno-0-84"></a>        <span class="n">element_count</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="k">for</span> <span class="n">quality</span> <span class="ow">in</span> <span class="n">QUALITY_MEMBERS</span><span class="p">:</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">svg_of</span><span class="p">(</span><span class="n">quality</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="n">quality_count</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="k">for</span> <span class="n">modality</span> <span class="ow">in</span> <span class="n">MODALITY_MEMBERS</span><span class="p">:</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">svg_of</span><span class="p">(</span><span class="n">modality</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="n">modality_count</span> <span class="o">=</span> <span class="mi">0</span>
 <a id="__codelineno-0-88" name="__codelineno-0-88"></a>            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ELEMENTS</span><span class="p">:</span>
 <a id="__codelineno-0-89" name="__codelineno-0-89"></a>                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
 <a id="__codelineno-0-90" name="__codelineno-0-90"></a>                <span class="n">symbols</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <a id="__codelineno-0-91" name="__codelineno-0-91"></a>                <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">aspectable1</span><span class="p">:</span>
 <a id="__codelineno-0-92" name="__codelineno-0-92"></a>                    <span class="k">if</span> <span class="p">(</span>
 <a id="__codelineno-0-93" name="__codelineno-0-93"></a>                        <span class="n">body</span><span class="o">.</span><span class="n">sign</span><span class="o">.</span><span class="n">element</span> <span class="o">==</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a>                        <span class="ow">and</span> <span class="n">body</span><span class="o">.</span><span class="n">sign</span><span class="o">.</span><span class="n">quality</span> <span class="o">==</span> <span class="n">quality</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>                        <span class="ow">and</span> <span class="n">body</span><span class="o">.</span><span class="n">sign</span><span class="o">.</span><span class="n">modality</span> <span class="o">==</span> <span class="n">modality</span><span class="o">.</span><span class="n">name</span>
 <a id="__codelineno-0-95" name="__codelineno-0-95"></a>                    <span class="p">):</span>
 <a id="__codelineno-0-96" name="__codelineno-0-96"></a>                        <span class="n">symbols</span> <span class="o">+=</span> <span class="n">svg_of</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <a id="__codelineno-0-97" name="__codelineno-0-97"></a>                        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
 <a id="__codelineno-0-98" name="__codelineno-0-98"></a>                        <span class="n">element_count</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 <a id="__codelineno-0-99" name="__codelineno-0-99"></a>                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100"></a>                <span class="n">quality_count</span> <span class="o">+=</span> <span class="n">count</span>
-<a id="__codelineno-0-101" name="__codelineno-0-101"></a>            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">quality_count</span><span class="p">)</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>                <span class="n">modality_count</span> <span class="o">+=</span> <span class="n">count</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modality_count</span><span class="p">)</span>
 <a id="__codelineno-0-102" name="__codelineno-0-102"></a>            <span class="n">grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 <a id="__codelineno-0-103" name="__codelineno-0-103"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <a id="__codelineno-0-104" name="__codelineno-0-104"></a>            <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">element_count</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">element_count</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
@@ -1589,7 +1589,7 @@
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a>        <span class="n">chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">data2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data2</span><span class="p">)</span>
 <a id="__codelineno-0-251" name="__codelineno-0-251"></a>        <span class="n">row1</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span>
 <a id="__codelineno-0-252" name="__codelineno-0-252"></a>            <span class="n">section</span><span class="p">(</span><span class="s2">&quot;Birth Info&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basic_info</span><span class="p">)</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a>            <span class="o">+</span> <span class="n">section</span><span class="p">(</span><span class="s2">&quot;Elements, Modality &amp; Polarity&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_vs_quality</span><span class="p">)</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a>            <span class="o">+</span> <span class="n">section</span><span class="p">(</span><span class="s2">&quot;Elements, Modality &amp; Polarity&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_vs_modality</span><span class="p">)</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a>            <span class="o">+</span> <span class="n">section</span><span class="p">(</span><span class="s2">&quot;Hemisphere &amp; Quadrants&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quadrants_vs_hemisphere</span><span class="p">),</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>            <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;info_col&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-256" name="__codelineno-0-256"></a>        <span class="p">)</span> <span class="o">+</span> <span class="n">div</span><span class="p">(</span><span class="n">chart</span><span class="o">.</span><span class="n">svg</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;chart&quot;</span><span class="p">)</span>
@@ -1816,8 +1816,8 @@
 
 
 
-<h4 id="natal.report.Report.element_vs_quality" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">element_vs_quality</span><span class="p">:</span> <span class="n">Grid</span></code>
+<h4 id="natal.report.Report.element_vs_modality" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">element_vs_modality</span><span class="p">:</span> <span class="n">Grid</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -1828,7 +1828,7 @@
 
     <div class="doc doc-contents ">
 
-        <p>Generates a grid comparing elements and qualities.</p>
+        <p>Generates a grid comparing elements and modalities.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -1846,7 +1846,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A grid comparing elements and qualities.</p>
+                <p>A grid comparing elements and modalities.</p>
               </div>
             </td>
           </tr>
