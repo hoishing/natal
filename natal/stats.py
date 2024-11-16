@@ -13,7 +13,7 @@ from tagit import div, h4
 from tabulate import tabulate
 from typing import Iterable, Literal, NamedTuple, Callable
 
-DistKind = Literal["element", "quality", "polarity"]
+DistKind = Literal["element", "modality", "polarity"]
 ReportKind = Literal["markdown", "html"]
 Grid = list[Iterable[str | int]]
 
@@ -63,11 +63,11 @@ class Stats:
 
     def distribution(self, kind: DistKind) -> StatData:
         """
-        Generate distribution statistics for elements, qualities, or polarities.
+        Generate distribution statistics for elements, modalities, or polarities.
 
         Args:
             kind (DistKind): The type of distribution to calculate. 
-                Must be one of "element", "quality", or "polarity".
+                Must be one of "element", "modality", or "polarity".
 
         Returns:
             StatData: A named tuple containing the title and grid of distribution data, 

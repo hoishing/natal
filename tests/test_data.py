@@ -125,7 +125,7 @@ def test_signs(data1: Data, signs: dict) -> None:
         assert round(sign.degree, 2) == signs[sign.name][0]
         assert sign.ruler == signs[sign.name][1]
         assert sign.color == signs[sign.name][2]
-        assert sign.quality == signs[sign.name][3]
+        assert sign.modality == signs[sign.name][3]
         assert sign.element == signs[sign.name][4]
         assert sign.polarity == signs[sign.name][5]
 
@@ -157,6 +157,7 @@ def test_fix_orb_eq_0(data1: Data) -> None:
     data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
     assert len(data1.aspects) == 24
     assert len(data.aspects) == 14
+
 
 def test_house_sys(data1: Data) -> None:
     data = Data(data1.name, data1.city, data1.dt, config=Config(house_sys="W"))

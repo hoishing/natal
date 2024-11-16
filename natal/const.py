@@ -1,4 +1,3 @@
-
 """
 Constants and utility functions for the natal package.
 """
@@ -44,9 +43,9 @@ class ElementMember(Body):
     ...
 
 
-class QualityMember(Body):
+class ModalityMember(Body):
     """
-    Represents a quality in raw data.
+    Represents a modality in raw data.
     (cardinal, fixed, mutable)
     """
 
@@ -98,7 +97,7 @@ class SignMember(Body):
     fall: str
     classic_ruler: str
     classic_detriment: str
-    quality: str
+    modality: str
     element: str
     polarity: str
 
@@ -141,7 +140,7 @@ def get_members(raw_data: dict) -> list[DotDict]:
 PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
 EXTRA_NAMES = ["asc_node", "chiron", "ceres", "pallas", "juno", "vesta"]
 ELEMENT_NAMES = ["fire", "earth", "air", "water"]
-QUALITY_NAMES = ["cardinal", "fixed", "mutable"]
+MODALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
 SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
 HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
@@ -170,8 +169,8 @@ ELEMENTS = dict(
     color=["fire", "earth", "air", "water"],
 )
 
-QUALITY = dict(
-    name=QUALITY_NAMES,
+MODALITY = dict(
+    name=MODALITY_NAMES,
     symbol="⟑⊟𛰣",
     value=[0, 1, 2],
     color=["fire", "earth", "air"],
@@ -191,11 +190,37 @@ SIGNS = dict(
     color=["fire", "earth", "air", "water"] * 3,
     ruler="mars venus mercury moon sun mercury venus pluto jupiter saturn uranus neptune".split(),
     detriment="venus pluto jupiter saturn uranus neptune mars venus mercury moon sun mercury".split(),
-    exaltation=['sun', 'moon', '', 'jupiter', '', 'mercury', 'saturn', '', '', 'mars', '', 'venus'],
-    fall=['saturn', '', '', 'mars', '', 'venus', 'sun', 'moon', '', 'jupiter', '', 'mercury'],
+    exaltation=[
+        "sun",
+        "moon",
+        "",
+        "jupiter",
+        "",
+        "mercury",
+        "saturn",
+        "",
+        "",
+        "mars",
+        "",
+        "venus",
+    ],
+    fall=[
+        "saturn",
+        "",
+        "",
+        "mars",
+        "",
+        "venus",
+        "sun",
+        "moon",
+        "",
+        "jupiter",
+        "",
+        "mercury",
+    ],
     classic_ruler="mars venus mercury moon sun mercury venus mars jupiter saturn saturn jupiter".split(),
     classic_detriment="venus mars jupiter saturn saturn jupiter mars venus mercury moon sun mercury".split(),
-    quality=list(QUALITY["name"]) * 4,
+    modality=list(MODALITY["name"]) * 4,
     element=list(ELEMENTS["name"]) * 3,
     polarity=list(POLARITY["name"]) * 6,
 )
@@ -226,7 +251,7 @@ VERTICES = dict(
 PLANET_MEMBERS = get_members(PLANETS)
 ASPECT_MEMBERS = get_members(ASPECTS)
 ELEMENT_MEMBERS = get_members(ELEMENTS)
-QUALITY_MEMBERS = get_members(QUALITY)
+MODALITY_MEMBERS = get_members(MODALITY)
 POLARITY_MEMBERS = get_members(POLARITY)
 SIGN_MEMBERS = get_members(SIGNS)
 HOUSE_MEMBERS = get_members(HOUSES)

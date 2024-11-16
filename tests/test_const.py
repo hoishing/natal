@@ -5,7 +5,7 @@ def test_const():
     assert len(PLANET_MEMBERS) == 10
     assert len(ASPECT_MEMBERS) == 5
     assert len(ELEMENT_MEMBERS) == 4
-    assert len(QUALITY_MEMBERS) == 3
+    assert len(MODALITY_MEMBERS) == 3
     assert len(POLARITY_MEMBERS) == 2
     assert len(SIGN_MEMBERS) == 12
     assert len(HOUSE_MEMBERS) == 12
@@ -30,6 +30,7 @@ def test_house_member():
     house = HOUSE_MEMBERS[3]
     assert house.name == "four"
     assert house.color == "water"
+
 
 def test_extra_member():
     node = EXTRA_MEMBERS[0]

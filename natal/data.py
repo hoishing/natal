@@ -206,7 +206,7 @@ class Data(DotDict):
             op += f"{e.name}: {e.signed_dms}\n"
         op += "Signs:\n"
         for e in self.signs:
-            op += f"{e.name}: degree={e.degree:.2f}, ruler={e.ruler}, color={e.color}, quality={e.quality}, element={e.element}, polarity={e.polarity}\n"
+            op += f"{e.name}: degree={e.degree:.2f}, ruler={e.ruler}, color={e.color}, modality={e.modality}, element={e.element}, polarity={e.polarity}\n"
         op += "Aspects:\n"
         for e in self.aspects:
             op += f"{e.body1.name} {e.aspect_member.symbol} {e.body2.name}: {e.aspect_member.color}\n"

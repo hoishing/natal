@@ -28,9 +28,9 @@ def element_grid():
 
 
 @fixture
-def quality_grid():
+def modality_grid():
     return [
-        ("quality", "sum", "bodies"),
+        ("modality", "sum", "bodies"),
         ("fixed", 5, "sun ♉, mercury ♉, jupiter ♉, uranus ♏, asc_node ♏"),
         ("cardinal", 7, "moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, asc ♎, mc ♋"),
         ("mutable", 1, "neptune ♐"),
@@ -254,9 +254,9 @@ def inner_planets_cross_ref_grid():
 # fmt: on
 
 
-def test_distribution_grid(stats, element_grid, quality_grid, polarity_grid):
+def test_distribution_grid(stats, element_grid, modality_grid, polarity_grid):
     assert stats.distribution("element").grid == element_grid
-    assert stats.distribution("quality").grid == quality_grid
+    assert stats.distribution("modality").grid == modality_grid
     assert stats.distribution("polarity").grid == polarity_grid
 
 

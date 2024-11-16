@@ -40,8 +40,8 @@ def test_basic_info(report):
     assert basic_info[2][0] == "birth"
 
 
-def test_element_vs_quality(report):
-    grid = report.element_vs_quality
+def test_element_vs_modality(report):
+    grid = report.element_vs_modality
     assert len(grid) > 0
     assert grid[4] == ["sum", 2, 2, 5, 4, 13]
     assert [g[5] for g in grid[:5]] == ["sum", 7, 5, 1, 13]
