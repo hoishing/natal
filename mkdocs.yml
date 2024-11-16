@@ -39,7 +39,7 @@ theme:
         - navigation.instant
         - navigation.tracking
         # - navigation.sections
-        # - navigation.expand
+        - navigation.expand
         # - toc.integrate
 
 extra:
@@ -58,6 +58,7 @@ plugins:
     - search:
           lang: en
     - mkdocstrings:
+          default_handler: python
           handlers:
               python:
                   options:
@@ -74,6 +75,14 @@ markdown_extensions:
 
 nav:
     - Quick Start: index.md
-    - References: ref.md
+    - References:
+          - Chart: chart.md
+          - Classes: classes.md
+          - Config: config.md
+          - Constants: const.md
+          - Data: data.md
+          - Report: report.md
+          - Stats: stats.md
+          - Utils: utils.md
     - License: license.md
     - Author: https://hoishing.github.io

@@ -24,7 +24,7 @@ from tagit import div, main, style, svg, table, td, tr
 from typing import Iterable
 from weasyprint import HTML
 
-Grid = list[Iterable[str | int]]
+type Grid = list[Iterable[str | int]]
 ELEMENTS = [ELEMENT_MEMBERS[i] for i in (0, 2, 3, 1)]
 TEXT_COLOR = "#595959"
 symbol_name_map = {
@@ -38,8 +38,8 @@ class Report:
     Generates an astrological report based on provided data.
 
     Attributes:
-        data1 (Data): The primary data for the report.
-        data2 (Data | None): The secondary data for the report, if any.
+        data1: The primary data for the report.
+        data2: The secondary data for the report, if any.
     """
 
     def __init__(self, data1: Data, data2: Data | None = None):
@@ -47,11 +47,11 @@ class Report:
         Initializes the Report with the given data.
 
         Args:
-            data1 (Data): The primary data for the report.
-            data2 (Data | None): The secondary data for the report, if any.
+            data1: The primary data for the report.
+            data2: The secondary data for the report, if any.
         """
-        self.data1 = data1
-        self.data2 = data2
+        self.data1: Data = data1
+        self.data2: Data = data2
 
     @property
     def basic_info(self) -> Grid:
@@ -59,7 +59,7 @@ class Report:
         Generates basic information about the provided data.
 
         Returns:
-            Grid: A grid containing the name, city, and birth date/time.
+            A grid containing the name, city, and birth date/time.
         """
         time_fmt = "%Y-%m-%d %H:%M"
         dt1 = self.data1.dt.strftime(time_fmt)
@@ -76,7 +76,7 @@ class Report:
         Generates a grid comparing elements and qualities.
 
         Returns:
-            Grid: A grid comparing elements and qualities.
+            A grid comparing elements and qualities.
         """
         aspectable1 = self.data1.aspectables
         element_symbols = [svg_of(ele.name) for ele in ELEMENTS]
@@ -119,7 +119,7 @@ class Report:
         Generates a grid comparing quadrants and hemispheres.
 
         Returns:
-            Grid: A grid comparing quadrants and hemispheres.
+            A grid comparing quadrants and hemispheres.
         """
         q = self.data1.quadrants
         first_q = [svg_of(body.name) for body in q[0]]
@@ -143,7 +143,7 @@ class Report:
         Generates a grid of signs and their corresponding bodies.
 
         Returns:
-            Grid: A grid of signs and their corresponding bodies.
+            A grid of signs and their corresponding bodies
         """
         grid = [["sign", "bodies", "sum"]]
         for sign in SIGN_MEMBERS:
@@ -161,7 +161,7 @@ class Report:
         Generates a grid of houses and their corresponding bodies.
 
         Returns:
-            Grid: A grid of houses and their corresponding bodies.
+            A grid of houses and their corresponding bodies.
         """
         grid = [["house", "cusp", "bodies", "sum"]]
         for hse in self.data1.houses:
@@ -205,10 +205,10 @@ class Report:
         Generates a grid of celestial bodies for the given data.
 
         Args:
-            data (Data): The data for which to generate the grid.
+            data: The data for which to generate the grid.
 
         Returns:
-            Grid: A grid of celestial bodies for the given data.
+            A grid of celestial bodies for the given data.
         """
         grid = [("body", "sign", "house", "dignity")]
         for body in data.aspectables:
@@ -276,10 +276,10 @@ class Report:
         Creates a PDF from the given HTML string.
 
         Args:
-            html (str): The HTML string to convert to PDF.
+            html: The HTML string to convert to PDF.
 
         Returns:
-            BytesIO: A BytesIO object containing the PDF data.
+            A BytesIO object containing the PDF data.
         """
         fp = BytesIO()
         HTML(string=html).write_pdf(fp)
@@ -292,12 +292,12 @@ class Report:
 def html_table_of(grid: Grid) -> str:
     """
     Converts a grid of data into an HTML table.
-
-    Args:
-        grid (Grid): The grid of data to convert.
-
-    Returns:
-        str: The HTML table as a string.
+    
+    # Arguments
+    * grid - The grid of data to convert
+    
+    # Returns
+    String containing the HTML table
     """
     rows = []
     for row in grid:
@@ -316,11 +316,11 @@ def svg_of(name: str, scale: float = 0.5) -> str:
     Generates an SVG representation of a given symbol name.
 
     Args:
-        name (str): The name of the symbol.
-        scale (float, optional): The scale of the SVG. Defaults to 0.5.
+        name: The name of the symbol.
+        scale: The scale of the SVG. Defaults to 0.5.
 
     Returns:
-        str: The SVG representation of the symbol.
+        The SVG representation of the symbol.
     """
     if not name:
         return ""
@@ -348,11 +348,11 @@ def section(title: str, grid: Grid) -> str:
     Creates an HTML section with a title and a table of data.
 
     Args:
-        title (str): The title of the section.
-        grid (Grid): The grid of data to include in the section.
+        title: The title of the section.
+        grid: The grid of data to include in the section.
 
     Returns:
-        str: The HTML section as a string.
+        The HTML section as a string.
     """
     return div(
         div(title, class_="title") + html_table_of(grid),

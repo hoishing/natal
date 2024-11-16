@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.7.6"
+version = "0.7.7"
 description = "create Natal Chart with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
@@ -27,6 +27,7 @@ pytest = "^8.3.2"
 toml = "^0.10.2"
 mkdocs-material = {extras = ["imaging"], version = "^9.5.44"}
 mkdocstrings = {extras = ["python"], version = "^0.27.0"}
+watchdog = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
