@@ -57,7 +57,7 @@ class MovableBody(Body):
     @property
     def sign(self) -> SignMember:
         """
-        Return sign name, symbol, element, quality, and polarity.
+        Return sign name, symbol, element, modality, and polarity.
 
         Returns:
             SignMember: The sign member.

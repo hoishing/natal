@@ -18,7 +18,7 @@
 - timezone, latitude and longitude database from [GeoNames]
     - auto aware of daylight saving for a given time and location
 - natal chart data statistics
-    - element, quality, and polarity counts
+    - element, modality, and polarity counts
     - planets in each houses
     - quadrant and hemisphere distribution
     - aspect pair counts
@@ -120,7 +120,7 @@ sun.sign.color # earth
 sun.sign.ruler # venus
 sun.sign.classic_ruler # venus
 sun.sign.element # earth
-sun.sign.quality # fixed
+sun.sign.modality # fixed
 sun.sign.polarity # negative
 
 # Aspect object
@@ -170,9 +170,9 @@ print(stats.full_report(kind="markdown"))
 | air       |    3    | venus ♊, pluto ♎, mc ♊                    |
 
 
-# Quality Distribution (MiMi)
+# Modality Distribution (MiMi)
 
-| quality   |  count  | bodies                                                     |
+| modality  |  count  | bodies                                                     |
 |-----------|---------|------------------------------------------------------------|
 | fixed     |    4    | sun ♉, mars ♌, uranus ♏, asc_node ♌                    |
 | cardinal  |    3    | moon ♋, mercury ♈, pluto ♎                              |

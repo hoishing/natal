@@ -14,7 +14,7 @@ from natal.const import (
     ELEMENT_MEMBERS,
     EXTRA_MEMBERS,
     PLANET_MEMBERS,
-    QUALITY_MEMBERS,
+    MODALITY_MEMBERS,
     SIGN_MEMBERS,
     VERTEX_MEMBERS,
 )
@@ -71,34 +71,34 @@ class Report:
         return list(zip(*output))
 
     @property
-    def element_vs_quality(self) -> Grid:
+    def element_vs_modality(self) -> Grid:
         """
-        Generates a grid comparing elements and qualities.
+        Generates a grid comparing elements and modalities.
 
         Returns:
-            A grid comparing elements and qualities.
+            A grid comparing elements and modalities.
         """
         aspectable1 = self.data1.aspectables
         element_symbols = [svg_of(ele.name) for ele in ELEMENTS]
         grid = [[""] + element_symbols + ["sum"]]
         element_count = defaultdict(int)
-        for quality in QUALITY_MEMBERS:
-            row = [svg_of(quality.name)]
-            quality_count = 0
+        for modality in MODALITY_MEMBERS:
+            row = [svg_of(modality.name)]
+            modality_count = 0
             for element in ELEMENTS:
                 count = 0
                 symbols = ""
                 for body in aspectable1:
                     if (
                         body.sign.element == element.name
-                        and body.sign.quality == quality.name
+                        and body.sign.modality == modality.name
                     ):
                         symbols += svg_of(body.name)
                         count += 1
                         element_count[element.name] += 1
                 row.append(symbols)
-                quality_count += count
-            row.append(quality_count)
+                modality_count += count
+            row.append(modality_count)
             grid.append(row)
         grid.append(
             ["sum"] + list(element_count.values()) + [sum(element_count.values())]
@@ -250,7 +250,7 @@ class Report:
         chart = Chart(self.data1, width=400, data2=self.data2)
         row1 = div(
             section("Birth Info", self.basic_info)
-            + section("Elements, Modality & Polarity", self.element_vs_quality)
+            + section("Elements, Modality & Polarity", self.element_vs_modality)
             + section("Hemisphere & Quadrants", self.quadrants_vs_hemisphere),
             class_="info_col",
         ) + div(chart.svg, class_="chart")
@@ -292,10 +292,10 @@ class Report:
 def html_table_of(grid: Grid) -> str:
     """
     Converts a grid of data into an HTML table.
-    
+
     # Arguments
     * grid - The grid of data to convert
-    
+
     # Returns
     String containing the HTML table
     """
