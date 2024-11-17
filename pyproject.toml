@@ -25,10 +25,23 @@ optional = true
 ipykernel = "^6.29.5"
 pytest = "^8.3.2"
 toml = "^0.10.2"
-mkdocs-material = {extras = ["imaging"], version = "^9.5.44"}
-mkdocstrings = {extras = ["python"], version = "^0.27.0"}
+mkdocs-material = { extras = ["imaging"], version = "^9.5.44" }
+mkdocstrings = { extras = ["python"], version = "^0.27.0" }
 watchdog = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.isort]
+combine-as-imports = true
+split-on-trailing-comma = true
+forced-separate = []
+section-order = ["*"]
+no-lines-before = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]

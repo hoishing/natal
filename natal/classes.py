@@ -1,4 +1,4 @@
-from natal.const import *
+from natal.const import Body, SignMember, AspectMember, SIGN_MEMBERS, DotDict
 from math import floor
 
 
@@ -36,8 +36,7 @@ class MovableBody(Body):
 
     @property
     def retro(self) -> bool:
-        """
-        Retrograde status.
+        """Retrograde status
 
         Returns:
             bool: True if retrograde, False otherwise.
@@ -46,8 +45,7 @@ class MovableBody(Body):
 
     @property
     def rx(self) -> str:
-        """
-        Retrograde symbol.
+        """Retrograde symbol
 
         Returns:
             str: The retrograde symbol if retrograde, empty string otherwise.
@@ -56,8 +54,7 @@ class MovableBody(Body):
 
     @property
     def sign(self) -> SignMember:
-        """
-        Return sign name, symbol, element, modality, and polarity.
+        """Return sign name, symbol, element, modality, and polarity
 
         Returns:
             SignMember: The sign member.
@@ -67,8 +64,7 @@ class MovableBody(Body):
 
     @property
     def dms(self) -> str:
-        """
-        Degree Minute Second representation of the position.
+        """Degree Minute Second representation of the position
 
         Returns:
             str: The DMS representation.
@@ -80,8 +76,7 @@ class MovableBody(Body):
 
     @property
     def signed_dms(self) -> str:
-        """
-        Degree Minute representation with sign.
+        """Degree Minute representation with sign
 
         Returns:
             str: The signed DMS representation.
@@ -93,49 +88,37 @@ class MovableBody(Body):
 
 
 class Planet(MovableBody):
-    """
-    Represents a planet.
-    """
+    """Represents a planet"""
 
     ...
 
 
 class Extra(MovableBody):
-    """
-    Represents an extra celestial body (e.g. Moon's Node and Asteroids).
-    """
+    """Represents an extra celestial body (e.g. Moon's Node and Asteroids)"""
 
     ...
 
 
 class Vertex(MovableBody):
-    """
-    Represents a vertex (Asc, Dsc, MC, IC).
-    """
+    """Represents a vertex (Asc, Dsc, MC, IC)"""
 
     ...
 
 
 class Aspectable(MovableBody):
-    """
-    Represents a celestial body that can form aspects.
-    """
+    """Represents a celestial body that can form aspects"""
 
     ...
 
 
 class Sign(SignMember):
-    """
-    alias to SignMember
-    """
+    """alias to SignMember"""
 
     ...
 
 
 class House(MovableBody):
-    """
-    Represents a house.
-    """
+    """Represents a house"""
 
     ruler: str = None
     ruler_sign: str = None
@@ -150,7 +133,7 @@ class Aspect(DotDict):
 
     Attributes:
         body1 (Aspectable): First body in aspect
-        body2 (Aspectable): Second body in aspect  
+        body2 (Aspectable): Second body in aspect
         aspect_member (AspectMember): Type of aspect
         applying (bool | None): Whether aspect is applying
         orb (float | None): Orb in degrees from exact aspect

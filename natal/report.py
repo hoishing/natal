@@ -240,6 +240,11 @@ class Report:
         return StatData(stats.cross_ref.title, grid)
 
     @property
+    def orbs(self) -> Grid:
+        orb = self.data1.config.orb
+        return [["aspect", "orb"]] + [[svg_of(aspect), orb[aspect]] for aspect in orb]
+
+    @property
     def full_report(self) -> str:
         """
         Generates the full astrological report as an HTML string.
@@ -262,7 +267,11 @@ class Report:
                 f"{self.data2.name}'s Celestial Bodies", self.celestial_body2
             )
         row2 += section(self.cross_ref.title, self.cross_ref.grid)
-        row3 = section("Signs", self.signs) + section("Houses", self.houses)
+        row3 = (
+            section("Signs", self.signs)
+            + section("Houses", self.houses)
+            + section("Orbs", self.orbs)
+        )
         css = Path(__file__).parent / "report.css"
         html = style(css.read_text()) + main(
             div(row1, class_="row1")
@@ -363,18 +372,6 @@ def section(title: str, grid: Grid) -> str:
 # sample data ================================================================
 
 if __name__ == "__main__":
-    person1 = {
-        "name": "Shing",
-        "city": "Hong Kong",
-        "dt": "1976-04-20 18:58",
-    }
-
-    person2 = {
-        "name": "Belle",
-        "city": "Hong Kong",
-        "dt": "2011-01-23 08:44",
-    }
-
     orb = Orb(
         conjunction=2,
         opposition=2,
@@ -383,9 +380,23 @@ if __name__ == "__main__":
         sextile=1,
     )
 
-    data1 = Data(**person1, config=Config(theme_type="light", orb=orb))
-    data2 = Data(**person2)
-    report = Report(data1, data2)
+    mimi = Data(
+        name="MiMi",
+        city="Taipei",
+        dt="1980-04-20 14:30",
+        config=Config(theme_type="mono", orb=orb),
+    )
+
+    transit = Data(name="Transit", city="Taipei", dt="2024-01-01 13:30")
+
+    report = Report(mimi, transit)
     fp = report.create_pdf(report.full_report)
-    with open("report.pdf", "wb") as f:
+    with open("demo_report_mono.pdf", "wb") as f:
+        f.write(fp.getvalue())
+
+    mimi.config.theme_type = "light"
+    mimi.config.orb = Orb()
+    report.data2 = None
+    fp = report.create_pdf(report.full_report)
+    with open("demo_report_light.pdf", "wb") as f:
         f.write(fp.getvalue())

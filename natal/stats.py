@@ -11,7 +11,7 @@ from natal.classes import Aspect, Aspectable
 from natal.data import Data
 from tagit import div, h4
 from tabulate import tabulate
-from typing import Iterable, Literal, NamedTuple, Callable
+from typing import Iterable, Literal, NamedTuple
 
 DistKind = Literal["element", "modality", "polarity"]
 ReportKind = Literal["markdown", "html"]
@@ -26,6 +26,7 @@ class StatData(NamedTuple):
         title (str): The title of the statistical data.
         grid (Grid): A grid containing the statistical information.
     """
+
     title: str
     grid: Grid
 
@@ -66,11 +67,11 @@ class Stats:
         Generate distribution statistics for elements, modalities, or polarities.
 
         Args:
-            kind (DistKind): The type of distribution to calculate. 
+            kind (DistKind): The type of distribution to calculate.
                 Must be one of "element", "modality", or "polarity".
 
         Returns:
-            StatData: A named tuple containing the title and grid of distribution data, 
+            StatData: A named tuple containing the title and grid of distribution data,
                       where the grid includes the distribution type, count, and bodies.
         """
         title = f"{kind.capitalize()} Distribution ({self.data1.name})"
@@ -90,7 +91,7 @@ class Stats:
         Generate a grid of celestial body positions for the primary chart.
 
         Returns:
-            StatData: A named tuple containing the title and grid of celestial body data, 
+            StatData: A named tuple containing the title and grid of celestial body data,
                       where the grid includes body name, sign, house, and dignity.
         """
         title = f"Celestial Bodies ({self.data1.name})"
@@ -112,16 +113,16 @@ class Stats:
         Generate a grid of celestial body positions for the secondary chart.
 
         Returns:
-            StatData: A named tuple containing the title and grid of celestial body data 
+            StatData: A named tuple containing the title and grid of celestial body data
                       for the secondary chart, showing its bodies in the primary chart's context.
                       The grid includes body name, sign, house, and dignity.
-        
+
         Raises:
             AttributeError: If no secondary chart (data2) is available.
         """
         if not self.data2:
             raise AttributeError("No secondary chart available")
-        
+
         title = f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart"
         grid = [(self.data2.name, "sign", "house", "dignity")]
         for body in self.data2.aspectables:
@@ -141,7 +142,7 @@ class Stats:
         Generate a grid of house data for the primary chart.
 
         Returns:
-            StatData: A named tuple containing the title and grid of house data, 
+            StatData: A named tuple containing the title and grid of house data,
                       where the grid includes house number, cusp, ruler, ruler sign, and ruler house.
         """
         title = f"Houses ({self.data1.name})"
@@ -164,7 +165,7 @@ class Stats:
         Generate a grid of celestial body distribution in quadrants.
 
         Returns:
-            StatData: A named tuple containing the title and grid of quadrant distribution data, 
+            StatData: A named tuple containing the title and grid of quadrant distribution data,
                       where the grid includes quadrant name, body count, and body names.
         """
         title = f"Quadrants ({self.data1.name})"
@@ -191,13 +192,14 @@ class Stats:
         Generate a grid of celestial body distribution in hemispheres.
 
         Returns:
-            StatData: A named tuple containing the title and grid of hemisphere distribution data, 
+            StatData: A named tuple containing the title and grid of hemisphere distribution data,
                       where the grid includes hemisphere direction, body count, and body names.
         """
         title = f"Hemispheres ({self.data1.name})"
         grid = [("hemisphere", "sum", "bodies")]
         data = self.quadrant.grid[1:]
-        formatter: Callable[[int, int], str] = lambda a, b: (data[a][2] + ", " + data[b][2]).strip(" ,")
+        def formatter(a: int, b: int) -> str:
+            return (data[a][2] + ", " + data[b][2]).strip(" ,")
         left = ("←", data[0][1] + data[3][1], formatter(0, 3))
         right = ("→", data[1][1] + data[2][1], formatter(1, 2))
         top = ("↑", data[2][1] + data[3][1], formatter(2, 3))
@@ -210,7 +212,7 @@ class Stats:
         Generate a grid of aspects for the primary chart.
 
         Returns:
-            StatData: A named tuple containing the title and grid of aspect data, 
+            StatData: A named tuple containing the title and grid of aspect data,
                       where the grid includes body 1, aspect type, body 2, phase, and orb.
         """
         title = f"Aspects ({self.data1.name})"
@@ -223,15 +225,15 @@ class Stats:
         Generate a grid of composite aspects between two charts.
 
         Returns:
-            StatData: A named tuple containing the title and grid of composite aspect data, 
+            StatData: A named tuple containing the title and grid of composite aspect data,
                       where the grid includes body names from both charts, aspect type, phase, and orb.
-        
+
         Raises:
             AttributeError: If no secondary chart (data2) is available.
         """
         if not self.data2:
             raise AttributeError("No secondary chart available for composite aspects")
-        
+
         title = f"Aspects of {self.data2.name} vs {self.data1.name}"
         headers = [self.data2.name, "aspect", self.data1.name, "phase", "orb"]
         return StatData(title, _aspect_grid(self.composite_aspects, headers))
@@ -242,7 +244,7 @@ class Stats:
         Generate a grid for aspect cross-reference between charts or within a single chart.
 
         Returns:
-            StatData: A named tuple containing the title and grid of aspect cross-reference data, 
+            StatData: A named tuple containing the title and grid of aspect cross-reference data,
                       where the grid shows aspect connections between bodies, with a sum column.
         """
         name = (
@@ -307,11 +309,11 @@ class Stats:
         return output
 
     def table_of(
-        self, 
-        fn_name: str, 
-        kind: ReportKind, 
-        *fn_args: object, 
-        **markdown_options: object
+        self,
+        fn_name: str,
+        kind: ReportKind,
+        *fn_args: object,
+        **markdown_options: object,
     ) -> str:
         """
         Format a table with a title.
@@ -355,7 +357,7 @@ def _aspect_grid(aspects: list[Aspect], headers: list[str]) -> Grid:
         headers (list[str]): The headers for the aspect grid.
 
     Returns:
-        Grid: A grid containing aspect data, with each row representing an aspect 
+        Grid: A grid containing aspect data, with each row representing an aspect
               and columns including body names, aspect symbol, phase, and orb.
     """
     grid = [headers]
@@ -382,7 +384,7 @@ def dignity_of(body: Aspectable) -> str:
         body (Aspectable): The celestial body to check for dignity.
 
     Returns:
-        str: The dignity of the celestial body. 
+        str: The dignity of the celestial body.
              Possible values are "domicile", "detriment", "exaltation", "fall", or an empty string.
     """
     if body.name == (body.sign.classic_ruler or body.sign.ruler):
@@ -398,9 +400,11 @@ def dignity_of(body: Aspectable) -> str:
 
 # for quick testing
 if __name__ == "__main__":
-    from tests import person1, person2
+    from natal.config import Orb
 
-    shing = Data(**person1)
-    belle = Data(**person2)
-    stats = Stats(data1=shing, data2=belle)
+    mimi = Data(name="MiMi", city="Taipei", dt="1980-04-20 14:30")
+    mimi.config.orb = Orb(conjunction=2, opposition=2, square=2, trine=2, sextile=1)
+    transit = Data(name="Transit", city="Taipei", dt="2024-01-01 13:30")
+
+    stats = Stats(data1=mimi, data2=transit)
     print(stats.full_report(kind="markdown"))
