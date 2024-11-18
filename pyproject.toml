@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.8.0"
+version = "0.8.1"
 description = "create Natal Chart with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
@@ -10,7 +10,7 @@ readme = "README.md"
 packages = [{ include = "natal", from = "." }]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.12, <3.13"
 pyswisseph = "^2.10.3.2"
 pydantic = "^2.8.2"
 pandas = "^2.2.2"
@@ -32,16 +32,3 @@ watchdog = "^6.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.ruff.isort]
-combine-as-imports = true
-split-on-trailing-comma = true
-forced-separate = []
-section-order = ["*"]
-no-lines-before = [
-    "future",
-    "standard-library",
-    "third-party",
-    "first-party",
-    "local-folder",
-]
