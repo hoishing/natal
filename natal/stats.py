@@ -198,8 +198,10 @@ class Stats:
         title = f"Hemispheres ({self.data1.name})"
         grid = [("hemisphere", "sum", "bodies")]
         data = self.quadrant.grid[1:]
+
         def formatter(a: int, b: int) -> str:
             return (data[a][2] + ", " + data[b][2]).strip(" ,")
+
         left = ("←", data[0][1] + data[3][1], formatter(0, 3))
         right = ("→", data[1][1] + data[2][1], formatter(1, 2))
         top = ("↑", data[2][1] + data[3][1], formatter(2, 3))

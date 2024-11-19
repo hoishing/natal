@@ -2200,6 +2200,19 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
+name = "scour"
+version = "0.38.2"
+description = "Scour SVG Optimizer"
+optional = false
+python-versions = "*"
+files = [
+    {file = "scour-0.38.2.tar.gz", hash = "sha256:6881ec26660c130c5ecd996ac6f6b03939dd574198f50773f2508b81a68e0daf"},
+]
+
+[package.dependencies]
+six = ">=1.9.0"
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -2550,4 +2563,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12, <3.13"
-content-hash = "713b0edcd6286528cbd08fc3f53033e2b605d48947599c983c54a7d0a1c9119e"
+content-hash = "678f6a31e849b0a00b4e6625ceceb47ba8d76a7418867138d3f61d9c0d7dbbfc"

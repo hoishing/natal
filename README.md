@@ -41,9 +41,6 @@
 
 <img src="https://bit.ly/3ZygoNw" width=600/>
 
-[Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
-[GeoNames]: https://www.geonames.org
-
 ## Quick Start
 
 - installation
@@ -66,16 +63,16 @@ mimi = Data(
 Chart(mimi, width=600).svg
 
 # create transit data object
-current = Data(
-  name = "Current",
-  city = "Taipei",
-  dt = datetime.now()
+transit = Data(
+    name="Transit",
+    city="Taipei",
+    dt="2024-01-01 13:30",
 )
 
 # create a transit chart
 transit_chart = Chart(
     data1=mimi, 
-    data2=current, 
+    data2=transit, 
     width=600
 )
 
@@ -138,19 +135,7 @@ aspect.orb # 3.3424
 - statistics of Data object in tabular form
 
 ```python
-from natal import Data, Stats
-
-mimi = Data(
-    name = "MiMi",
-    city = "Taipei",
-    dt = "1980-04-20 14:30"
-)
-
-transit = Data(
-    name = "Transit",
-    city = "Taipei",
-    dt = "2024-10-10 12:00"
-)
+from natal import Stats
 
 stats = Stats(data1=mimi, data2=transit)
 
@@ -364,27 +349,28 @@ data = Data(
 
 read the [docs] for complete references
 
-[docs]: https://hoishing.github.io/natal
-
 ## Tech Stack
 
 - [tagit]: SVG / HTML generation and manipulation
 - [pyswisseph]: astrological data - Swiss Ephemeris
 - [mkdocs-material]: docs site generation
-- [weasyprint]: PDF generation (refer its docs for installing OS dependencies)
+- [weasyprint]: PDF generation (refer weasyprint docs for installing OS dependencies)
 
 [black-badge]: https://img.shields.io/badge/formatter-Black-black
 [black-url]: https://github.com/psf/black
 [ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
+[demo_report_light.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_light.pdf
+[demo_report_mono.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
+[docs]: https://hoishing.github.io/natal
+[GeoNames]: https://www.geonames.org
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
 [MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
-[tagit]: https://github.com/hoishing/tagit
 [pypi-badge]: https://img.shields.io/pypi/v/natal
 [pypi-url]: https://pypi.org/project/natal
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
-[demo_report_light.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_light.pdf
-[demo_report_mono.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_mono.pdf
+[Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
+[tagit]: https://github.com/hoishing/tagit
 [weasyprint]: https://weasyprint.org
