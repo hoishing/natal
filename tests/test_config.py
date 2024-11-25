@@ -36,7 +36,7 @@ config = {
 def test_load_config_from_dict() -> None:
     cfg = Config(**config)
     assert cfg.light_theme.fire == "#ff0000"
-    assert cfg.display.asc_node == False
+    assert cfg.display.asc_node is False
     assert cfg.orb.opposition == 7
 
 
@@ -71,4 +71,4 @@ def test_unpacked_dict(foo):
 def test_model_dict_iter():
     # iter of original pydantic model returns key value pairs, not keys
     orb_keys = [key for key in Orb()]
-    assert orb_keys == ["conjunction", "opposition", "trine", "square", "sextile"]
+    assert orb_keys == ["conjunction", "opposition", "trine", "square", "sextile", "quincunx"]

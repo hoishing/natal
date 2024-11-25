@@ -144,7 +144,7 @@ MODALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
 SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
 HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
-ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile"]
+ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile", "quincunx"]
 VERTEX_NAMES = ["asc", "ic", "dsc", "mc"]
 # fmt: on
 
@@ -157,9 +157,9 @@ PLANETS = dict(
 
 ASPECTS = dict(
     name=ASPECT_NAMES,
-    symbol="☌☍△□⚹",
-    value=[0, 180, 120, 90, 60],
-    color=["others", "water", "air", "fire", "points"],
+    symbol="☌☍△□⚹⚻",
+    value=[0, 180, 120, 90, 60, 150],
+    color=["others", "water", "air", "fire", "points", "asteroids"],
 )
 
 ELEMENTS = dict(

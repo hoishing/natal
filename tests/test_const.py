@@ -1,9 +1,19 @@
-from natal.const import *
+from natal.const import (
+    PLANET_MEMBERS,
+    ASPECT_MEMBERS,
+    ELEMENT_MEMBERS,
+    MODALITY_MEMBERS,
+    POLARITY_MEMBERS,
+    SIGN_MEMBERS,
+    HOUSE_MEMBERS,
+    EXTRA_MEMBERS,
+    VERTEX_MEMBERS,
+)
 
 
 def test_const():
     assert len(PLANET_MEMBERS) == 10
-    assert len(ASPECT_MEMBERS) == 5
+    assert len(ASPECT_MEMBERS) == 6
     assert len(ELEMENT_MEMBERS) == 4
     assert len(MODALITY_MEMBERS) == 3
     assert len(POLARITY_MEMBERS) == 2

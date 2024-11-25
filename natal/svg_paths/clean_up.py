@@ -12,9 +12,10 @@ import re
 import subprocess
 from pathlib import Path
 
-svgs = Path(__file__).parent.glob("*.svg")
+folder = Path(__file__).parent
 
-for svg in svgs:
+
+def clean_svg(svg: Path) -> str:
     # use scour to optimize the svg
     cmd = f"scour -i {svg} --enable-id-stripping --enable-comment-stripping --indent=none --strip-xml-prolog --quiet"
     content = subprocess.run(cmd.split(), capture_output=True, text=True).stdout
@@ -34,7 +35,26 @@ for svg in svgs:
     # Remove blank lines, including first and last
     content = re.sub(r"^\s*$\n", "", content, flags=re.MULTILINE)
 
-    content = content.strip()
+    return content.strip()
 
+
+def write_svg(svg: Path, content: str):
     with svg.open("w") as file:
         file.write(content)
+
+
+def fix_all_svgs():
+    for svg in folder.glob("*.svg"):
+        content = clean_svg(svg)
+        write_svg(svg, content)
+
+
+def fix_svg(name: str):
+    svg = folder / f"{name}.svg"
+    content = clean_svg(svg)
+    write_svg(svg, content)
+
+
+if __name__ == "__main__":
+    # fix_all_svgs()
+    fix_svg("quincunx")
