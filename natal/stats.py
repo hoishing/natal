@@ -79,7 +79,7 @@ class Stats:
         for body in self.data1.aspectables:
             key = body.sign[kind]
             bodies[key][0] += 1  # act as a counter
-            bodies[key][1].append(f"{body.name} {body.sign.symbol}")
+            bodies[key][1].append(f"{body.name} {body.sign.symbol} ")
         grid = [(kind, "sum", "bodies")]
         data = [(key, val[0], ", ".join(val[1])) for key, val in bodies.items()]
         grid.extend(data)
@@ -297,7 +297,9 @@ class Stats:
         for dist in DistKind.__args__:
             output += self.table_of("distribution", kind, dist)
         output += self.table_of("celestial_body", kind)
-        output += self.table_of("house", kind)
+        output += self.table_of(
+            "house", kind, colalign=("left", "center", "left", "center")
+        )
         output += self.table_of("quadrant", kind)
         output += self.table_of("hemisphere", kind)
         if self.data2:

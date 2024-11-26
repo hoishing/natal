@@ -147,66 +147,66 @@ print(stats.full_report(kind="markdown"))
 ```markdown
 # Element Distribution (MiMi)
 
-| element   |  sum  | bodies                                       |
-|-----------|-------|----------------------------------------------|
-| earth     |   4   | sun ♉, jupiter ♍, saturn ♍, asc ♍        |
-| water     |   2   | moon ♋, uranus ♏                           |
-| fire      |   4   | mercury ♈, mars ♌, neptune ♐, asc_node ♌ |
-| air       |   3   | venus ♊, pluto ♎, mc ♊                    |
+| element   |  sum  | bodies                                          |
+|-----------|-------|-------------------------------------------------|
+| earth     |   4   | sun ♉ , jupiter ♍ , saturn ♍ , asc ♍        |
+| water     |   2   | moon ♋ , uranus ♏                             |
+| fire      |   4   | mercury ♈ , mars ♌ , neptune ♐ , asc_node ♌ |
+| air       |   3   | venus ♊ , pluto ♎ , mc ♊                     |
 
 
 # Modality Distribution (MiMi)
 
-| modality   |  sum  | bodies                                                     |
-|------------|-------|------------------------------------------------------------|
-| fixed      |   4   | sun ♉, mars ♌, uranus ♏, asc_node ♌                    |
-| cardinal   |   3   | moon ♋, mercury ♈, pluto ♎                              |
-| mutable    |   6   | venus ♊, jupiter ♍, saturn ♍, neptune ♐, asc ♍, mc ♊ |
+| modality   |  sum  | bodies                                                          |
+|------------|-------|-----------------------------------------------------------------|
+| fixed      |   4   | sun ♉ , mars ♌ , uranus ♏ , asc_node ♌                      |
+| cardinal   |   3   | moon ♋ , mercury ♈ , pluto ♎                                 |
+| mutable    |   6   | venus ♊ , jupiter ♍ , saturn ♍ , neptune ♐ , asc ♍ , mc ♊ |
 
 
 # Polarity Distribution (MiMi)
 
-| polarity   |  sum  | bodies                                                                  |
-|------------|-------|-------------------------------------------------------------------------|
-| negative   |   6   | sun ♉, moon ♋, jupiter ♍, saturn ♍, uranus ♏, asc ♍               |
-| positive   |   7   | mercury ♈, venus ♊, mars ♌, neptune ♐, pluto ♎, asc_node ♌, mc ♊ |
+| polarity   |  sum  | bodies                                                                        |
+|------------|-------|-------------------------------------------------------------------------------|
+| negative   |   6   | sun ♉ , moon ♋ , jupiter ♍ , saturn ♍ , uranus ♏ , asc ♍                |
+| positive   |   7   | mercury ♈ , venus ♊ , mars ♌ , neptune ♐ , pluto ♎ , asc_node ♌ , mc ♊ |
 
 
 # Celestial Bodies (MiMi)
 
-| body     | sign      |  house  | dignity   |
-|----------|-----------|---------|-----------|
-| sun      | 00°♉19'  |    8    |           |
-| moon     | 08°♋29'  |   10    | domicile  |
-| mercury  | 08°♈28'  |    8    |           |
-| venus    | 15°♊12'  |   10    |           |
-| mars     | 26°♌59'  |   12    |           |
-| jupiter  | 00°♍17'℞ |   12    | detriment |
-| saturn   | 21°♍03'℞ |    1    |           |
-| uranus   | 24°♏31'℞ |    3    |           |
-| neptune  | 22°♐29'℞ |    4    |           |
-| pluto    | 20°♎06'℞ |    2    |           |
-| asc_node | 26°♌03'℞ |   12    |           |
-| asc      | 09°♍42'  |    1    |           |
-| mc       | 09°♊13'  |   10    |           |
+| body     | sign         |  house  | dignity   |
+|----------|--------------|---------|-----------|
+| sun      | 00° ♉ 19'   |    8    |           |
+| moon     | 08° ♋ 29'   |   10    | domicile  |
+| mercury  | 08° ♈ 28'   |    8    |           |
+| venus    | 15° ♊ 12'   |   10    |           |
+| mars     | 26° ♌ 59'   |   12    |           |
+| jupiter  | 00° ♍ 17' ℞ |   12    | detriment |
+| saturn   | 21° ♍ 03' ℞ |    1    |           |
+| uranus   | 24° ♏ 31' ℞ |    3    |           |
+| neptune  | 22° ♐ 29' ℞ |    4    |           |
+| pluto    | 20° ♎ 06' ℞ |    2    |           |
+| asc_node | 26° ♌ 03' ℞ |   12    |           |
+| asc      | 09° ♍ 42'   |    1    |           |
+| mc       | 09° ♊ 13'   |   10    |           |
 
 
 # Houses (MiMi)
 
-|  house  | cusp     | ruler   | ruler sign   |  ruler house  |
-|---------|----------|---------|--------------|---------------|
-|    1    | 09°♍41' | mercury | ♈           |       8       |
-|    2    | 07°♎13' | venus   | ♊           |      10       |
-|    3    | 07°♏38' | pluto   | ♎           |       2       |
-|    4    | 09°♐13' | jupiter | ♍           |      12       |
-|    5    | 10°♑25' | saturn  | ♍           |       1       |
-|    6    | 10°♒44' | uranus  | ♏           |       3       |
-|    7    | 09°♓41' | neptune | ♐           |       4       |
-|    8    | 07°♈13' | mars    | ♌           |      12       |
-|    9    | 07°♉38' | venus   | ♊           |      10       |
-|   10    | 09°♊13' | mercury | ♈           |       8       |
-|   11    | 10°♋25' | moon    | ♋           |      10       |
-|   12    | 10°♌44' | sun     | ♉           |       8       |
+| house   |    cusp    | ruler   |  ruler sign  |  ruler house  |
+|---------|------------|---------|--------------|---------------|
+| 1       | 09° ♍ 41' | mercury |      ♈      |       8       |
+| 2       | 07° ♎ 13' | venus   |      ♊      |      10       |
+| 3       | 07° ♏ 38' | pluto   |      ♎      |       2       |
+| 4       | 09° ♐ 13' | jupiter |      ♍      |      12       |
+| 5       | 10° ♑ 25' | saturn  |      ♍      |       1       |
+| 6       | 10° ♒ 44' | uranus  |      ♏      |       3       |
+| 7       | 09° ♓ 41' | neptune |      ♐      |       4       |
+| 8       | 07° ♈ 13' | mars    |      ♌      |      12       |
+| 9       | 07° ♉ 38' | venus   |      ♊      |      10       |
+| 10      | 09° ♊ 13' | mercury |      ♈      |       8       |
+| 11      | 10° ♋ 25' | moon    |      ♋      |      10       |
+| 12      | 10° ♌ 44' | sun     |      ♉      |       8       |
 
 
 # Quadrants (MiMi)
@@ -231,21 +231,21 @@ print(stats.full_report(kind="markdown"))
 
 # Celestial Bodies of Transit in MiMi's chart
 
-| Transit   | sign      |  house  | dignity   |
-|-----------|-----------|---------|-----------|
-| sun       | 10°♑16'  |    4    |           |
-| moon      | 08°♍42'  |   12    |           |
-| mercury   | 22°♐14'℞ |    4    | detriment |
-| venus     | 02°♐53'  |    3    |           |
-| mars      | 27°♐28'  |    4    |           |
-| jupiter   | 05°♉34'  |    8    |           |
-| saturn    | 03°♓15'  |    6    |           |
-| uranus    | 19°♉22'℞ |    9    |           |
-| neptune   | 25°♓04'  |    7    |           |
-| pluto     | 29°♑21'  |    5    |           |
-| asc_node  | 20°♈51'℞ |    8    |           |
-| asc       | 14°♉41'  |    9    |           |
-| mc        | 02°♒08'  |    5    |           |
+| Transit   | sign         |  house  | dignity   |
+|-----------|--------------|---------|-----------|
+| sun       | 10° ♑ 16'   |    4    |           |
+| moon      | 08° ♍ 42'   |   12    |           |
+| mercury   | 22° ♐ 14' ℞ |    4    | detriment |
+| venus     | 02° ♐ 53'   |    3    |           |
+| mars      | 27° ♐ 28'   |    4    |           |
+| jupiter   | 05° ♉ 34'   |    8    |           |
+| saturn    | 03° ♓ 15'   |    6    |           |
+| uranus    | 19° ♉ 22' ℞ |    9    |           |
+| neptune   | 25° ♓ 04'   |    7    |           |
+| pluto     | 29° ♑ 21'   |    5    |           |
+| asc_node  | 20° ♈ 51' ℞ |    8    |           |
+| asc       | 14° ♉ 41'   |    9    |           |
+| mc        | 02° ♒ 08'   |    5    |           |
 
 
 # Aspects of Transit vs MiMi

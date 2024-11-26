@@ -20,10 +20,10 @@ def composite_stats(data1, data2):
 def element_grid():
     return [
         ("element", "sum", "bodies"),
-        ("earth", 4, "sun ♉, moon ♑, mercury ♉, jupiter ♉"),
-        ("fire", 2, "venus ♈, neptune ♐"),
-        ("water", 5, "mars ♋, saturn ♋, uranus ♏, asc_node ♏, mc ♋"),
-        ("air", 2, "pluto ♎, asc ♎"),
+        ("earth", 4, "sun ♉ , moon ♑ , mercury ♉ , jupiter ♉ "),
+        ("fire", 2, "venus ♈ , neptune ♐ "),
+        ("water", 5, "mars ♋ , saturn ♋ , uranus ♏ , asc_node ♏ , mc ♋ "),
+        ("air", 2, "pluto ♎ , asc ♎ "),
     ]
 
 
@@ -31,9 +31,9 @@ def element_grid():
 def modality_grid():
     return [
         ("modality", "sum", "bodies"),
-        ("fixed", 5, "sun ♉, mercury ♉, jupiter ♉, uranus ♏, asc_node ♏"),
-        ("cardinal", 7, "moon ♑, venus ♈, mars ♋, saturn ♋, pluto ♎, asc ♎, mc ♋"),
-        ("mutable", 1, "neptune ♐"),
+        ("fixed", 5, "sun ♉ , mercury ♉ , jupiter ♉ , uranus ♏ , asc_node ♏ "),
+        ("cardinal", 7, "moon ♑ , venus ♈ , mars ♋ , saturn ♋ , pluto ♎ , asc ♎ , mc ♋ "),
+        ("mutable", 1, "neptune ♐ "),
     ]
 
 
@@ -41,8 +41,8 @@ def modality_grid():
 def polarity_grid():
     return [
         ("polarity", "sum", "bodies"),
-        ("negative", 9, "sun ♉, moon ♑, mercury ♉, mars ♋, jupiter ♉, saturn ♋, uranus ♏, asc_node ♏, mc ♋",),
-        ("positive", 4, "venus ♈, neptune ♐, pluto ♎, asc ♎"),
+        ("negative", 9, "sun ♉ , moon ♑ , mercury ♉ , mars ♋ , jupiter ♉ , saturn ♋ , uranus ♏ , asc_node ♏ , mc ♋ ",),
+        ("positive", 4, "venus ♈ , neptune ♐ , pluto ♎ , asc ♎ "),
     ]
 
 
@@ -50,38 +50,38 @@ def polarity_grid():
 def celestial_body_grid():
     return [
         ("body", "sign", "house", "dignity"),
-        ("sun", "00°♉26'", 7, ""),
-        ("moon", "19°♑47'", 3, "detriment"),
-        ("mercury", "18°♉30'", 7, ""),
-        ("venus", "14°♈49'", 6, "detriment"),
-        ("mars", "15°♋54'", 9, "fall"),
-        ("jupiter", "05°♉52'", 7, ""),
-        ("saturn", "26°♋31'", 10, "detriment"),
-        ("uranus", "05°♏19'℞", 1, ""),
-        ("neptune", "13°♐38'℞", 2, ""),
-        ("pluto", "09°♎47'℞", 12, ""),
-        ("asc_node", "13°♏25'℞", 1, ""),
-        ("asc", "20°♎32'", 1, ""),
-        ("mc", "20°♋36'", 10, ""),
+        ("sun", "00° ♉ 26'", 7, ""),
+        ("moon", "19° ♑ 47'", 3, "detriment"),
+        ("mercury", "18° ♉ 30'", 7, ""),
+        ("venus", "14° ♈ 49'", 6, "detriment"),
+        ("mars", "15° ♋ 54'", 9, "fall"),
+        ("jupiter", "05° ♉ 52'", 7, ""),
+        ("saturn", "26° ♋ 31'", 10, "detriment"),
+        ("uranus", "05° ♏ 19' ℞", 1, ""),
+        ("neptune", "13° ♐ 38' ℞", 2, ""),
+        ("pluto", "09° ♎ 47' ℞", 12, ""),
+        ("asc_node", "13° ♏ 25' ℞", 1, ""),
+        ("asc", "20° ♎ 32'", 1, ""),
+        ("mc", "20° ♋ 36'", 10, ""),
     ]
 
 @fixture
 def data2_celestial_body_grid():
     return [
         ("belle", "sign", "house", "dignity"),
-        ("sun", "02°♒38'", 4, "detriment"),
-        ("moon", "15°♍46'", 11, ""),
-        ("mercury", "12°♑25'", 3, ""),
-        ("venus", "16°♐22'", 2, ""),
-        ("mars", "05°♒32'", 4, ""),
-        ("jupiter", "00°♈03'", 6, ""),
-        ("saturn", "17°♎13'", 12, "exaltation"),
-        ("uranus", "27°♓37'", 6, ""),
-        ("neptune", "27°♒26'", 5, ""),
-        ("pluto", "06°♑05'", 3, ""),
-        ("asc_node", "01°♑08'℞", 3, ""),
-        ("asc", "00°♓24'", 5, ""),
-        ("mc", "08°♐54'", 2, ""),
+        ("sun", "02° ♒ 38'", 4, "detriment"),
+        ("moon", "15° ♍ 46'", 11, ""),
+        ("mercury", "12° ♑ 25'", 3, ""),
+        ("venus", "16° ♐ 22'", 2, ""),
+        ("mars", "05° ♒ 32'", 4, ""),
+        ("jupiter", "00° ♈ 03'", 6, ""),
+        ("saturn", "17° ♎ 13'", 12, "exaltation"),
+        ("uranus", "27° ♓ 37'", 6, ""),
+        ("neptune", "27° ♒ 26'", 5, ""),
+        ("pluto", "06° ♑ 05'", 3, ""),
+        ("asc_node", "01° ♑ 08' ℞", 3, ""),
+        ("asc", "00° ♓ 24'", 5, ""),
+        ("mc", "08° ♐ 54'", 2, ""),
     ]
 
 @fixture
@@ -108,18 +108,18 @@ def hemisphere_grid():
 def house_grid():
     return [
         ("house", "cusp", "ruler", "ruler sign", "ruler house"),
-        (1, "20°♎32'", "venus", "♈", 6),
-        (2, "19°♏43'", "pluto", "♎", 12),
-        (3, "19°♐49'", "jupiter", "♉", 7),
-        (4, "20°♑36'", "saturn", "♋", 10),
-        (5, "21°♒53'", "uranus", "♏", 1),
-        (6, "22°♓29'", "neptune", "♐", 2),
-        (7, "20°♈32'", "mars", "♋", 9),
-        (8, "19°♉43'", "venus", "♈", 6),
-        (9, "19°♊49'", "mercury", "♉", 7),
-        (10, "20°♋36'", "moon", "♑", 3),
-        (11, "21°♌54'", "sun", "♉", 7),
-        (12, "22°♍29'", "mercury", "♉", 7),
+        (1, "20° ♎ 32'", "venus", "♈", 6),
+        (2, "19° ♏ 43'", "pluto", "♎", 12),
+        (3, "19° ♐ 49'", "jupiter", "♉", 7),
+        (4, "20° ♑ 36'", "saturn", "♋", 10),
+        (5, "21° ♒ 53'", "uranus", "♏", 1),
+        (6, "22° ♓ 29'", "neptune", "♐", 2),
+        (7, "20° ♈ 32'", "mars", "♋", 9),
+        (8, "19° ♉ 43'", "venus", "♈", 6),
+        (9, "19° ♊ 49'", "mercury", "♉", 7),
+        (10, "20° ♋ 36'", "moon", "♑", 3),
+        (11, "21° ♌ 54'", "sun", "♉", 7),
+        (12, "22° ♍ 29'", "mercury", "♉", 7),
     ]
 
 

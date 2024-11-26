@@ -84,7 +84,7 @@ class MovableBody(Body):
         op = [f"{self.signed_deg:02d}°", self.sign.symbol, f"{self.minute:02d}'"]
         if self.rx:
             op.append(self.rx)
-        return "".join(op)
+        return " ".join(op)
 
 
 class Planet(MovableBody):
