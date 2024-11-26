@@ -1,7 +1,6 @@
 import pytest
 from io import BytesIO
-from pathlib import Path
-from natal import Chart, Config, Data, Stats
+from natal import Config, Data
 from natal.config import Orb
 from natal.report import Report
 
@@ -93,6 +92,15 @@ def test_cross_ref(report):
     assert grid[1][1] == ""
     assert grid[4][4].startswith("<svg")
 
+
+def test_orb(report):
+    grid = report.orbs
+    assert len(grid) == 7
+    assert grid[1][1] == 2
+    assert grid[4][0].startswith("<svg")
+    assert grid[6][1] == 0
+
+
 def test_full_report(report):
     full_report = report.full_report
     assert isinstance(full_report, str)
@@ -102,12 +110,12 @@ def test_full_report(report):
 def test_create_pdf(report):
     html = report.full_report
     pdf = report.create_pdf(html)
-    
+
     # Check it's a BytesIO object
     assert isinstance(pdf, BytesIO)
     assert pdf.getbuffer().nbytes > 0
-    
+
     # Check PDF magic numbers
     pdf.seek(0)
-    header = pdf.read(4).decode('utf-8')
-    assert header == '%PDF', "File doesn't start with PDF header"
+    header = pdf.read(4).decode("utf-8")
+    assert header == "%PDF", "File doesn't start with PDF header"

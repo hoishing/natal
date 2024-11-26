@@ -162,7 +162,6 @@ class Chart(ModelDict):
     pos_adj_factor: float = 2.2
 
 
-
 class Config(ModelDict):
     """
     Package configuration model.

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "natal"
-version = "0.8.4"
+version = "0.8.5"
 description = "create Natal Chart with ease"
 license = "MIT"
 repository = "https://github.com/hoishing/natal"
