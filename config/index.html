@@ -1036,7 +1036,8 @@
 
               <details class="quote">
                 <summary>Source code in <code>natal/config.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-166">166</a></span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-165">165</a></span>
+<span class="normal"><a href="#__codelineno-0-166">166</a></span>
 <span class="normal"><a href="#__codelineno-0-167">167</a></span>
 <span class="normal"><a href="#__codelineno-0-168">168</a></span>
 <span class="normal"><a href="#__codelineno-0-169">169</a></span>
@@ -1065,38 +1066,37 @@
 <span class="normal"><a href="#__codelineno-0-192">192</a></span>
 <span class="normal"><a href="#__codelineno-0-193">193</a></span>
 <span class="normal"><a href="#__codelineno-0-194">194</a></span>
-<span class="normal"><a href="#__codelineno-0-195">195</a></span>
-<span class="normal"><a href="#__codelineno-0-196">196</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ModelDict</span><span class="p">):</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">    Package configuration model.</span>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>    <span class="n">theme_type</span><span class="p">:</span> <span class="n">ThemeType</span> <span class="o">=</span> <span class="s2">&quot;dark&quot;</span>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="n">house_sys</span><span class="p">:</span> <span class="n">HouseSys</span> <span class="o">=</span> <span class="n">HouseSys</span><span class="o">.</span><span class="n">Placidus</span>
-<a id="__codelineno-0-173" name="__codelineno-0-173"></a>    <span class="n">orb</span><span class="p">:</span> <span class="n">Orb</span> <span class="o">=</span> <span class="n">Orb</span><span class="p">()</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="n">light_theme</span><span class="p">:</span> <span class="n">LightTheme</span> <span class="o">=</span> <span class="n">LightTheme</span><span class="p">()</span>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a>    <span class="n">dark_theme</span><span class="p">:</span> <span class="n">DarkTheme</span> <span class="o">=</span> <span class="n">DarkTheme</span><span class="p">()</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a>    <span class="n">display</span><span class="p">:</span> <span class="n">Display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">()</span>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a>    <span class="n">chart</span><span class="p">:</span> <span class="n">Chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">()</span>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a>    <span class="k">def</span> <span class="nf">theme</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Theme</span><span class="p">:</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">        Return theme colors based on the theme type.</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">            Theme: The theme colors.</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme_type</span><span class="p">:</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>            <span class="k">case</span> <span class="s2">&quot;light&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">light_theme</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="k">case</span> <span class="s2">&quot;dark&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dark_theme</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="k">case</span> <span class="s2">&quot;mono&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s2">&quot;#888888&quot;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">light_theme</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()}</span>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;background&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#FFFFFF&quot;</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;transparency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>                <span class="k">return</span> <span class="n">Theme</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-195">195</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-165" name="__codelineno-0-165"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ModelDict</span><span class="p">):</span>
+<a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="sd">    Package configuration model.</span>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="n">theme_type</span><span class="p">:</span> <span class="n">ThemeType</span> <span class="o">=</span> <span class="s2">&quot;dark&quot;</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a>    <span class="n">house_sys</span><span class="p">:</span> <span class="n">HouseSys</span> <span class="o">=</span> <span class="n">HouseSys</span><span class="o">.</span><span class="n">Placidus</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="n">orb</span><span class="p">:</span> <span class="n">Orb</span> <span class="o">=</span> <span class="n">Orb</span><span class="p">()</span>
+<a id="__codelineno-0-173" name="__codelineno-0-173"></a>    <span class="n">light_theme</span><span class="p">:</span> <span class="n">LightTheme</span> <span class="o">=</span> <span class="n">LightTheme</span><span class="p">()</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="n">dark_theme</span><span class="p">:</span> <span class="n">DarkTheme</span> <span class="o">=</span> <span class="n">DarkTheme</span><span class="p">()</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>    <span class="n">display</span><span class="p">:</span> <span class="n">Display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">()</span>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a>    <span class="n">chart</span><span class="p">:</span> <span class="n">Chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">()</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="k">def</span> <span class="nf">theme</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Theme</span><span class="p">:</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">        Return theme colors based on the theme type.</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">            Theme: The theme colors.</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">theme_type</span><span class="p">:</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>            <span class="k">case</span> <span class="s2">&quot;light&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">light_theme</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>            <span class="k">case</span> <span class="s2">&quot;dark&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dark_theme</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="k">case</span> <span class="s2">&quot;mono&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s2">&quot;#888888&quot;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">light_theme</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()}</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;background&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#FFFFFF&quot;</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;transparency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>                <span class="k">return</span> <span class="n">Theme</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
