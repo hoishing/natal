@@ -165,6 +165,7 @@ class Chart(ModelDict):
     spike_length_ratio: float = 0.15
     conjunction_line_multiple: float = 3
     aspect_line_ratio: float = 0.75
+    horizon_line: bool = False
     # hard-coded 2.2 and 600 due to the original symbol svg size = 20x20
     scale_adj_factor: float = 600
     pos_adj_factor: float = 2.2
