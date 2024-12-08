@@ -350,6 +350,33 @@ class Chart(DotDict):
             self.data1.composite_aspects_pairs(self.data2)
         )
         return self.aspect_lines(radius, aspects)
+    
+    def horizon(self) -> list[str]:
+        """Generate horizon line for chart if desired.
+
+        Returns:
+            A list of one SVG element representing the horizon.
+            The line is thick (4* the standard line width, but see through and faint)
+        """
+        if self.config.chart.horizon_line:
+            y = self.cy  # Halfway down the image (center of the chart)
+            x_start = 0  # Start at the left edge
+            x_end = self.width  # End at the right edge
+
+            return [
+                line(
+                    x1=x_start,
+                    y1=y,
+                    x2=x_end,
+                    y2=y,
+                    stroke=self.config.theme.dim,  # Faint color
+                    stroke_width=self.config.chart.stroke_width * 2,  # Wider line
+                    stroke_opacity=0.25,  # Slightly transparent
+                    stroke_dasharray="10,10",  # Long dashes (10 units dash, 10 units gap)
+                )
+            ]
+        
+        return []
 
     @property
     def svg(self) -> str:
@@ -368,6 +395,7 @@ class Chart(DotDict):
                 self.inner_body_wheel(),
                 self.outer_aspect(),
                 self.inner_aspect(),
+                self.horizon(),
             ]
         )
 
@@ -484,7 +512,7 @@ class Chart(DotDict):
             inner_radius = wheel_radius - self.ring_thickness
             inner_x = self.cx - inner_radius * cos(original_angle)
             inner_y = self.cy + inner_radius * sin(original_angle)
-
+            
             output.extend(
                 [
                     line(
@@ -521,15 +549,16 @@ class Chart(DotDict):
         return output
 
     def aspect_lines(self, radius: float, aspects: list[Aspect]) -> list[str]:
-        """Draw aspect lines between aspectable celestial bodies.
+        """Draw aspect lines and inward spikes for the chart, with special handling for conjunctions.
 
         Args:
             radius: Radius of the aspect wheel
             aspects: List of aspects to draw
 
         Returns:
-            A list of SVG elements representing aspect lines
+            A list of SVG elements representing aspect lines and spikes
         """
+        # Background circle for aspects
         bg = [
             self.background(
                 radius,
@@ -538,10 +567,20 @@ class Chart(DotDict):
                 stroke_width=self.config.chart.stroke_width,
             )
         ]
+
         aspect_lines = []
+        spike_lines = []
+
+        # Define the inner circle radius
+        inner_radius = radius - self.ring_thickness
+
+        # Iterate through each aspect to draw the lines
         for aspect in aspects:
+            # Starting and ending angles for the aspect
             start_angle = radians(self.data1.normalize(aspect.body1.degree))
             end_angle = radians(self.data1.normalize(aspect.body2.degree))
+
+            # Orb configuration and opacity factor
             orb_config = self.config.orb[aspect.aspect_member.name]
             if not orb_config:
                 continue
@@ -549,20 +588,70 @@ class Chart(DotDict):
             opacity_factor = (
                 1 if aspect.aspect_member.name == "conjunction" else orb_fraction
             )
-            aspect_lines.append(
-                line(
-                    x1=self.cx - radius * cos(start_angle),
-                    y1=self.cy + radius * sin(start_angle),
-                    x2=self.cx - radius * cos(end_angle),
-                    y2=self.cy + radius * sin(end_angle),
-                    stroke=self.config.theme[aspect.aspect_member.color],
-                    stroke_width=self.config.chart.stroke_width / 2,
-                    stroke_opacity=self.config.chart.stroke_opacity * opacity_factor,
-                )
-            )
 
-        self.aspect_lines_len = len(aspect_lines)  # for test only
-        return bg + aspect_lines
+            # Adjust for the spike position (radius minus spike length)
+            spike_length = self.ring_thickness * self.config.chart.spike_length_ratio
+            spike_radius = radius - spike_length
+
+            # Spike coordinates for body1
+            spike_x1 = self.cx - spike_radius * cos(start_angle)
+            spike_y1 = self.cy + spike_radius * sin(start_angle)
+
+            # Spike coordinates for body2
+            spike_x2 = self.cx - spike_radius * cos(end_angle)
+            spike_y2 = self.cy + spike_radius * sin(end_angle)
+
+            # Add spikes for body1 and body2
+            spike_lines.extend([
+                line(
+                    x1=self.cx - radius * cos(start_angle),  # Start at inner circle
+                    y1=self.cy + radius * sin(start_angle),
+                    x2=spike_x1,
+                    y2=spike_y1,
+                    stroke=self.config.theme.dim,
+                    stroke_width=self.config.chart.stroke_width,
+                ),
+                line(
+                    x1=self.cx - radius * cos(end_angle),  # Start at inner circle
+                    y1=self.cy + radius * sin(end_angle),
+                    x2=spike_x2,
+                    y2=spike_y2,
+                    stroke=self.config.theme.dim,
+                    stroke_width=self.config.chart.stroke_width,
+                ),
+            ])
+
+            # Aspect line logic
+            if aspect.aspect_member.name == "conjunction":
+                # Draw a thick line for conjunction
+                aspect_lines.append(
+                    line(
+                        x1=spike_x1,
+                        y1=spike_y1,
+                        x2=spike_x2,
+                        y2=spike_y2,
+                        stroke=self.config.theme[aspect.aspect_member.color],
+                        stroke_width=self.config.chart.stroke_width * self.config.chart.conjunction_line_multiple,  # Thicker line
+                        stroke_opacity=self.config.chart.stroke_opacity,
+                    )
+                )
+            else:
+                # Regular aspect line
+                aspect_lines.append(
+                    line(
+                        x1=spike_x1,
+                        y1=spike_y1,
+                        x2=spike_x2,
+                        y2=spike_y2,
+                        stroke=self.config.theme[aspect.aspect_member.color],
+                        stroke_width=self.config.chart.stroke_width*self.config.chart.aspect_line_ratio,
+                        stroke_opacity=self.config.chart.stroke_opacity * opacity_factor,
+                    )
+                )
+
+        self.aspect_lines_len = len(aspect_lines)  # For testing only
+        return bg + spike_lines + aspect_lines
+
 
     @cached_property
     def house_vertices(self) -> list[tuple[float, float]]:
