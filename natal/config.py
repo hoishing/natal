@@ -54,6 +54,11 @@ class ModelDict(BaseModel, Dictable):
     # override to return keys, otherwise BaseModel.__iter__ returns key value pairs
     def __iter__(self) -> Iterator[str]:
         return iter(self.__dict__)
+    
+class ZodiacCalculation(StrEnum):
+    """Calculation for Zodiac - Sidereal used for Vedic astrology"""
+    TROPICAL = "TROPICAL" 
+    SIDEREAL = "SIDEREAL"
 
 
 class HouseSys(StrEnum):
@@ -171,6 +176,7 @@ class Config(ModelDict):
     """
 
     theme_type: ThemeType = "dark"
+    zodiac: ZodiacCalculation = ZodiacCalculation.TROPICAL
     house_sys: HouseSys = HouseSys.Placidus
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
