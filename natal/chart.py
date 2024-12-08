@@ -350,6 +350,33 @@ class Chart(DotDict):
             self.data1.composite_aspects_pairs(self.data2)
         )
         return self.aspect_lines(radius, aspects)
+    
+    def horizon(self) -> list[str]:
+        """Generate horizon line for chart if desired.
+
+        Returns:
+            A list of one SVG element representing the horizon.
+            The line is thick (4* the standard line width, but see through and faint)
+        """
+        if self.config.chart.horizon_line:
+            y = self.cy  # Halfway down the image (center of the chart)
+            x_start = 0  # Start at the left edge
+            x_end = self.width  # End at the right edge
+
+            return [
+                line(
+                    x1=x_start,
+                    y1=y,
+                    x2=x_end,
+                    y2=y,
+                    stroke=self.config.theme.dim,  # Faint color
+                    stroke_width=self.config.chart.stroke_width * 2,  # Wider line
+                    stroke_opacity=0.25,  # Slightly transparent
+                    stroke_dasharray="10,10",  # Long dashes (10 units dash, 10 units gap)
+                )
+            ]
+        
+        return []
 
     @property
     def svg(self) -> str:
@@ -368,6 +395,7 @@ class Chart(DotDict):
                 self.inner_body_wheel(),
                 self.outer_aspect(),
                 self.inner_aspect(),
+                self.horizon(),
             ]
         )
 
