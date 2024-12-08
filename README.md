@@ -313,7 +313,7 @@ report.create_pdf(html) # returns BytesIO
 - a sample config as follow:
 
 ```py
-from natal.config import Display, Config, Orb
+from natal.config import Display, Config, Orb, HouseSys
 
 # adjust which celestial bodies to display
 display = Display(
@@ -335,7 +335,8 @@ orb = Orb(
 config = Config(
     theme_type = "light", # or "dark", "mono"
     display = display,
-    orb = orb
+    orb = orb,
+    house_sys = HouseSys.Whole_Sign # display planets in Whole Sign Houses. Other house systems are also available
 )
 
 # create data object with the config
