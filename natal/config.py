@@ -69,8 +69,8 @@ class HouseSys(StrEnum):
 class Orb(ModelDict):
     """default orb for natal chart"""
 
-    conjunction: int = 7
-    opposition: int = 6
+    conjunction: int = 10
+    opposition: int = 9
     trine: int = 6
     square: int = 6
     sextile: int = 5
@@ -133,7 +133,7 @@ class Display(ModelDict):
     neptune: bool = True
     pluto: bool = True
     asc_node: bool = True
-    chiron: bool = False
+    chiron: bool = True
     ceres: bool = False
     pallas: bool = False
     juno: bool = False
@@ -157,6 +157,9 @@ class Chart(ModelDict):
     outer_min_degree: float = 8
     margin_factor: float = 0.04
     ring_thickness_fraction: float = 0.15
+    spike_length_ratio: float = 0.15
+    conjunction_line_multiple: float = 3
+    aspect_line_ratio: float = 0.75
     # hard-coded 2.2 and 600 due to the original symbol svg size = 20x20
     scale_adj_factor: float = 600
     pos_adj_factor: float = 2.2
@@ -189,7 +192,7 @@ class Config(ModelDict):
             case "dark":
                 return self.dark_theme
             case "mono":
-                kwargs = {key: "#888888" for key in self.light_theme.model_dump()}
+                kwargs = {key: "#242424" for key in self.light_theme.model_dump()}
                 kwargs["background"] = "#FFFFFF"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)
