@@ -2,6 +2,7 @@ import itertools
 import pandas as pd
 import swisseph as swe
 from datetime import datetime
+from functools import cached_property
 from math import floor
 from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
 from natal.config import Config, DotDict
@@ -28,8 +29,6 @@ class Data(DotDict):
     """
     Data object for a natal chart.
     """
-
-    cities = pd.read_csv(data_folder / "cities.csv.gz")
 
     def __init__(
         self,
@@ -306,3 +305,7 @@ class Data(DotDict):
             BodyPairs: Pairs of bodies to check for aspects
         """
         return itertools.product(self.aspectables, data2.aspectables)
+
+    @cached_property
+    def cities(self) -> pd.DataFrame:
+        return pd.read_csv(data_folder / "cities.csv.gz")
