@@ -306,6 +306,12 @@ class Data(DotDict):
         """
         return itertools.product(self.aspectables, data2.aspectables)
 
+    @staticmethod
+    def get_cities() -> pd.DataFrame:
+        """make cities data available outside Data class"""
+        return pd.read_csv(data_folder / "cities.csv.gz")
+
     @cached_property
     def cities(self) -> pd.DataFrame:
-        return pd.read_csv(data_folder / "cities.csv.gz")
+        """cached cities data"""
+        return Data.get_cities()
