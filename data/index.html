@@ -492,6 +492,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#natal.data.Data.cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      cities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#natal.data.Data.julian_day" class="md-nav__link">
     <span class="md-ellipsis">
       julian_day
@@ -531,6 +540,15 @@
   <a href="#natal.data.Data.composite_aspects_pairs" class="md-nav__link">
     <span class="md-ellipsis">
       composite_aspects_pairs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#natal.data.Data.get_cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_cities
     </span>
   </a>
   
@@ -818,6 +836,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#natal.data.Data.cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      cities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#natal.data.Data.julian_day" class="md-nav__link">
     <span class="md-ellipsis">
       julian_day
@@ -857,6 +884,15 @@
   <a href="#natal.data.Data.composite_aspects_pairs" class="md-nav__link">
     <span class="md-ellipsis">
       composite_aspects_pairs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#natal.data.Data.get_cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_cities
     </span>
   </a>
   
@@ -1336,7 +1372,13 @@
 <span class="normal"><a href="#__codelineno-0-308">308</a></span>
 <span class="normal"><a href="#__codelineno-0-309">309</a></span>
 <span class="normal"><a href="#__codelineno-0-310">310</a></span>
-<span class="normal"><a href="#__codelineno-0-311">311</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">class</span> <span class="nc">Data</span><span class="p">(</span><span class="n">DotDict</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-311">311</a></span>
+<span class="normal"><a href="#__codelineno-0-312">312</a></span>
+<span class="normal"><a href="#__codelineno-0-313">313</a></span>
+<span class="normal"><a href="#__codelineno-0-314">314</a></span>
+<span class="normal"><a href="#__codelineno-0-315">315</a></span>
+<span class="normal"><a href="#__codelineno-0-316">316</a></span>
+<span class="normal"><a href="#__codelineno-0-317">317</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">class</span> <span class="nc">Data</span><span class="p">(</span><span class="n">DotDict</span><span class="p">):</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">    Data object for a natal chart.</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -1617,9 +1659,15 @@
 <a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-0-307" name="__codelineno-0-307"></a>        <span class="k">return</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">data2</span><span class="o">.</span><span class="n">aspectables</span><span class="p">)</span>
 <a id="__codelineno-0-308" name="__codelineno-0-308"></a>
-<a id="__codelineno-0-309" name="__codelineno-0-309"></a>    <span class="nd">@cached_property</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a>    <span class="k">def</span> <span class="nf">cities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<a id="__codelineno-0-311" name="__codelineno-0-311"></a>        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_folder</span> <span class="o">/</span> <span class="s2">&quot;cities.csv.gz&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-309" name="__codelineno-0-309"></a>    <span class="nd">@staticmethod</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a>    <span class="k">def</span> <span class="nf">get_cities</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;make cities data available outside Data class&quot;&quot;&quot;</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a>        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_folder</span> <span class="o">/</span> <span class="s2">&quot;cities.csv.gz&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-313" name="__codelineno-0-313"></a>
+<a id="__codelineno-0-314" name="__codelineno-0-314"></a>    <span class="nd">@cached_property</span>
+<a id="__codelineno-0-315" name="__codelineno-0-315"></a>    <span class="k">def</span> <span class="nf">cities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;cached cities data&quot;&quot;&quot;</span>
+<a id="__codelineno-0-317" name="__codelineno-0-317"></a>        <span class="k">return</span> <span class="n">Data</span><span class="o">.</span><span class="n">get_cities</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1632,6 +1680,28 @@
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="natal.data.Data.cities" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cities</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>cached cities data</p>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -2199,6 +2269,38 @@
 <a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">        BodyPairs: Pairs of bodies to check for aspects</span>
 <a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">    &quot;&quot;&quot;</span>
 <a id="__codelineno-0-307" name="__codelineno-0-307"></a>    <span class="k">return</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">data2</span><span class="o">.</span><span class="n">aspectables</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="natal.data.Data.get_cities" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_cities</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>make cities data available outside Data class</p>
+
+            <details class="quote">
+              <summary>Source code in <code>natal/data.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-309">309</a></span>
+<span class="normal"><a href="#__codelineno-0-310">310</a></span>
+<span class="normal"><a href="#__codelineno-0-311">311</a></span>
+<span class="normal"><a href="#__codelineno-0-312">312</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="nd">@staticmethod</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="k">def</span> <span class="nf">get_cities</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;make cities data available outside Data class&quot;&quot;&quot;</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a>    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_folder</span> <span class="o">/</span> <span class="s2">&quot;cities.csv.gz&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
