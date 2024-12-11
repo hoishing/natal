@@ -163,3 +163,11 @@ def test_house_sys(data1: Data) -> None:
     data = Data(data1.name, data1.city, data1.dt, config=Config(house_sys="W"))
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
+
+
+def test_duplicate_cities(data1: Data) -> None:
+    # can have multiple cities with same name and country
+    assert len(data1.cities) > len(data1.cities.drop_duplicates(subset=['name', 'country']))
+    # can't have multiple cities with same name and timezone
+    assert len(data1.cities) == len(data1.cities.drop_duplicates(subset=['name', 'timezone']))
+
