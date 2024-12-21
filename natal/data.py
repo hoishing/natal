@@ -21,14 +21,13 @@ from zoneinfo import ZoneInfo
 
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
-data_folder = Path(__file__).parent.absolute() / "data"
-swe.set_ephe_path(str(data_folder))
-
 
 class Data(DotDict):
     """
     Data object for a natal chart.
     """
+
+    data_folder = Path(__file__).parent.absolute() / "data"
 
     def __init__(
         self,
@@ -45,6 +44,7 @@ class Data(DotDict):
             dt (datetime | str): Date and time as datetime object or string
             config (Config): Configuration settings
         """
+        swe.set_ephe_path(str(self.data_folder))
         self.name = name
         self.city = city
         if isinstance(dt, str):
@@ -309,7 +309,7 @@ class Data(DotDict):
     @staticmethod
     def get_cities() -> pd.DataFrame:
         """make cities data available outside Data class"""
-        return pd.read_csv(data_folder / "cities.csv.gz")
+        return pd.read_csv(Data.data_folder / "cities.csv.gz")
 
     @cached_property
     def cities(self) -> pd.DataFrame:
