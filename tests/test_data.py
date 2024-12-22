@@ -96,8 +96,9 @@ def test_lat_lon(data1: Data) -> None:
 
 def test_data_input(data1: Data) -> None:
     assert data1.name == "shing"
-    assert data1.city == "hong kong"
-    assert data1.dt == datetime(1976, 4, 20, 18, 58)
+    assert data1.lat == 22.2783
+    assert data1.lon == 114.175
+    assert data1.utc_dt == datetime(1976, 4, 20, 9, 58, 0)
 
 
 def test_planet(data1: Data, planets: dict[str, str]) -> None:
@@ -143,7 +144,8 @@ def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
 
 
 def test_normalize(data1: Data) -> None:
-    data = Data(data1.name, data1.city, data1.dt)  # Create a new Data object
+    # create a new Data object
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt)
     data.asc.degree = 0
     assert data.normalize(10) == 10
     assert data.normalize(350) == 350
@@ -155,18 +157,14 @@ def test_normalize(data1: Data) -> None:
 
 def test_fix_orb_eq_0(data1: Data) -> None:
     orb = Orb(conjunction=0, opposition=0)
-    data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(orb=orb))
     assert len(data1.aspects) == 24
     assert len(data.aspects) == 14
 
 
 def test_house_sys(data1: Data) -> None:
-    data = Data(data1.name, data1.city, data1.dt, config=Config(house_sys="W"))
+    data = Data(
+        data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W")
+    )
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
-
-
-def test_duplicate_cities(data1: Data) -> None:
-    # can't have multiple cities with same name and country
-    assert len(data1.cities) == len(data1.cities.drop_duplicates(subset=['name', 'country']))
-

@@ -57,4 +57,4 @@ def str_to_dt(dt_str: str) -> datetime:
     Returns:
         datetime: Parsed datetime object
     """
-    return datetime.strptime(dt_str, "%Y-%m-%d %H:%M")
+    return datetime.strptime(dt_str[:16], "%Y-%m-%d %H:%M")
