@@ -32,7 +32,7 @@ class Data(DotDict):
         name: str,
         lat: float,
         lon: float,
-        utc_dt: datetime,
+        utc_dt: datetime | str,
         config: Config = Config(),
         moshier: bool = False,
     ) -> None:
@@ -42,9 +42,9 @@ class Data(DotDict):
             name: The name for this chart
             lat: Latitude of the city
             lon: Longitude of the city
-            utc_dt: datetime object in UTC timezone
+            utc_dt: datetime object or string in format "YYYY-MM-DD HH:MM" in UTC timezone
             config: Configuration settings with defaults
-            moshier: use Moshier ephemeris that does not load seas_18.se1, no asteroids data but more performant
+            moshier: Use Moshier ephemeris without seas_18.se1, no asteroids but more performant
 
         Returns:
             None
@@ -206,10 +206,10 @@ class Data(DotDict):
         """Set the positions of celestial bodies.
 
         Args:
-            bodies (list[Body]): List of celestial body definitions
+            bodies: List of celestial body definitions
 
         Returns:
-            list[Aspectable]: List of aspectable bodies with positions set
+            List of aspectable bodies with positions set
         """
         output = []
         for body in bodies:
@@ -227,10 +227,10 @@ class Data(DotDict):
         """Get the house number containing a celestial body.
 
         Args:
-            body (Body): The celestial body to locate
+            body: The celestial body to locate
 
         Returns:
-            int: House number (1-12) containing the body
+            House number (1-12) containing the body
         """
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
@@ -242,10 +242,10 @@ class Data(DotDict):
         """Normalize a degree relative to the Ascendant.
 
         Args:
-            degree (float): The degree to normalize
+            degree: The degree to normalize
 
         Returns:
-            float: Normalized degree (0-360)
+            Normalized degree (0-360)
         """
         return (degree - self.asc.degree + 360) % 360
 
@@ -253,10 +253,10 @@ class Data(DotDict):
         """Calculate aspects between pairs of celestial bodies.
 
         Args:
-            body_pairs (BodyPairs): Pairs of bodies to check for aspects
+            body_pairs: Pairs of bodies to check for aspects
 
         Returns:
-            list[Aspect]: List of aspects found between the bodies
+            List of aspects found between the bodies
         """
         output = []
         for b1, b2 in body_pairs:
@@ -290,9 +290,9 @@ class Data(DotDict):
         """Generate pairs of aspectable bodies for composite chart.
 
         Args:
-            data2 (Self): Second chart data to compare against
+            data2: Second chart data to compare against
 
         Returns:
-            BodyPairs: Pairs of bodies to check for aspects
+            Pairs of bodies to check for aspects
         """
         return itertools.product(self.aspectables, data2.aspectables)

@@ -15,8 +15,6 @@
   - light / dark theme color definitions
   - chart stroke, opacity, font, spacing between planets ...etc
 - high precision astrological data with [Swiss Ephemeris]
-- timezone, latitude and longitude database from [GeoNames]
-  - auto aware of daylight saving for a given time and location
 - natal chart data statistics
   - element, modality, and polarity counts
   - planets in each houses
@@ -54,9 +52,10 @@ from natal import Data, Chart
 
 # create chart data object
 mimi = Data(
-  name = "MiMi",
-  city = "Taipei",
-  dt = "1980-04-20 14:30"
+    name="MiMi",
+    utc_dt="1980-04-20 06:30:00",
+    lat=25.0531,
+    lon=121.526,
 )
 
 # return natal chart in SVG string
@@ -65,8 +64,9 @@ Chart(mimi, width=600).svg
 # create transit data object
 transit = Data(
     name="Transit",
-    city="Taipei",
-    dt="2024-01-01 13:30",
+    utc_dt="2024-01-01 05:30:00",
+    lat=25.0531,
+    lon=121.526,
 )
 
 # create a transit chart
@@ -356,7 +356,6 @@ read the [docs] for complete references
 [demo_report_mono.pdf]: https://github.com/hoishing/natal_report/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [docs]: https://hoishing.github.io/natal
-[GeoNames]: https://www.geonames.org
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
 [MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
