@@ -293,18 +293,11 @@ print(stats.full_report(kind="markdown"))
 
 ## PDF Report
 
-- generate PDF report as file-like object (BytesIO)
-
-```python
-from natal import Report
-
-report = Report(data1=mimi, data2=transit)
-html = report.full_report
-report.create_pdf(html) # returns BytesIO
-```
-
-- see [demo_report_light.pdf] for light theme with Birth Chart
-- see [demo_report_mono.pdf] for mono theme with Transit Chart
+- optional dependencies for PDF report generation
+- install with `pip install natal[report]`
+- see [natal_report] package for details
+- [demo_report_light.pdf]: light theme report with Birth Chart
+- [demo_report_mono.pdf]: mono theme report with Transit Chart
 
 ## Configuration
 
@@ -354,14 +347,13 @@ read the [docs] for complete references
 - [tagit]: SVG / HTML generation and manipulation
 - [pyswisseph]: astrological data - Swiss Ephemeris
 - [mkdocs-material]: docs site generation
-- [weasyprint]: PDF generation (refer weasyprint docs for installing OS dependencies)
 
 [black-badge]: https://img.shields.io/badge/formatter-Black-black
 [black-url]: https://github.com/psf/black
 [ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
-[demo_report_light.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_light.pdf
-[demo_report_mono.pdf]: https://github.com/hoishing/natal/blob/main/demo_report_mono.pdf
+[demo_report_light.pdf]: https://github.com/hoishing/natal_report/blob/main/demo_report_light.pdf
+[demo_report_mono.pdf]: https://github.com/hoishing/natal_report/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [docs]: https://hoishing.github.io/natal
 [GeoNames]: https://www.geonames.org
@@ -373,4 +365,3 @@ read the [docs] for complete references
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [tagit]: https://github.com/hoishing/tagit
-[weasyprint]: https://weasyprint.org
