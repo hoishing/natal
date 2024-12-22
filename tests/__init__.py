@@ -3,14 +3,16 @@ from natal.data import Data
 
 person1 = {
     "name": "shing",
-    "city": "hong kong",
-    "dt": "1976-04-20 18:58",
+    "lat": 22.2783,
+    "lon": 114.175,
+    "utc_dt": "1976-04-20 09:58",
 }
 
 person2 = {
     "name": "belle",
-    "city": "hong kong",
-    "dt": "2011-01-23 08:44",
+    "lat": 22.2783,
+    "lon": 114.175,
+    "utc_dt": "2011-01-23 00:44",
 }
 
 
