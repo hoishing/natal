@@ -137,8 +137,8 @@ def get_members(raw_data: dict) -> list[DotDict]:
 # Raw Data ===============================
 
 # fmt: off
-PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]
-EXTRA_NAMES = ["asc_node", "chiron", "ceres", "pallas", "juno", "vesta"]
+PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto", "asc_node"]
+EXTRA_NAMES = ["chiron", "ceres", "pallas", "juno", "vesta"]
 ELEMENT_NAMES = ["fire", "earth", "air", "water"]
 MODALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
@@ -150,9 +150,9 @@ VERTEX_NAMES = ["asc", "ic", "dsc", "mc"]
 
 PLANETS = dict(
     name=PLANET_NAMES,
-    symbol="☉☽☿♀♂♃♄♅♆♇",
-    value=list(range(10)),
-    color="fire water air earth fire fire earth air water water".split(),
+    symbol="☉☽☿♀♂♃♄♅♆♇☊",
+    value=list(range(11)),
+    color="fire water air earth fire fire earth air water water points".split(),
 )
 
 ASPECTS = dict(
@@ -234,9 +234,9 @@ HOUSES = dict(
 
 EXTRAS = dict(
     name=EXTRA_NAMES,
-    symbol="☊⚷⚳⚴⚵⚶",
-    value=[10, 15, 17, 18, 19, 20],
-    color=["points"] + ["asteroids"] * 5,
+    symbol="⚷⚳⚴⚵⚶",
+    value=[15, 17, 18, 19, 20],
+    color=["asteroids"] * 5,
 )
 
 VERTICES = dict(

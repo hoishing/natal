@@ -18,6 +18,7 @@ def planets() -> dict[str, str]:
         uranus="05° ♏ 19' ℞",
         neptune="13° ♐ 38' ℞",
         pluto="09° ♎ 47' ℞",
+        asc_node="13° ♏ 25' ℞",
     )
 
 
