@@ -1,8 +1,6 @@
 import itertools
-import pandas as pd
 import swisseph as swe
 from datetime import datetime
-from functools import cached_property
 from math import floor
 from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
 from natal.config import Config, DotDict
