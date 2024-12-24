@@ -1,5 +1,6 @@
 site_name: Natal
 
+site_url: https://hoishing.github.io/natal
 repo_url: https://github.com/hoishing/natal
 extra_css:
     - stylesheets/extra.css
@@ -81,7 +82,6 @@ nav:
           - Config: config.md
           - Constants: const.md
           - Data: data.md
-          - Report: report.md
           - Stats: stats.md
           - Utils: utils.md
     - License: license.md

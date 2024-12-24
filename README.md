@@ -295,7 +295,7 @@ print(stats.full_report(kind="markdown"))
 
 - optional dependencies for PDF report generation
 - install with `pip install natal[report]`
-- see [natal_report] package for details
+- see [natal-report] package for details
 - [demo_report_light.pdf]: light theme report with Birth Chart
 - [demo_report_mono.pdf]: mono theme report with Transit Chart
 
@@ -359,6 +359,7 @@ read the [docs] for complete references
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal
 [MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
+[natal-report]: https://github.com/hoishing/natal-report
 [pypi-badge]: https://img.shields.io/pypi/v/natal
 [pypi-url]: https://pypi.org/project/natal
 [pyswisseph]: https://github.com/astrorigin/pyswisseph

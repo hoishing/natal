@@ -428,7 +428,9 @@ class Chart(DotDict):
 
         return avg_adj
 
-    def body_wheel(self, wheel_radius: float, data: Data, min_degree: float):
+    def body_wheel(
+        self, wheel_radius: float, data: Data, min_degree: float
+    ) -> list[str]:
         """Generate elements for both inner and outer body wheels.
 
         Args:
