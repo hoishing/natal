@@ -8,6 +8,8 @@
       
       
       
+        <link rel="canonical" href="https://hoishing.github.io/natal/">
+      
       
       
         <link rel="next" href="chart/">
@@ -61,7 +63,7 @@
       
         <meta  property="og:description"  content="None" >
       
-        <meta  property="og:image"  content="./assets/images/social/index.png" >
+        <meta  property="og:image"  content="https://hoishing.github.io/natal/assets/images/social/index.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -69,7 +71,7 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="None" >
+        <meta  property="og:url"  content="https://hoishing.github.io/natal/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
@@ -77,7 +79,7 @@
       
         <meta  name="twitter:description"  content="None" >
       
-        <meta  name="twitter:image"  content="./assets/images/social/index.png" >
+        <meta  name="twitter:image"  content="https://hoishing.github.io/natal/assets/images/social/index.png" >
       
     
     
@@ -561,27 +563,6 @@
   
   
     <li class="md-nav__item">
-      <a href="report/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Report
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="stats/" class="md-nav__link">
         
   
@@ -796,8 +777,6 @@
 <li>light / dark theme color definitions</li>
 <li>chart stroke, opacity, font, spacing between planets ...etc</li>
 <li>high precision astrological data with <a href="https://www.astro.com/swisseph/swephinfo_e.htm">Swiss Ephemeris</a></li>
-<li>timezone, latitude and longitude database from <a href="https://www.geonames.org">GeoNames</a></li>
-<li>auto aware of daylight saving for a given time and location</li>
 <li>natal chart data statistics</li>
 <li>element, modality, and polarity counts</li>
 <li>planets in each houses</li>
@@ -833,32 +812,34 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># create chart data object</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">mimi</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;Taipei&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  <span class="n">dt</span> <span class="o">=</span> <span class="s2">&quot;1980-04-20 14:30&quot;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># return natal chart in SVG string</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">Chart</span><span class="p">(</span><span class="n">mimi</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span><span class="o">.</span><span class="n">svg</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># create transit data object</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">transit</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Transit&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Taipei&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">dt</span><span class="o">=</span><span class="s2">&quot;2024-01-01 13:30&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">)</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c1"># create a transit chart</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="n">transit_chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">(</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">data1</span><span class="o">=</span><span class="n">mimi</span><span class="p">,</span> 
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">data2</span><span class="o">=</span><span class="n">transit</span><span class="p">,</span> 
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">width</span><span class="o">=</span><span class="mi">600</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">)</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1"># view the composite chart in jupyter notebook</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="n">HTML</span><span class="p">(</span><span class="n">transit_chart</span><span class="o">.</span><span class="n">svg</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;1980-04-20 06:30:00&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">lat</span><span class="o">=</span><span class="mf">25.0531</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">lon</span><span class="o">=</span><span class="mf">121.526</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># return natal chart in SVG string</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">Chart</span><span class="p">(</span><span class="n">mimi</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span><span class="o">.</span><span class="n">svg</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># create transit data object</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">transit</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Transit&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;2024-01-01 05:30:00&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">lat</span><span class="o">=</span><span class="mf">25.0531</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">lon</span><span class="o">=</span><span class="mf">121.526</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">)</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1"># create a transit chart</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="n">transit_chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">(</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">data1</span><span class="o">=</span><span class="n">mimi</span><span class="p">,</span> 
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">data2</span><span class="o">=</span><span class="n">transit</span><span class="p">,</span> 
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">width</span><span class="o">=</span><span class="mi">600</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="p">)</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="c1"># view the composite chart in jupyter notebook</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="n">HTML</span><span class="p">(</span><span class="n">transit_chart</span><span class="o">.</span><span class="n">svg</span><span class="p">)</span>
 </code></pre></div>
 <p>following SVG chart will be produced:</p>
 <p><img src="https://bit.ly/3MX7H8e" width=600/></p>
@@ -1064,17 +1045,11 @@
 </ul>
 <h2 id="pdf-report">PDF Report</h2>
 <ul>
-<li>generate PDF report as file-like object (BytesIO)</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">natal</span> <span class="kn">import</span> <span class="n">Report</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="n">data1</span><span class="o">=</span><span class="n">mimi</span><span class="p">,</span> <span class="n">data2</span><span class="o">=</span><span class="n">transit</span><span class="p">)</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">html</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">full_report</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">report</span><span class="o">.</span><span class="n">create_pdf</span><span class="p">(</span><span class="n">html</span><span class="p">)</span> <span class="c1"># returns BytesIO</span>
-</code></pre></div>
-<ul>
-<li>see <a href="https://github.com/hoishing/natal/blob/main/demo_report_light.pdf">demo_report_light.pdf</a> for light theme with Birth Chart</li>
-<li>see <a href="https://github.com/hoishing/natal/blob/main/demo_report_mono.pdf">demo_report_mono.pdf</a> for mono theme with Transit Chart</li>
+<li>optional dependencies for PDF report generation</li>
+<li>install with <code>pip install natal[report]</code></li>
+<li>see <a href="https://github.com/hoishing/natal-report">natal-report</a> package for details</li>
+<li><a href="https://github.com/hoishing/natal_report/blob/main/demo_report_light.pdf">demo_report_light.pdf</a>: light theme report with Birth Chart</li>
+<li><a href="https://github.com/hoishing/natal_report/blob/main/demo_report_mono.pdf">demo_report_mono.pdf</a>: mono theme report with Transit Chart</li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <ul>
@@ -1082,38 +1057,38 @@
 <li>it will override the default settings in <code>config.py</code></li>
 <li>a sample config as follow:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">natal.config</span> <span class="kn">import</span> <span class="n">Display</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">Orb</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># adjust which celestial bodies to display</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">mc</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">asc_node</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">chiron</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">)</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># adjust orbs for each aspect</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">orb</span> <span class="o">=</span> <span class="n">Orb</span><span class="p">(</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">conjunction</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">opposition</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">trine</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">square</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="n">sextile</span> <span class="o">=</span> <span class="mi">6</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="p">)</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># the complete config object</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">theme_type</span> <span class="o">=</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="c1"># or &quot;dark&quot;, &quot;mono&quot;</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="n">display</span> <span class="o">=</span> <span class="n">display</span><span class="p">,</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="n">orb</span> <span class="o">=</span> <span class="n">orb</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="p">)</span>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c1"># create data object with the config</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;Taipei&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="n">dt</span> <span class="o">=</span> <span class="s2">&quot;1980-04-20 14:30&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="p">,</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">natal.config</span> <span class="kn">import</span> <span class="n">Display</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">Orb</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># adjust which celestial bodies to display</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">display</span> <span class="o">=</span> <span class="n">Display</span><span class="p">(</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">mc</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">asc_node</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">chiron</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># adjust orbs for each aspect</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">orb</span> <span class="o">=</span> <span class="n">Orb</span><span class="p">(</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">conjunction</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">opposition</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">trine</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">square</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="n">sextile</span> <span class="o">=</span> <span class="mi">6</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># the complete config object</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">theme_type</span> <span class="o">=</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="c1"># or &quot;dark&quot;, &quot;mono&quot;</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="n">display</span> <span class="o">=</span> <span class="n">display</span><span class="p">,</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="n">orb</span> <span class="o">=</span> <span class="n">orb</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">)</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># create data object with the config</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;Taipei&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>    <span class="n">dt</span> <span class="o">=</span> <span class="s2">&quot;1980-04-20 14:30&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="p">,</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="p">)</span>
 </code></pre></div>
 <p>read the <a href="https://hoishing.github.io/natal">docs</a> for complete references</p>
 <h2 id="tech-stack">Tech Stack</h2>
@@ -1121,7 +1096,6 @@
 <li><a href="https://github.com/hoishing/tagit">tagit</a>: SVG / HTML generation and manipulation</li>
 <li><a href="https://github.com/astrorigin/pyswisseph">pyswisseph</a>: astrological data - Swiss Ephemeris</li>
 <li><a href="https://github.com/squidfunk/mkdocs-material">mkdocs-material</a>: docs site generation</li>
-<li><a href="https://weasyprint.org">weasyprint</a>: PDF generation (refer weasyprint docs for installing OS dependencies)</li>
 </ul>
 
 

@@ -8,6 +8,8 @@
       
       
       
+        <link rel="canonical" href="https://hoishing.github.io/natal/chart/">
+      
       
         <link rel="prev" href="..">
       
@@ -63,7 +65,7 @@
       
         <meta  property="og:description"  content="None" >
       
-        <meta  property="og:image"  content="./assets/images/social/chart.png" >
+        <meta  property="og:image"  content="https://hoishing.github.io/natal/assets/images/social/chart.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -71,7 +73,7 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="None" >
+        <meta  property="og:url"  content="https://hoishing.github.io/natal/chart/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
@@ -79,7 +81,7 @@
       
         <meta  name="twitter:description"  content="None" >
       
-        <meta  name="twitter:image"  content="./assets/images/social/chart.png" >
+        <meta  name="twitter:image"  content="https://hoishing.github.io/natal/assets/images/social/chart.png" >
       
     
     
@@ -663,27 +665,6 @@
   
   <span class="md-ellipsis">
     Data
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../report/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Report
   </span>
   
 
@@ -1666,7 +1647,9 @@ It supports both single and composite charts.</p>
 <span class="normal"><a href="#__codelineno-0-610">610</a></span>
 <span class="normal"><a href="#__codelineno-0-611">611</a></span>
 <span class="normal"><a href="#__codelineno-0-612">612</a></span>
-<span class="normal"><a href="#__codelineno-0-613">613</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="k">class</span> <span class="nc">Chart</span><span class="p">(</span><span class="n">DotDict</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-613">613</a></span>
+<span class="normal"><a href="#__codelineno-0-614">614</a></span>
+<span class="normal"><a href="#__codelineno-0-615">615</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="k">class</span> <span class="nc">Chart</span><span class="p">(</span><span class="n">DotDict</span><span class="p">):</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;SVG representation of a natal chart.</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a>
 <a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">    This class generates the visual components of an astrological chart,</span>
@@ -2072,189 +2055,191 @@ It supports both single and composite charts.</p>
 <a id="__codelineno-0-428" name="__codelineno-0-428"></a>
 <a id="__codelineno-0-429" name="__codelineno-0-429"></a>        <span class="k">return</span> <span class="n">avg_adj</span>
 <a id="__codelineno-0-430" name="__codelineno-0-430"></a>
-<a id="__codelineno-0-431" name="__codelineno-0-431"></a>    <span class="k">def</span> <span class="nf">body_wheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate elements for both inner and outer body wheels.</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">            wheel_radius: Radius of the wheel</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">            data: Chart data to use</span>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">            min_degree: Minimum degree separation between bodies</span>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="sd">            A list of SVG elements representing the body wheel</span>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>        <span class="k">def</span> <span class="nf">norm_deg</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>        <span class="n">sorted_norm_bodies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">norm_deg</span><span class="p">)</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="n">sorted_norm_degs</span> <span class="o">=</span> <span class="p">[</span><span class="n">norm_deg</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">sorted_norm_bodies</span><span class="p">]</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="c1"># Calculate adjusted positions</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>        <span class="n">adj_norm_degs</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">adjusted_degrees</span><span class="p">(</span><span class="n">sorted_norm_degs</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">)</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="k">else</span> <span class="n">sorted_norm_degs</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="p">)</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a>        <span class="c1"># for tests only</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adj_degs_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_norm_degs</span><span class="p">)</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>        <span class="k">for</span> <span class="n">body</span><span class="p">,</span> <span class="n">adj_deg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">,</span> <span class="n">adj_norm_degs</span><span class="p">):</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>            <span class="n">g_opt</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>                <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>                <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>                <span class="s2">&quot;stroke_width&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="p">}</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>            <span class="c1"># special handling for asc, ic, dsc and mc</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>            <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>                <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">]</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>                <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;stroke&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>            <span class="n">symbol_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-431" name="__codelineno-0-431"></a>    <span class="k">def</span> <span class="nf">body_wheel</span><span class="p">(</span>
+<a id="__codelineno-0-432" name="__codelineno-0-432"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate elements for both inner and outer body wheels.</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">            wheel_radius: Radius of the wheel</span>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">            data: Chart data to use</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">            min_degree: Minimum degree separation between bodies</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="sd">            A list of SVG elements representing the body wheel</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>        <span class="k">def</span> <span class="nf">norm_deg</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>        <span class="n">sorted_norm_bodies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">norm_deg</span><span class="p">)</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="n">sorted_norm_degs</span> <span class="o">=</span> <span class="p">[</span><span class="n">norm_deg</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">sorted_norm_bodies</span><span class="p">]</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="c1"># Calculate adjusted positions</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="n">adj_norm_degs</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">adjusted_degrees</span><span class="p">(</span><span class="n">sorted_norm_degs</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">)</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<a id="__codelineno-0-455" name="__codelineno-0-455"></a>            <span class="k">else</span> <span class="n">sorted_norm_degs</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="p">)</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>        <span class="c1"># for tests only</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adj_degs_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_norm_degs</span><span class="p">)</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a>        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a>        <span class="k">for</span> <span class="n">body</span><span class="p">,</span> <span class="n">adj_deg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">,</span> <span class="n">adj_norm_degs</span><span class="p">):</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>            <span class="n">g_opt</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>                <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>                <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>                <span class="s2">&quot;stroke_width&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>            <span class="p">}</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>            <span class="c1"># special handling for asc, ic, dsc and mc</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>            <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>                <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">]</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>                <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;stroke&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
 <a id="__codelineno-0-472" name="__codelineno-0-472"></a>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>            <span class="c1"># Use original angle for line start position</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>            <span class="n">original_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>            <span class="n">degree_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>            <span class="n">degree_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>            <span class="c1"># Use adjusted angle for symbol position</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>            <span class="n">adjusted_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">adj_deg</span><span class="p">)</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>            <span class="n">symbol_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>            <span class="n">symbol_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a>            <span class="c1"># Add line connecting to the inner circle</span>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a>            <span class="n">inner_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a>            <span class="n">inner_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">inner_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>            <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>                <span class="p">[</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>                    <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>                        <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                        <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                        <span class="n">x2</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
-<a id="__codelineno-0-494" name="__codelineno-0-494"></a>                        <span class="n">y2</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
-<a id="__codelineno-0-495" name="__codelineno-0-495"></a>                        <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-496" name="__codelineno-0-496"></a>                        <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-497" name="__codelineno-0-497"></a>                    <span class="p">),</span>
-<a id="__codelineno-0-498" name="__codelineno-0-498"></a>                    <span class="n">circle</span><span class="p">(</span>
-<a id="__codelineno-0-499" name="__codelineno-0-499"></a>                        <span class="n">cx</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
-<a id="__codelineno-0-500" name="__codelineno-0-500"></a>                        <span class="n">cy</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a>                        <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-502" name="__codelineno-0-502"></a>                        <span class="c1"># fill=&quot;red&quot;,  # for testing only</span>
-<a id="__codelineno-0-503" name="__codelineno-0-503"></a>                        <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
-<a id="__codelineno-0-504" name="__codelineno-0-504"></a>                    <span class="p">),</span>
-<a id="__codelineno-0-505" name="__codelineno-0-505"></a>                    <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-506" name="__codelineno-0-506"></a>                        <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
-<a id="__codelineno-0-507" name="__codelineno-0-507"></a>                        <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
-<a id="__codelineno-0-508" name="__codelineno-0-508"></a>                        <span class="n">x2</span><span class="o">=</span><span class="n">inner_x</span><span class="p">,</span>
-<a id="__codelineno-0-509" name="__codelineno-0-509"></a>                        <span class="n">y2</span><span class="o">=</span><span class="n">inner_y</span><span class="p">,</span>
-<a id="__codelineno-0-510" name="__codelineno-0-510"></a>                        <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-<a id="__codelineno-0-511" name="__codelineno-0-511"></a>                        <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-512" name="__codelineno-0-512"></a>                        <span class="n">stroke_dasharray</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">11</span><span class="p">,</span>
-<a id="__codelineno-0-513" name="__codelineno-0-513"></a>                    <span class="p">),</span>
-<a id="__codelineno-0-514" name="__codelineno-0-514"></a>                    <span class="n">g</span><span class="p">(</span>
-<a id="__codelineno-0-515" name="__codelineno-0-515"></a>                        <span class="n">svg_paths</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-<a id="__codelineno-0-516" name="__codelineno-0-516"></a>                        <span class="n">transform</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;translate(</span><span class="si">{</span><span class="n">symbol_x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">symbol_y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">) scale(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_adjustment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-517" name="__codelineno-0-517"></a>                        <span class="o">**</span><span class="n">g_opt</span><span class="p">,</span>
-<a id="__codelineno-0-518" name="__codelineno-0-518"></a>                    <span class="p">),</span>
-<a id="__codelineno-0-519" name="__codelineno-0-519"></a>                <span class="p">]</span>
-<a id="__codelineno-0-520" name="__codelineno-0-520"></a>            <span class="p">)</span>
-<a id="__codelineno-0-521" name="__codelineno-0-521"></a>        <span class="k">return</span> <span class="n">output</span>
-<a id="__codelineno-0-522" name="__codelineno-0-522"></a>
-<a id="__codelineno-0-523" name="__codelineno-0-523"></a>    <span class="k">def</span> <span class="nf">aspect_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">aspects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Aspect</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw aspect lines between aspectable celestial bodies.</span>
-<a id="__codelineno-0-525" name="__codelineno-0-525"></a>
-<a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a><span class="sd">            radius: Radius of the aspect wheel</span>
-<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="sd">            aspects: List of aspects to draw</span>
-<a id="__codelineno-0-529" name="__codelineno-0-529"></a>
-<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-531" name="__codelineno-0-531"></a><span class="sd">            A list of SVG elements representing aspect lines</span>
-<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-533" name="__codelineno-0-533"></a>        <span class="n">bg</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-534" name="__codelineno-0-534"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">(</span>
-<a id="__codelineno-0-535" name="__codelineno-0-535"></a>                <span class="n">radius</span><span class="p">,</span>
-<a id="__codelineno-0-536" name="__codelineno-0-536"></a>                <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
-<a id="__codelineno-0-537" name="__codelineno-0-537"></a>                <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-<a id="__codelineno-0-538" name="__codelineno-0-538"></a>                <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span><span class="p">,</span>
-<a id="__codelineno-0-539" name="__codelineno-0-539"></a>            <span class="p">)</span>
-<a id="__codelineno-0-540" name="__codelineno-0-540"></a>        <span class="p">]</span>
-<a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="n">aspect_lines</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="k">for</span> <span class="n">aspect</span> <span class="ow">in</span> <span class="n">aspects</span><span class="p">:</span>
-<a id="__codelineno-0-543" name="__codelineno-0-543"></a>            <span class="n">start_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body1</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-544" name="__codelineno-0-544"></a>            <span class="n">end_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body2</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-545" name="__codelineno-0-545"></a>            <span class="n">orb_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orb</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-<a id="__codelineno-0-546" name="__codelineno-0-546"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">orb_config</span><span class="p">:</span>
-<a id="__codelineno-0-547" name="__codelineno-0-547"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-548" name="__codelineno-0-548"></a>            <span class="n">orb_fraction</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">aspect</span><span class="o">.</span><span class="n">orb</span> <span class="o">/</span> <span class="n">orb_config</span>
-<a id="__codelineno-0-549" name="__codelineno-0-549"></a>            <span class="n">opacity_factor</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-550" name="__codelineno-0-550"></a>                <span class="mi">1</span> <span class="k">if</span> <span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;conjunction&quot;</span> <span class="k">else</span> <span class="n">orb_fraction</span>
-<a id="__codelineno-0-551" name="__codelineno-0-551"></a>            <span class="p">)</span>
-<a id="__codelineno-0-552" name="__codelineno-0-552"></a>            <span class="n">aspect_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-<a id="__codelineno-0-553" name="__codelineno-0-553"></a>                <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-554" name="__codelineno-0-554"></a>                    <span class="n">x1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
-<a id="__codelineno-0-555" name="__codelineno-0-555"></a>                    <span class="n">y1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
-<a id="__codelineno-0-556" name="__codelineno-0-556"></a>                    <span class="n">x2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
-<a id="__codelineno-0-557" name="__codelineno-0-557"></a>                    <span class="n">y2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
-<a id="__codelineno-0-558" name="__codelineno-0-558"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-559" name="__codelineno-0-559"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-560" name="__codelineno-0-560"></a>                    <span class="n">stroke_opacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_opacity</span> <span class="o">*</span> <span class="n">opacity_factor</span><span class="p">,</span>
-<a id="__codelineno-0-561" name="__codelineno-0-561"></a>                <span class="p">)</span>
-<a id="__codelineno-0-562" name="__codelineno-0-562"></a>            <span class="p">)</span>
-<a id="__codelineno-0-563" name="__codelineno-0-563"></a>
-<a id="__codelineno-0-564" name="__codelineno-0-564"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">aspect_lines_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aspect_lines</span><span class="p">)</span>  <span class="c1"># for test only</span>
-<a id="__codelineno-0-565" name="__codelineno-0-565"></a>        <span class="k">return</span> <span class="n">bg</span> <span class="o">+</span> <span class="n">aspect_lines</span>
-<a id="__codelineno-0-566" name="__codelineno-0-566"></a>
-<a id="__codelineno-0-567" name="__codelineno-0-567"></a>    <span class="nd">@cached_property</span>
-<a id="__codelineno-0-568" name="__codelineno-0-568"></a>    <span class="k">def</span> <span class="nf">house_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<a id="__codelineno-0-569" name="__codelineno-0-569"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the vertices (start and end degrees) of each house.</span>
-<a id="__codelineno-0-570" name="__codelineno-0-570"></a>
-<a id="__codelineno-0-571" name="__codelineno-0-571"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-572" name="__codelineno-0-572"></a><span class="sd">            A list of tuples containing start and end degrees for each house</span>
-<a id="__codelineno-0-573" name="__codelineno-0-573"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-574" name="__codelineno-0-574"></a>        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-575" name="__codelineno-0-575"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
-<a id="__codelineno-0-576" name="__codelineno-0-576"></a>            <span class="n">next_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span>
-<a id="__codelineno-0-577" name="__codelineno-0-577"></a>            <span class="n">start_deg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">houses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">normalized_degree</span>
-<a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="n">end_deg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">houses</span><span class="p">[</span><span class="n">next_i</span><span class="p">]</span><span class="o">.</span><span class="n">normalized_degree</span>
-<a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="c1"># Handle the case where end_deg is less than start_deg (crosses 0°)</span>
-<a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="k">if</span> <span class="n">end_deg</span> <span class="o">&lt;</span> <span class="n">start_deg</span><span class="p">:</span>
-<a id="__codelineno-0-581" name="__codelineno-0-581"></a>                <span class="n">end_deg</span> <span class="o">+=</span> <span class="mi">360</span>
-<a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start_deg</span><span class="p">,</span> <span class="n">end_deg</span><span class="p">))</span>
-<a id="__codelineno-0-583" name="__codelineno-0-583"></a>
-<a id="__codelineno-0-584" name="__codelineno-0-584"></a>        <span class="k">return</span> <span class="n">vertices</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>            <span class="n">symbol_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>            <span class="c1"># Use original angle for line start position</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>            <span class="n">original_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>            <span class="n">degree_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>            <span class="n">degree_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>
+<a id="__codelineno-0-480" name="__codelineno-0-480"></a>            <span class="c1"># Use adjusted angle for symbol position</span>
+<a id="__codelineno-0-481" name="__codelineno-0-481"></a>            <span class="n">adjusted_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">adj_deg</span><span class="p">)</span>
+<a id="__codelineno-0-482" name="__codelineno-0-482"></a>            <span class="n">symbol_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a>            <span class="n">symbol_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
+<a id="__codelineno-0-484" name="__codelineno-0-484"></a>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a>            <span class="c1"># Add line connecting to the inner circle</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">inner_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span>
+<a id="__codelineno-0-487" name="__codelineno-0-487"></a>            <span class="n">inner_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a>            <span class="n">inner_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>            <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a>                <span class="p">[</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                    <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                        <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a>                        <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a>                        <span class="n">x2</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>                        <span class="n">y2</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>                        <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>                        <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>                    <span class="p">),</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a>                    <span class="n">circle</span><span class="p">(</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a>                        <span class="n">cx</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a>                        <span class="n">cy</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a>                        <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>                        <span class="c1"># fill=&quot;red&quot;,  # for testing only</span>
+<a id="__codelineno-0-505" name="__codelineno-0-505"></a>                        <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
+<a id="__codelineno-0-506" name="__codelineno-0-506"></a>                    <span class="p">),</span>
+<a id="__codelineno-0-507" name="__codelineno-0-507"></a>                    <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-508" name="__codelineno-0-508"></a>                        <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
+<a id="__codelineno-0-509" name="__codelineno-0-509"></a>                        <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
+<a id="__codelineno-0-510" name="__codelineno-0-510"></a>                        <span class="n">x2</span><span class="o">=</span><span class="n">inner_x</span><span class="p">,</span>
+<a id="__codelineno-0-511" name="__codelineno-0-511"></a>                        <span class="n">y2</span><span class="o">=</span><span class="n">inner_y</span><span class="p">,</span>
+<a id="__codelineno-0-512" name="__codelineno-0-512"></a>                        <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+<a id="__codelineno-0-513" name="__codelineno-0-513"></a>                        <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-514" name="__codelineno-0-514"></a>                        <span class="n">stroke_dasharray</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">11</span><span class="p">,</span>
+<a id="__codelineno-0-515" name="__codelineno-0-515"></a>                    <span class="p">),</span>
+<a id="__codelineno-0-516" name="__codelineno-0-516"></a>                    <span class="n">g</span><span class="p">(</span>
+<a id="__codelineno-0-517" name="__codelineno-0-517"></a>                        <span class="n">svg_paths</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<a id="__codelineno-0-518" name="__codelineno-0-518"></a>                        <span class="n">transform</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;translate(</span><span class="si">{</span><span class="n">symbol_x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">symbol_y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">) scale(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_adjustment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-519" name="__codelineno-0-519"></a>                        <span class="o">**</span><span class="n">g_opt</span><span class="p">,</span>
+<a id="__codelineno-0-520" name="__codelineno-0-520"></a>                    <span class="p">),</span>
+<a id="__codelineno-0-521" name="__codelineno-0-521"></a>                <span class="p">]</span>
+<a id="__codelineno-0-522" name="__codelineno-0-522"></a>            <span class="p">)</span>
+<a id="__codelineno-0-523" name="__codelineno-0-523"></a>        <span class="k">return</span> <span class="n">output</span>
+<a id="__codelineno-0-524" name="__codelineno-0-524"></a>
+<a id="__codelineno-0-525" name="__codelineno-0-525"></a>    <span class="k">def</span> <span class="nf">aspect_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">aspects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Aspect</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw aspect lines between aspectable celestial bodies.</span>
+<a id="__codelineno-0-527" name="__codelineno-0-527"></a>
+<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-529" name="__codelineno-0-529"></a><span class="sd">            radius: Radius of the aspect wheel</span>
+<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">            aspects: List of aspects to draw</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>
+<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="sd">            A list of SVG elements representing aspect lines</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a>        <span class="n">bg</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-0-536" name="__codelineno-0-536"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">(</span>
+<a id="__codelineno-0-537" name="__codelineno-0-537"></a>                <span class="n">radius</span><span class="p">,</span>
+<a id="__codelineno-0-538" name="__codelineno-0-538"></a>                <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
+<a id="__codelineno-0-539" name="__codelineno-0-539"></a>                <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+<a id="__codelineno-0-540" name="__codelineno-0-540"></a>                <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span><span class="p">,</span>
+<a id="__codelineno-0-541" name="__codelineno-0-541"></a>            <span class="p">)</span>
+<a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="p">]</span>
+<a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="n">aspect_lines</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="k">for</span> <span class="n">aspect</span> <span class="ow">in</span> <span class="n">aspects</span><span class="p">:</span>
+<a id="__codelineno-0-545" name="__codelineno-0-545"></a>            <span class="n">start_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body1</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-546" name="__codelineno-0-546"></a>            <span class="n">end_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body2</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-547" name="__codelineno-0-547"></a>            <span class="n">orb_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orb</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<a id="__codelineno-0-548" name="__codelineno-0-548"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">orb_config</span><span class="p">:</span>
+<a id="__codelineno-0-549" name="__codelineno-0-549"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-550" name="__codelineno-0-550"></a>            <span class="n">orb_fraction</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">aspect</span><span class="o">.</span><span class="n">orb</span> <span class="o">/</span> <span class="n">orb_config</span>
+<a id="__codelineno-0-551" name="__codelineno-0-551"></a>            <span class="n">opacity_factor</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-552" name="__codelineno-0-552"></a>                <span class="mi">1</span> <span class="k">if</span> <span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;conjunction&quot;</span> <span class="k">else</span> <span class="n">orb_fraction</span>
+<a id="__codelineno-0-553" name="__codelineno-0-553"></a>            <span class="p">)</span>
+<a id="__codelineno-0-554" name="__codelineno-0-554"></a>            <span class="n">aspect_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<a id="__codelineno-0-555" name="__codelineno-0-555"></a>                <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-556" name="__codelineno-0-556"></a>                    <span class="n">x1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
+<a id="__codelineno-0-557" name="__codelineno-0-557"></a>                    <span class="n">y1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
+<a id="__codelineno-0-558" name="__codelineno-0-558"></a>                    <span class="n">x2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
+<a id="__codelineno-0-559" name="__codelineno-0-559"></a>                    <span class="n">y2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
+<a id="__codelineno-0-560" name="__codelineno-0-560"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-561" name="__codelineno-0-561"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-562" name="__codelineno-0-562"></a>                    <span class="n">stroke_opacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_opacity</span> <span class="o">*</span> <span class="n">opacity_factor</span><span class="p">,</span>
+<a id="__codelineno-0-563" name="__codelineno-0-563"></a>                <span class="p">)</span>
+<a id="__codelineno-0-564" name="__codelineno-0-564"></a>            <span class="p">)</span>
+<a id="__codelineno-0-565" name="__codelineno-0-565"></a>
+<a id="__codelineno-0-566" name="__codelineno-0-566"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">aspect_lines_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aspect_lines</span><span class="p">)</span>  <span class="c1"># for test only</span>
+<a id="__codelineno-0-567" name="__codelineno-0-567"></a>        <span class="k">return</span> <span class="n">bg</span> <span class="o">+</span> <span class="n">aspect_lines</span>
+<a id="__codelineno-0-568" name="__codelineno-0-568"></a>
+<a id="__codelineno-0-569" name="__codelineno-0-569"></a>    <span class="nd">@cached_property</span>
+<a id="__codelineno-0-570" name="__codelineno-0-570"></a>    <span class="k">def</span> <span class="nf">house_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<a id="__codelineno-0-571" name="__codelineno-0-571"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the vertices (start and end degrees) of each house.</span>
+<a id="__codelineno-0-572" name="__codelineno-0-572"></a>
+<a id="__codelineno-0-573" name="__codelineno-0-573"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-574" name="__codelineno-0-574"></a><span class="sd">            A list of tuples containing start and end degrees for each house</span>
+<a id="__codelineno-0-575" name="__codelineno-0-575"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-576" name="__codelineno-0-576"></a>        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-577" name="__codelineno-0-577"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+<a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="n">next_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span>
+<a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="n">start_deg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">houses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">normalized_degree</span>
+<a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="n">end_deg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">houses</span><span class="p">[</span><span class="n">next_i</span><span class="p">]</span><span class="o">.</span><span class="n">normalized_degree</span>
+<a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="c1"># Handle the case where end_deg is less than start_deg (crosses 0°)</span>
+<a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="k">if</span> <span class="n">end_deg</span> <span class="o">&lt;</span> <span class="n">start_deg</span><span class="p">:</span>
+<a id="__codelineno-0-583" name="__codelineno-0-583"></a>                <span class="n">end_deg</span> <span class="o">+=</span> <span class="mi">360</span>
+<a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start_deg</span><span class="p">,</span> <span class="n">end_deg</span><span class="p">))</span>
 <a id="__codelineno-0-585" name="__codelineno-0-585"></a>
-<a id="__codelineno-0-586" name="__codelineno-0-586"></a>    <span class="nd">@cached_property</span>
-<a id="__codelineno-0-587" name="__codelineno-0-587"></a>    <span class="k">def</span> <span class="nf">bg_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-588" name="__codelineno-0-588"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the background colors for each house.</span>
-<a id="__codelineno-0-589" name="__codelineno-0-589"></a>
-<a id="__codelineno-0-590" name="__codelineno-0-590"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-591" name="__codelineno-0-591"></a><span class="sd">            A list of hex color strings for house backgrounds</span>
-<a id="__codelineno-0-592" name="__codelineno-0-592"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-593" name="__codelineno-0-593"></a>
-<a id="__codelineno-0-594" name="__codelineno-0-594"></a>        <span class="k">def</span> <span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">hex_value</span><span class="p">):</span>
-<a id="__codelineno-0-595" name="__codelineno-0-595"></a>            <span class="n">hex_value</span> <span class="o">=</span> <span class="n">hex_value</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-596" name="__codelineno-0-596"></a>            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<a id="__codelineno-0-597" name="__codelineno-0-597"></a>
-<a id="__codelineno-0-598" name="__codelineno-0-598"></a>        <span class="k">def</span> <span class="nf">rgb_to_hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
-<a id="__codelineno-0-599" name="__codelineno-0-599"></a>            <span class="k">return</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">)</span>
-<a id="__codelineno-0-600" name="__codelineno-0-600"></a>
-<a id="__codelineno-0-601" name="__codelineno-0-601"></a>        <span class="n">trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">transparency</span>
-<a id="__codelineno-0-602" name="__codelineno-0-602"></a>        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-603" name="__codelineno-0-603"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
-<a id="__codelineno-0-604" name="__codelineno-0-604"></a>            <span class="n">hex_color</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">,</span> <span class="n">SIGN_MEMBERS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
-<a id="__codelineno-0-605" name="__codelineno-0-605"></a>            <span class="n">rgb_color</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">hex_color</span><span class="p">)</span>
-<a id="__codelineno-0-606" name="__codelineno-0-606"></a>            <span class="n">rgb_bg</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
-<a id="__codelineno-0-607" name="__codelineno-0-607"></a>            <span class="c1"># blend the color with the background</span>
-<a id="__codelineno-0-608" name="__codelineno-0-608"></a>            <span class="n">blended_rgb</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-<a id="__codelineno-0-609" name="__codelineno-0-609"></a>                <span class="nb">int</span><span class="p">(</span><span class="n">trans</span> <span class="o">*</span> <span class="n">rgb_color</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">trans</span><span class="p">)</span> <span class="o">*</span> <span class="n">rgb_bg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<a id="__codelineno-0-610" name="__codelineno-0-610"></a>            <span class="p">)</span>
-<a id="__codelineno-0-611" name="__codelineno-0-611"></a>            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">blended_rgb</span><span class="p">))</span>
-<a id="__codelineno-0-612" name="__codelineno-0-612"></a>
-<a id="__codelineno-0-613" name="__codelineno-0-613"></a>        <span class="k">return</span> <span class="n">output</span> <span class="o">*</span> <span class="mi">4</span>
+<a id="__codelineno-0-586" name="__codelineno-0-586"></a>        <span class="k">return</span> <span class="n">vertices</span>
+<a id="__codelineno-0-587" name="__codelineno-0-587"></a>
+<a id="__codelineno-0-588" name="__codelineno-0-588"></a>    <span class="nd">@cached_property</span>
+<a id="__codelineno-0-589" name="__codelineno-0-589"></a>    <span class="k">def</span> <span class="nf">bg_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-590" name="__codelineno-0-590"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the background colors for each house.</span>
+<a id="__codelineno-0-591" name="__codelineno-0-591"></a>
+<a id="__codelineno-0-592" name="__codelineno-0-592"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-593" name="__codelineno-0-593"></a><span class="sd">            A list of hex color strings for house backgrounds</span>
+<a id="__codelineno-0-594" name="__codelineno-0-594"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-595" name="__codelineno-0-595"></a>
+<a id="__codelineno-0-596" name="__codelineno-0-596"></a>        <span class="k">def</span> <span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">hex_value</span><span class="p">):</span>
+<a id="__codelineno-0-597" name="__codelineno-0-597"></a>            <span class="n">hex_value</span> <span class="o">=</span> <span class="n">hex_value</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-598" name="__codelineno-0-598"></a>            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_value</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<a id="__codelineno-0-599" name="__codelineno-0-599"></a>
+<a id="__codelineno-0-600" name="__codelineno-0-600"></a>        <span class="k">def</span> <span class="nf">rgb_to_hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<a id="__codelineno-0-601" name="__codelineno-0-601"></a>            <span class="k">return</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">)</span>
+<a id="__codelineno-0-602" name="__codelineno-0-602"></a>
+<a id="__codelineno-0-603" name="__codelineno-0-603"></a>        <span class="n">trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">transparency</span>
+<a id="__codelineno-0-604" name="__codelineno-0-604"></a>        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-605" name="__codelineno-0-605"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<a id="__codelineno-0-606" name="__codelineno-0-606"></a>            <span class="n">hex_color</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">,</span> <span class="n">SIGN_MEMBERS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+<a id="__codelineno-0-607" name="__codelineno-0-607"></a>            <span class="n">rgb_color</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">hex_color</span><span class="p">)</span>
+<a id="__codelineno-0-608" name="__codelineno-0-608"></a>            <span class="n">rgb_bg</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
+<a id="__codelineno-0-609" name="__codelineno-0-609"></a>            <span class="c1"># blend the color with the background</span>
+<a id="__codelineno-0-610" name="__codelineno-0-610"></a>            <span class="n">blended_rgb</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+<a id="__codelineno-0-611" name="__codelineno-0-611"></a>                <span class="nb">int</span><span class="p">(</span><span class="n">trans</span> <span class="o">*</span> <span class="n">rgb_color</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">trans</span><span class="p">)</span> <span class="o">*</span> <span class="n">rgb_bg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<a id="__codelineno-0-612" name="__codelineno-0-612"></a>            <span class="p">)</span>
+<a id="__codelineno-0-613" name="__codelineno-0-613"></a>            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">blended_rgb</span><span class="p">))</span>
+<a id="__codelineno-0-614" name="__codelineno-0-614"></a>
+<a id="__codelineno-0-615" name="__codelineno-0-615"></a>        <span class="k">return</span> <span class="n">output</span> <span class="o">*</span> <span class="mi">4</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2883,9 +2868,7 @@ It supports both single and composite charts.</p>
 
             <details class="quote">
               <summary>Source code in <code>natal/chart.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-523">523</a></span>
-<span class="normal"><a href="#__codelineno-0-524">524</a></span>
-<span class="normal"><a href="#__codelineno-0-525">525</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-525">525</a></span>
 <span class="normal"><a href="#__codelineno-0-526">526</a></span>
 <span class="normal"><a href="#__codelineno-0-527">527</a></span>
 <span class="normal"><a href="#__codelineno-0-528">528</a></span>
@@ -2925,49 +2908,51 @@ It supports both single and composite charts.</p>
 <span class="normal"><a href="#__codelineno-0-562">562</a></span>
 <span class="normal"><a href="#__codelineno-0-563">563</a></span>
 <span class="normal"><a href="#__codelineno-0-564">564</a></span>
-<span class="normal"><a href="#__codelineno-0-565">565</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="k">def</span> <span class="nf">aspect_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">aspects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Aspect</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw aspect lines between aspectable celestial bodies.</span>
-<a id="__codelineno-0-525" name="__codelineno-0-525"></a>
-<a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a><span class="sd">        radius: Radius of the aspect wheel</span>
-<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="sd">        aspects: List of aspects to draw</span>
-<a id="__codelineno-0-529" name="__codelineno-0-529"></a>
-<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-531" name="__codelineno-0-531"></a><span class="sd">        A list of SVG elements representing aspect lines</span>
-<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-533" name="__codelineno-0-533"></a>    <span class="n">bg</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-534" name="__codelineno-0-534"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">(</span>
-<a id="__codelineno-0-535" name="__codelineno-0-535"></a>            <span class="n">radius</span><span class="p">,</span>
-<a id="__codelineno-0-536" name="__codelineno-0-536"></a>            <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
-<a id="__codelineno-0-537" name="__codelineno-0-537"></a>            <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-<a id="__codelineno-0-538" name="__codelineno-0-538"></a>            <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span><span class="p">,</span>
-<a id="__codelineno-0-539" name="__codelineno-0-539"></a>        <span class="p">)</span>
-<a id="__codelineno-0-540" name="__codelineno-0-540"></a>    <span class="p">]</span>
-<a id="__codelineno-0-541" name="__codelineno-0-541"></a>    <span class="n">aspect_lines</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-542" name="__codelineno-0-542"></a>    <span class="k">for</span> <span class="n">aspect</span> <span class="ow">in</span> <span class="n">aspects</span><span class="p">:</span>
-<a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="n">start_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body1</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="n">end_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body2</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">orb_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orb</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-<a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">orb_config</span><span class="p">:</span>
-<a id="__codelineno-0-547" name="__codelineno-0-547"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-548" name="__codelineno-0-548"></a>        <span class="n">orb_fraction</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">aspect</span><span class="o">.</span><span class="n">orb</span> <span class="o">/</span> <span class="n">orb_config</span>
-<a id="__codelineno-0-549" name="__codelineno-0-549"></a>        <span class="n">opacity_factor</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-550" name="__codelineno-0-550"></a>            <span class="mi">1</span> <span class="k">if</span> <span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;conjunction&quot;</span> <span class="k">else</span> <span class="n">orb_fraction</span>
-<a id="__codelineno-0-551" name="__codelineno-0-551"></a>        <span class="p">)</span>
-<a id="__codelineno-0-552" name="__codelineno-0-552"></a>        <span class="n">aspect_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-<a id="__codelineno-0-553" name="__codelineno-0-553"></a>            <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-554" name="__codelineno-0-554"></a>                <span class="n">x1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
-<a id="__codelineno-0-555" name="__codelineno-0-555"></a>                <span class="n">y1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
-<a id="__codelineno-0-556" name="__codelineno-0-556"></a>                <span class="n">x2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
-<a id="__codelineno-0-557" name="__codelineno-0-557"></a>                <span class="n">y2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
-<a id="__codelineno-0-558" name="__codelineno-0-558"></a>                <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-559" name="__codelineno-0-559"></a>                <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-560" name="__codelineno-0-560"></a>                <span class="n">stroke_opacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_opacity</span> <span class="o">*</span> <span class="n">opacity_factor</span><span class="p">,</span>
-<a id="__codelineno-0-561" name="__codelineno-0-561"></a>            <span class="p">)</span>
-<a id="__codelineno-0-562" name="__codelineno-0-562"></a>        <span class="p">)</span>
-<a id="__codelineno-0-563" name="__codelineno-0-563"></a>
-<a id="__codelineno-0-564" name="__codelineno-0-564"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">aspect_lines_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aspect_lines</span><span class="p">)</span>  <span class="c1"># for test only</span>
-<a id="__codelineno-0-565" name="__codelineno-0-565"></a>    <span class="k">return</span> <span class="n">bg</span> <span class="o">+</span> <span class="n">aspect_lines</span>
+<span class="normal"><a href="#__codelineno-0-565">565</a></span>
+<span class="normal"><a href="#__codelineno-0-566">566</a></span>
+<span class="normal"><a href="#__codelineno-0-567">567</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="k">def</span> <span class="nf">aspect_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">aspects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Aspect</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw aspect lines between aspectable celestial bodies.</span>
+<a id="__codelineno-0-527" name="__codelineno-0-527"></a>
+<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-529" name="__codelineno-0-529"></a><span class="sd">        radius: Radius of the aspect wheel</span>
+<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">        aspects: List of aspects to draw</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>
+<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="sd">        A list of SVG elements representing aspect lines</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a>    <span class="n">bg</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-0-536" name="__codelineno-0-536"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">(</span>
+<a id="__codelineno-0-537" name="__codelineno-0-537"></a>            <span class="n">radius</span><span class="p">,</span>
+<a id="__codelineno-0-538" name="__codelineno-0-538"></a>            <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
+<a id="__codelineno-0-539" name="__codelineno-0-539"></a>            <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+<a id="__codelineno-0-540" name="__codelineno-0-540"></a>            <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span><span class="p">,</span>
+<a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="p">)</span>
+<a id="__codelineno-0-542" name="__codelineno-0-542"></a>    <span class="p">]</span>
+<a id="__codelineno-0-543" name="__codelineno-0-543"></a>    <span class="n">aspect_lines</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-544" name="__codelineno-0-544"></a>    <span class="k">for</span> <span class="n">aspect</span> <span class="ow">in</span> <span class="n">aspects</span><span class="p">:</span>
+<a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">start_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body1</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="n">end_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">aspect</span><span class="o">.</span><span class="n">body2</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-547" name="__codelineno-0-547"></a>        <span class="n">orb_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orb</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<a id="__codelineno-0-548" name="__codelineno-0-548"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">orb_config</span><span class="p">:</span>
+<a id="__codelineno-0-549" name="__codelineno-0-549"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-550" name="__codelineno-0-550"></a>        <span class="n">orb_fraction</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">aspect</span><span class="o">.</span><span class="n">orb</span> <span class="o">/</span> <span class="n">orb_config</span>
+<a id="__codelineno-0-551" name="__codelineno-0-551"></a>        <span class="n">opacity_factor</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-552" name="__codelineno-0-552"></a>            <span class="mi">1</span> <span class="k">if</span> <span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;conjunction&quot;</span> <span class="k">else</span> <span class="n">orb_fraction</span>
+<a id="__codelineno-0-553" name="__codelineno-0-553"></a>        <span class="p">)</span>
+<a id="__codelineno-0-554" name="__codelineno-0-554"></a>        <span class="n">aspect_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<a id="__codelineno-0-555" name="__codelineno-0-555"></a>            <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-556" name="__codelineno-0-556"></a>                <span class="n">x1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
+<a id="__codelineno-0-557" name="__codelineno-0-557"></a>                <span class="n">y1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">start_angle</span><span class="p">),</span>
+<a id="__codelineno-0-558" name="__codelineno-0-558"></a>                <span class="n">x2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
+<a id="__codelineno-0-559" name="__codelineno-0-559"></a>                <span class="n">y2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">end_angle</span><span class="p">),</span>
+<a id="__codelineno-0-560" name="__codelineno-0-560"></a>                <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">aspect</span><span class="o">.</span><span class="n">aspect_member</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-561" name="__codelineno-0-561"></a>                <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-562" name="__codelineno-0-562"></a>                <span class="n">stroke_opacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_opacity</span> <span class="o">*</span> <span class="n">opacity_factor</span><span class="p">,</span>
+<a id="__codelineno-0-563" name="__codelineno-0-563"></a>            <span class="p">)</span>
+<a id="__codelineno-0-564" name="__codelineno-0-564"></a>        <span class="p">)</span>
+<a id="__codelineno-0-565" name="__codelineno-0-565"></a>
+<a id="__codelineno-0-566" name="__codelineno-0-566"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">aspect_lines_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aspect_lines</span><span class="p">)</span>  <span class="c1"># for test only</span>
+<a id="__codelineno-0-567" name="__codelineno-0-567"></a>    <span class="k">return</span> <span class="n">bg</span> <span class="o">+</span> <span class="n">aspect_lines</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3089,7 +3074,7 @@ It supports both single and composite charts.</p>
 
 
 <h4 id="natal.chart.Chart.body_wheel" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">body_wheel</span><span class="p">(</span><span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">body_wheel</span><span class="p">(</span><span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 </h4>
 
@@ -3173,6 +3158,7 @@ It supports both single and composite charts.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3275,97 +3261,101 @@ It supports both single and composite charts.</p>
 <span class="normal"><a href="#__codelineno-0-518">518</a></span>
 <span class="normal"><a href="#__codelineno-0-519">519</a></span>
 <span class="normal"><a href="#__codelineno-0-520">520</a></span>
-<span class="normal"><a href="#__codelineno-0-521">521</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="k">def</span> <span class="nf">body_wheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate elements for both inner and outer body wheels.</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">        wheel_radius: Radius of the wheel</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">        data: Chart data to use</span>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">        min_degree: Minimum degree separation between bodies</span>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="sd">        A list of SVG elements representing the body wheel</span>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>    <span class="k">def</span> <span class="nf">norm_deg</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>    <span class="n">sorted_norm_bodies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">norm_deg</span><span class="p">)</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>    <span class="n">sorted_norm_degs</span> <span class="o">=</span> <span class="p">[</span><span class="n">norm_deg</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">sorted_norm_bodies</span><span class="p">]</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>    <span class="c1"># Calculate adjusted positions</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>    <span class="n">adj_norm_degs</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adjusted_degrees</span><span class="p">(</span><span class="n">sorted_norm_degs</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">)</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>        <span class="k">else</span> <span class="n">sorted_norm_degs</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>    <span class="p">)</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a>    <span class="c1"># for tests only</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">adj_degs_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_norm_degs</span><span class="p">)</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>    <span class="k">for</span> <span class="n">body</span><span class="p">,</span> <span class="n">adj_deg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">,</span> <span class="n">adj_norm_degs</span><span class="p">):</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>        <span class="n">g_opt</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>            <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>            <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>            <span class="s2">&quot;stroke_width&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="p">}</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>        <span class="c1"># special handling for asc, ic, dsc and mc</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>        <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>            <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">]</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>            <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;stroke&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>        <span class="n">symbol_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-521">521</a></span>
+<span class="normal"><a href="#__codelineno-0-522">522</a></span>
+<span class="normal"><a href="#__codelineno-0-523">523</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="k">def</span> <span class="nf">body_wheel</span><span class="p">(</span>
+<a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">wheel_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate elements for both inner and outer body wheels.</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">        wheel_radius: Radius of the wheel</span>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">        data: Chart data to use</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">        min_degree: Minimum degree separation between bodies</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="sd">        A list of SVG elements representing the body wheel</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>    <span class="k">def</span> <span class="nf">norm_deg</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>    <span class="n">sorted_norm_bodies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">aspectables</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">norm_deg</span><span class="p">)</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>    <span class="n">sorted_norm_degs</span> <span class="o">=</span> <span class="p">[</span><span class="n">norm_deg</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">sorted_norm_bodies</span><span class="p">]</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>    <span class="c1"># Calculate adjusted positions</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>    <span class="n">adj_norm_degs</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adjusted_degrees</span><span class="p">(</span><span class="n">sorted_norm_degs</span><span class="p">,</span> <span class="n">min_degree</span><span class="p">)</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<a id="__codelineno-0-455" name="__codelineno-0-455"></a>        <span class="k">else</span> <span class="n">sorted_norm_degs</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>    <span class="p">)</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>    <span class="c1"># for tests only</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">adj_degs_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_norm_degs</span><span class="p">)</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a>    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a>    <span class="k">for</span> <span class="n">body</span><span class="p">,</span> <span class="n">adj_deg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sorted_norm_bodies</span><span class="p">,</span> <span class="n">adj_norm_degs</span><span class="p">):</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>        <span class="n">g_opt</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>            <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>            <span class="s2">&quot;stroke_width&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>        <span class="p">}</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="c1"># special handling for asc, ic, dsc and mc</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>        <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">VERTEX_NAMES</span><span class="p">:</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>            <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">]</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>            <span class="n">g_opt</span><span class="p">[</span><span class="s2">&quot;stroke&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
 <a id="__codelineno-0-472" name="__codelineno-0-472"></a>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="c1"># Use original angle for line start position</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>        <span class="n">original_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="n">degree_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="n">degree_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>        <span class="c1"># Use adjusted angle for symbol position</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>        <span class="n">adjusted_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">adj_deg</span><span class="p">)</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="n">symbol_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>        <span class="n">symbol_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a>        <span class="c1"># Add line connecting to the inner circle</span>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a>        <span class="n">inner_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="n">inner_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="n">inner_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>            <span class="p">[</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>                <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>                    <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                    <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                    <span class="n">x2</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
-<a id="__codelineno-0-494" name="__codelineno-0-494"></a>                    <span class="n">y2</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
-<a id="__codelineno-0-495" name="__codelineno-0-495"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
-<a id="__codelineno-0-496" name="__codelineno-0-496"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-497" name="__codelineno-0-497"></a>                <span class="p">),</span>
-<a id="__codelineno-0-498" name="__codelineno-0-498"></a>                <span class="n">circle</span><span class="p">(</span>
-<a id="__codelineno-0-499" name="__codelineno-0-499"></a>                    <span class="n">cx</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
-<a id="__codelineno-0-500" name="__codelineno-0-500"></a>                    <span class="n">cy</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a>                    <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-502" name="__codelineno-0-502"></a>                    <span class="c1"># fill=&quot;red&quot;,  # for testing only</span>
-<a id="__codelineno-0-503" name="__codelineno-0-503"></a>                    <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
-<a id="__codelineno-0-504" name="__codelineno-0-504"></a>                <span class="p">),</span>
-<a id="__codelineno-0-505" name="__codelineno-0-505"></a>                <span class="n">line</span><span class="p">(</span>
-<a id="__codelineno-0-506" name="__codelineno-0-506"></a>                    <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
-<a id="__codelineno-0-507" name="__codelineno-0-507"></a>                    <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
-<a id="__codelineno-0-508" name="__codelineno-0-508"></a>                    <span class="n">x2</span><span class="o">=</span><span class="n">inner_x</span><span class="p">,</span>
-<a id="__codelineno-0-509" name="__codelineno-0-509"></a>                    <span class="n">y2</span><span class="o">=</span><span class="n">inner_y</span><span class="p">,</span>
-<a id="__codelineno-0-510" name="__codelineno-0-510"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
-<a id="__codelineno-0-511" name="__codelineno-0-511"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-512" name="__codelineno-0-512"></a>                    <span class="n">stroke_dasharray</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">11</span><span class="p">,</span>
-<a id="__codelineno-0-513" name="__codelineno-0-513"></a>                <span class="p">),</span>
-<a id="__codelineno-0-514" name="__codelineno-0-514"></a>                <span class="n">g</span><span class="p">(</span>
-<a id="__codelineno-0-515" name="__codelineno-0-515"></a>                    <span class="n">svg_paths</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-<a id="__codelineno-0-516" name="__codelineno-0-516"></a>                    <span class="n">transform</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;translate(</span><span class="si">{</span><span class="n">symbol_x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">symbol_y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">) scale(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_adjustment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-517" name="__codelineno-0-517"></a>                    <span class="o">**</span><span class="n">g_opt</span><span class="p">,</span>
-<a id="__codelineno-0-518" name="__codelineno-0-518"></a>                <span class="p">),</span>
-<a id="__codelineno-0-519" name="__codelineno-0-519"></a>            <span class="p">]</span>
-<a id="__codelineno-0-520" name="__codelineno-0-520"></a>        <span class="p">)</span>
-<a id="__codelineno-0-521" name="__codelineno-0-521"></a>    <span class="k">return</span> <span class="n">output</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="n">symbol_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="c1"># Use original angle for line start position</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="n">original_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data1</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="n">degree_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>        <span class="n">degree_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>
+<a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="c1"># Use adjusted angle for symbol position</span>
+<a id="__codelineno-0-481" name="__codelineno-0-481"></a>        <span class="n">adjusted_angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">adj_deg</span><span class="p">)</span>
+<a id="__codelineno-0-482" name="__codelineno-0-482"></a>        <span class="n">symbol_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a>        <span class="n">symbol_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">symbol_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">adjusted_angle</span><span class="p">)</span>
+<a id="__codelineno-0-484" name="__codelineno-0-484"></a>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="c1"># Add line connecting to the inner circle</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="n">inner_radius</span> <span class="o">=</span> <span class="n">wheel_radius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span>
+<a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="n">inner_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">-</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="n">inner_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">+</span> <span class="n">inner_radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">original_angle</span><span class="p">)</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a>            <span class="p">[</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                    <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a>                    <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a>                    <span class="n">x2</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>                    <span class="n">y2</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">color</span><span class="p">],</span>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>                <span class="p">),</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a>                <span class="n">circle</span><span class="p">(</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a>                    <span class="n">cx</span><span class="o">=</span><span class="n">symbol_x</span><span class="p">,</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a>                    <span class="n">cy</span><span class="o">=</span><span class="n">symbol_y</span><span class="p">,</span>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a>                    <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>                    <span class="c1"># fill=&quot;red&quot;,  # for testing only</span>
+<a id="__codelineno-0-505" name="__codelineno-0-505"></a>                    <span class="n">fill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
+<a id="__codelineno-0-506" name="__codelineno-0-506"></a>                <span class="p">),</span>
+<a id="__codelineno-0-507" name="__codelineno-0-507"></a>                <span class="n">line</span><span class="p">(</span>
+<a id="__codelineno-0-508" name="__codelineno-0-508"></a>                    <span class="n">x1</span><span class="o">=</span><span class="n">degree_x</span><span class="p">,</span>
+<a id="__codelineno-0-509" name="__codelineno-0-509"></a>                    <span class="n">y1</span><span class="o">=</span><span class="n">degree_y</span><span class="p">,</span>
+<a id="__codelineno-0-510" name="__codelineno-0-510"></a>                    <span class="n">x2</span><span class="o">=</span><span class="n">inner_x</span><span class="p">,</span>
+<a id="__codelineno-0-511" name="__codelineno-0-511"></a>                    <span class="n">y2</span><span class="o">=</span><span class="n">inner_y</span><span class="p">,</span>
+<a id="__codelineno-0-512" name="__codelineno-0-512"></a>                    <span class="n">stroke</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span>
+<a id="__codelineno-0-513" name="__codelineno-0-513"></a>                    <span class="n">stroke_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">chart</span><span class="o">.</span><span class="n">stroke_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-514" name="__codelineno-0-514"></a>                    <span class="n">stroke_dasharray</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_thickness</span> <span class="o">/</span> <span class="mi">11</span><span class="p">,</span>
+<a id="__codelineno-0-515" name="__codelineno-0-515"></a>                <span class="p">),</span>
+<a id="__codelineno-0-516" name="__codelineno-0-516"></a>                <span class="n">g</span><span class="p">(</span>
+<a id="__codelineno-0-517" name="__codelineno-0-517"></a>                    <span class="n">svg_paths</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<a id="__codelineno-0-518" name="__codelineno-0-518"></a>                    <span class="n">transform</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;translate(</span><span class="si">{</span><span class="n">symbol_x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">symbol_y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">pos_adjustment</span><span class="si">}</span><span class="s2">) scale(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_adjustment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-519" name="__codelineno-0-519"></a>                    <span class="o">**</span><span class="n">g_opt</span><span class="p">,</span>
+<a id="__codelineno-0-520" name="__codelineno-0-520"></a>                <span class="p">),</span>
+<a id="__codelineno-0-521" name="__codelineno-0-521"></a>            <span class="p">]</span>
+<a id="__codelineno-0-522" name="__codelineno-0-522"></a>        <span class="p">)</span>
+<a id="__codelineno-0-523" name="__codelineno-0-523"></a>    <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
