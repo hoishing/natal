@@ -42,7 +42,7 @@ class Data(DotDict):
             lon: Longitude of the city
             utc_dt: datetime object or string in format "YYYY-MM-DD HH:MM" in UTC timezone
             config: Configuration settings with defaults
-            moshier: Use Moshier ephemeris without seas_18.se1, no asteroids but more performant
+            moshier: Use Moshier ephemeris, no asteroids support, but more performant
 
         Returns:
             None
@@ -53,7 +53,7 @@ class Data(DotDict):
         self.lon = lon
         self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else utc_dt
         self.config = config
-        self.moshier_only = moshier
+        self.moshier = moshier
         self.house_sys = config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
@@ -74,7 +74,7 @@ class Data(DotDict):
     def set_movable_bodies(self) -> None:
         """Set the positions of the planets and other celestial bodies."""
         self.planets = self.set_positions(PLANET_MEMBERS)
-        if not self.moshier_only:
+        if not self.moshier:
             self.extras = self.set_positions(EXTRA_MEMBERS)
 
     def set_houses_vertices(self) -> None:
@@ -155,34 +155,6 @@ class Data(DotDict):
         third = [b for b in bodies if dsc <= b.normalized_degree < mc]
         fourth = [b for b in bodies if mc <= b.normalized_degree]
         self.quadrants = [first, second, third, fourth]
-
-    def __repr__(self) -> str:
-        """Get string representation of the Data object.
-
-        Returns:
-            str: Formatted string showing chart data
-        """
-        op = ""
-        op += f"Name: {self.name}\n"
-        op += f"UTC: {self.utc_dt}\n"
-        op += f"Latitude: {self.lat}\n"
-        op += f"Longitude: {self.lon}\n"
-        op += f"House System: {self.house_sys}\n"
-        op += "Planets:\n"
-        for planet in self.planets:
-            op += f"\t{planet.name}: {planet.signed_dms}\n"
-        op += "Extras:\n"
-        for extra in self.extras:
-            op += f"\t{extra.name}: {extra.signed_dms}\n"
-        op += f"Asc: {self.asc.signed_dms}\n"
-        op += f"MC: {self.mc.signed_dms}\n"
-        op += "Houses:\n"
-        for house in self.houses:
-            op += f"\t{house.name}: {house.signed_dms}\n"
-        op += "Signs:\n"
-        for sign in self.signs:
-            op += f"\t{sign.name}: degree={sign.degree:.2f}, ruler={sign.ruler}, color={sign.color}, modality={sign.modality}, element={sign.element}, polarity={sign.polarity}\n"
-        return op
 
     # utils ===============================
 

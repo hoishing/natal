@@ -30,7 +30,7 @@ watchdog = "^6.0.0"
 scour = "^0.38.2"
 
 [tool.poetry.extras]
-report = ["natal_report"]
+report = ["natal-report"]
 
 [build-system]
 requires = ["poetry-core"]
