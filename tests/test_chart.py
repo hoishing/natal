@@ -61,8 +61,8 @@ def test_adjusted_inner_degrees(chart, adj_inner_degs):
 
 
 def test_fix_wrong_bodies_position():
-    d1 = Data("d1", "Hong Kong", "1988-04-20 14:30")
-    d2 = Data("d2", "Hong Kong", "2025-02-25 12:00")
+    d1 = Data("d1", 22.2783, 114.175, "1988-04-20 06:30")
+    d2 = Data("d2", 22.2783, 114.175, "2025-02-25 04:00")
 
     chart1 = Chart(data1=d1, data2=d2, width=600)
     input_degs = sorted(
@@ -77,7 +77,7 @@ def test_fix_wrong_bodies_position():
 
 
 def test_fix_crowded_bodies():
-    crowded = Data("Crowded", "Hong Kong", "2025-03-26 12:00")
+    crowded = Data("Crowded", 22.2783, 114.175, "2025-03-26 04:00")
     chart = Chart(data1=crowded, width=600)
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 14, 205, 223, 256, 259, 260, 262, 263, 265, 268, 317, 337]
@@ -89,7 +89,7 @@ def test_fix_crowded_bodies():
 
 
 def test_fix_infinite_loop():
-    inf_loop = Data("Inf Loop", "Hong Kong", "2000-01-12 12:00")
+    inf_loop = Data("Inf Loop", 22.2783, 114.175, "2000-01-12 04:00")
     chart = Chart(data1=inf_loop, width=600)
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 5, 20, 104, 231, 234, 264, 268, 271, 283, 295, 316, 332]
@@ -101,7 +101,7 @@ def test_fix_infinite_loop():
 
 
 def test_adj_degs_len():
-    info = ["test", "Hong Kong", "2024-01-01 00:00"]
+    info = ["test", 22.2783, 114.175, "2023-12-23 16:00"]
     bodies = Display.model_fields.keys()
     values = [False] * len(bodies)
 
@@ -117,7 +117,7 @@ def test_adj_degs_len():
 def test_fix_orb_eq_0(data1: Data) -> None:
     org_chart = Chart(data1=data1, width=600)
     orb = Orb(conjunction=0, opposition=0)
-    data = Data(data1.name, data1.city, data1.dt, config=Config(orb=orb))
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(orb=orb))
     chart = Chart(data1=data, width=600)
     _ = org_chart.svg
     _ = chart.svg

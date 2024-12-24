@@ -1,8 +1,6 @@
 import itertools
-import pandas as pd
 import swisseph as swe
 from datetime import datetime
-from functools import cached_property
 from math import floor
 from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
 from natal.config import Config, DotDict
@@ -23,37 +21,39 @@ type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
 
 class Data(DotDict):
-    """
-    Data object for a natal chart.
-    """
+    """Data object for a natal chart."""
 
-    data_folder = Path(__file__).parent.absolute() / "data"
+    data_folder = Path(__file__).parent.absolute()
 
     def __init__(
         self,
         name: str,
-        city: str,
-        dt: datetime | str,
+        lat: float,
+        lon: float,
+        utc_dt: datetime | str,
         config: Config = Config(),
+        moshier: bool = False,
     ) -> None:
         """Initialize a natal chart data object.
 
         Args:
-            name (str): The name for this chart
-            city (str): City name to lookup coordinates
-            dt (datetime | str): Date and time as datetime object or string
-            config (Config): Configuration settings
+            name: The name for this chart
+            lat: Latitude of the city
+            lon: Longitude of the city
+            utc_dt: datetime object or string in format "YYYY-MM-DD HH:MM" in UTC timezone
+            config: Configuration settings with defaults
+            moshier: Use Moshier ephemeris, no asteroids support, but more performant
+
+        Returns:
+            None
         """
-        swe.set_ephe_path(str(self.data_folder))
+        swe.set_ephe_path(None if moshier else str(Path(__file__).parent.absolute()))
         self.name = name
-        self.city = city
-        if isinstance(dt, str):
-            dt = str_to_dt(dt)
-        self.dt = dt
+        self.lat = lat
+        self.lon = lon
+        self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else utc_dt
         self.config = config
-        self.lat: float = None
-        self.lon: float = None
-        self.timezone: str = None
+        self.moshier = moshier
         self.house_sys = config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
@@ -62,7 +62,6 @@ class Data(DotDict):
         self.signs: list[Sign] = []
         self.aspects: list[Aspect] = []
         self.quadrants: list[list[Aspectable]] = []
-        self.set_lat_lon()
         self.set_houses_vertices()
         self.set_movable_bodies()
         self.set_aspectable()
@@ -72,31 +71,11 @@ class Data(DotDict):
         self.set_rulers()
         self.set_quadrants()
 
-    @property
-    def julian_day(self) -> float:
-        """Convert dt to UTC and return Julian day.
-
-        Returns:
-            float: The Julian day number
-        """
-        local_tz = ZoneInfo(self.timezone)
-        local_dt = self.dt.replace(tzinfo=local_tz)
-        utc_dt = local_dt.astimezone(ZoneInfo("UTC"))
-        return swe.date_conversion(
-            utc_dt.year, utc_dt.month, utc_dt.day, utc_dt.hour + utc_dt.minute / 60
-        )[1]
-
-    def set_lat_lon(self) -> None:
-        """Set the geographical information of a city."""
-        info = self.cities[self.cities["name"].str.lower() == self.city.lower()].iloc[0]
-        self.lat = float(info["lat"])
-        self.lon = float(info["lon"])
-        self.timezone = info["timezone"]
-
     def set_movable_bodies(self) -> None:
         """Set the positions of the planets and other celestial bodies."""
         self.planets = self.set_positions(PLANET_MEMBERS)
-        self.extras = self.set_positions(EXTRA_MEMBERS)
+        if not self.moshier:
+            self.extras = self.set_positions(EXTRA_MEMBERS)
 
     def set_houses_vertices(self) -> None:
         """Calculate the cusps of the houses and set the vertices."""
@@ -177,48 +156,30 @@ class Data(DotDict):
         fourth = [b for b in bodies if mc <= b.normalized_degree]
         self.quadrants = [first, second, third, fourth]
 
-    def __str__(self) -> str:
-        """Get string representation of the Data object.
+    # utils ===============================
+
+    @property
+    def julian_day(self) -> float:
+        """Convert dt to UTC and return Julian day.
 
         Returns:
-            str: Formatted string showing chart data
+            float: The Julian day number
         """
-        op = ""
-        op += f"Name: {self.name}\n"
-        op += f"City: {self.city}\n"
-        op += f"Date: {self.dt}\n"
-        op += f"Latitude: {self.lat}\n"
-        op += f"Longitude: {self.lon}\n"
-        op += f"House System: {self.house_sys}\n"
-        op += "Planets:\n"
-        for e in self.planets:
-            op += f"{e.name}: {e.signed_dms}\n"
-        op += "Extras:\n"
-        for e in self.extras:
-            op += f"{e.name}: {e.signed_dms}\n"
-        op += f"Asc: {self.asc.signed_dms}\n"
-        op += f"MC: {self.mc.signed_dms}\n"
-        op += "Houses:\n"
-        for e in self.houses:
-            op += f"{e.name}: {e.signed_dms}\n"
-        op += "Signs:\n"
-        for e in self.signs:
-            op += f"{e.name}: degree={e.degree:.2f}, ruler={e.ruler}, color={e.color}, modality={e.modality}, element={e.element}, polarity={e.polarity}\n"
-        op += "Aspects:\n"
-        for e in self.aspects:
-            op += f"{e.body1.name} {e.aspect_member.symbol} {e.body2.name}: {e.aspect_member.color}\n"
-        return op
-
-    # utils ===============================
+        return swe.date_conversion(
+            self.utc_dt.year,
+            self.utc_dt.month,
+            self.utc_dt.day,
+            self.utc_dt.hour + self.utc_dt.minute / 60,
+        )[1]
 
     def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
         """Set the positions of celestial bodies.
 
         Args:
-            bodies (list[Body]): List of celestial body definitions
+            bodies: List of celestial body definitions
 
         Returns:
-            list[Aspectable]: List of aspectable bodies with positions set
+            List of aspectable bodies with positions set
         """
         output = []
         for body in bodies:
@@ -236,10 +197,10 @@ class Data(DotDict):
         """Get the house number containing a celestial body.
 
         Args:
-            body (Body): The celestial body to locate
+            body: The celestial body to locate
 
         Returns:
-            int: House number (1-12) containing the body
+            House number (1-12) containing the body
         """
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
@@ -251,10 +212,10 @@ class Data(DotDict):
         """Normalize a degree relative to the Ascendant.
 
         Args:
-            degree (float): The degree to normalize
+            degree: The degree to normalize
 
         Returns:
-            float: Normalized degree (0-360)
+            Normalized degree (0-360)
         """
         return (degree - self.asc.degree + 360) % 360
 
@@ -262,10 +223,10 @@ class Data(DotDict):
         """Calculate aspects between pairs of celestial bodies.
 
         Args:
-            body_pairs (BodyPairs): Pairs of bodies to check for aspects
+            body_pairs: Pairs of bodies to check for aspects
 
         Returns:
-            list[Aspect]: List of aspects found between the bodies
+            List of aspects found between the bodies
         """
         output = []
         for b1, b2 in body_pairs:
@@ -299,19 +260,9 @@ class Data(DotDict):
         """Generate pairs of aspectable bodies for composite chart.
 
         Args:
-            data2 (Self): Second chart data to compare against
+            data2: Second chart data to compare against
 
         Returns:
-            BodyPairs: Pairs of bodies to check for aspects
+            Pairs of bodies to check for aspects
         """
         return itertools.product(self.aspectables, data2.aspectables)
-
-    @staticmethod
-    def get_cities() -> pd.DataFrame:
-        """make cities data available outside Data class"""
-        return pd.read_csv(Data.data_folder / "cities.csv.gz")
-
-    @cached_property
-    def cities(self) -> pd.DataFrame:
-        """cached cities data"""
-        return Data.get_cities()
