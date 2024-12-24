@@ -168,3 +168,9 @@ def test_house_sys(data1: Data) -> None:
     )
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
+
+
+def test_moshier(data1: Data) -> None:
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, moshier=True)
+    assert data.moshier
+    assert data.extras == []
