@@ -813,7 +813,7 @@
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># create chart data object</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">mimi</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;1980-04-20 06:30:00&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;1980-04-20 06:30&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">lat</span><span class="o">=</span><span class="mf">25.0531</span><span class="p">,</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">lon</span><span class="o">=</span><span class="mf">121.526</span><span class="p">,</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
@@ -824,7 +824,7 @@
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># create transit data object</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">transit</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Transit&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;2024-01-01 05:30:00&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">utc_dt</span><span class="o">=</span><span class="s2">&quot;2024-01-01 05:30&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">lat</span><span class="o">=</span><span class="mf">25.0531</span><span class="p">,</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">lon</span><span class="o">=</span><span class="mf">121.526</span><span class="p">,</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">)</span>
@@ -897,148 +897,156 @@
 <ul>
 <li>following markdown report will be produced:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gh"># Element Distribution (MiMi)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gh"># Basic Information</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>| element   |  sum  | bodies                                          |
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>|-----------|-------|-------------------------------------------------|
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>| earth     |   4   | sun ♉ , jupiter ♍ , saturn ♍ , asc ♍        |
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>| water     |   2   | moon ♋ , uranus ♏                             |
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>| fire      |   4   | mercury ♈ , mars ♌ , neptune ♐ , asc_node ♌ |
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>| air       |   3   | venus ♊ , pluto ♎ , mc ♊                     |
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>| name    | location             | UTC time         |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>|---------|----------------------|------------------|
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>| MiMi    | 25.0531°N, 121.526°E | 1980-04-20 06:30 |
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>| Transit | 25.0531°N, 121.526°E | 2024-01-01 05:30 |
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="gh"># Element Distribution (MiMi)</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="gh"># Modality Distribution (MiMi)</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>| modality   |  sum  | bodies                                                          |
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>|------------|-------|-----------------------------------------------------------------|
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>| fixed      |   4   | sun ♉ , mars ♌ , uranus ♏ , asc_node ♌                      |
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>| cardinal   |   3   | moon ♋ , mercury ♈ , pluto ♎                                 |
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>| mutable    |   6   | venus ♊ , jupiter ♍ , saturn ♍ , neptune ♐ , asc ♍ , mc ♊ |
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>| element   |  sum  | bodies                                          |
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>|-----------|-------|-------------------------------------------------|
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>| earth     |   4   | sun ♉ , jupiter ♍ , saturn ♍ , asc ♍        |
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>| water     |   2   | moon ♋ , uranus ♏                             |
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>| fire      |   4   | mercury ♈ , mars ♌ , neptune ♐ , asc_node ♌ |
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>| air       |   3   | venus ♊ , pluto ♎ , mc ♊                     |
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="gh"># Polarity Distribution (MiMi)</span>
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>| polarity   |  sum  | bodies                                                                        |
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>|------------|-------|-------------------------------------------------------------------------------|
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>| negative   |   6   | sun ♉ , moon ♋ , jupiter ♍ , saturn ♍ , uranus ♏ , asc ♍                |
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>| positive   |   7   | mercury ♈ , venus ♊ , mars ♌ , neptune ♐ , pluto ♎ , asc_node ♌ , mc ♊ |
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="gh"># Modality Distribution (MiMi)</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>| modality   |  sum  | bodies                                                          |
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>|------------|-------|-----------------------------------------------------------------|
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>| fixed      |   4   | sun ♉ , mars ♌ , uranus ♏ , asc_node ♌                      |
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>| cardinal   |   3   | moon ♋ , mercury ♈ , pluto ♎                                 |
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>| mutable    |   6   | venus ♊ , jupiter ♍ , saturn ♍ , neptune ♐ , asc ♍ , mc ♊ |
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
-<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="gh"># Celestial Bodies (MiMi)</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="gh"># Polarity Distribution (MiMi)</span>
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
-<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>| body     | sign         |  house  | dignity   |
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>|----------|--------------|---------|-----------|
-<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>| sun      | 00° ♉ 19&#39;   |    8    |           |
-<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>| moon     | 08° ♋ 29&#39;   |   10    | domicile  |
-<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>| mercury  | 08° ♈ 28&#39;   |    8    |           |
-<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>| venus    | 15° ♊ 12&#39;   |   10    |           |
-<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>| mars     | 26° ♌ 59&#39;   |   12    |           |
-<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>| jupiter  | 00° ♍ 17&#39; ℞ |   12    | detriment |
-<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>| saturn   | 21° ♍ 03&#39; ℞ |    1    |           |
-<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>| uranus   | 24° ♏ 31&#39; ℞ |    3    |           |
-<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>| neptune  | 22° ♐ 29&#39; ℞ |    4    |           |
-<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>| pluto    | 20° ♎ 06&#39; ℞ |    2    |           |
-<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>| asc_node | 26° ♌ 03&#39; ℞ |   12    |           |
-<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>| asc      | 09° ♍ 42&#39;   |    1    |           |
-<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>| mc       | 09° ♊ 13&#39;   |   10    |           |
-<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>
-<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
-<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="gh"># Houses (MiMi)</span>
-<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>
-<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>| house   |    cusp    | ruler   |  ruler sign  |  ruler house  |
-<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>|---------|------------|---------|--------------|---------------|
-<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>| 1       | 09° ♍ 41&#39; | mercury |      ♈      |       8       |
-<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>| 2       | 07° ♎ 13&#39; | venus   |      ♊      |      10       |
-<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>| 3       | 07° ♏ 38&#39; | pluto   |      ♎      |       2       |
-<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>| 4       | 09° ♐ 13&#39; | jupiter |      ♍      |      12       |
-<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>| 5       | 10° ♑ 25&#39; | saturn  |      ♍      |       1       |
-<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>| 6       | 10° ♒ 44&#39; | uranus  |      ♏      |       3       |
-<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>| 7       | 09° ♓ 41&#39; | neptune |      ♐      |       4       |
-<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>| 8       | 07° ♈ 13&#39; | mars    |      ♌      |      12       |
-<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>| 9       | 07° ♉ 38&#39; | venus   |      ♊      |      10       |
-<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>| 10      | 09° ♊ 13&#39; | mercury |      ♈      |       8       |
-<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>| 11      | 10° ♋ 25&#39; | moon    |      ♋      |      10       |
-<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>| 12      | 10° ♌ 44&#39; | sun     |      ♉      |       8       |
-<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>
-<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>
-<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a><span class="gh"># Quadrants (MiMi)</span>
-<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>
-<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>| quadrant   |  sum  | bodies                               |
-<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>|------------|-------|--------------------------------------|
-<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a>| 1st ◵      |   3   | saturn, uranus, pluto                |
-<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>| 2nd ◶      |   1   | neptune                              |
-<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a>| 3rd ◷      |   2   | sun, mercury                         |
-<a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a>| 4th ◴      |   5   | moon, venus, mars, jupiter, asc_node |
-<a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>| polarity   |  sum  | bodies                                                                        |
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>|------------|-------|-------------------------------------------------------------------------------|
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>| negative   |   6   | sun ♉ , moon ♋ , jupiter ♍ , saturn ♍ , uranus ♏ , asc ♍                |
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>| positive   |   7   | mercury ♈ , venus ♊ , mars ♌ , neptune ♐ , pluto ♎ , asc_node ♌ , mc ♊ |
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="gh"># Celestial Bodies (MiMi)</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>| body     | sign         |  house  | dignity   |
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>|----------|--------------|---------|-----------|
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>| sun      | 00° ♉ 19&#39;   |    8    |           |
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>| moon     | 08° ♋ 29&#39;   |   10    | domicile  |
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>| mercury  | 08° ♈ 28&#39;   |    8    |           |
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>| venus    | 15° ♊ 12&#39;   |   10    |           |
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>| mars     | 26° ♌ 59&#39;   |   12    |           |
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>| jupiter  | 00° ♍ 17&#39; ℞ |   12    | detriment |
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>| saturn   | 21° ♍ 03&#39; ℞ |    1    |           |
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>| uranus   | 24° ♏ 31&#39; ℞ |    3    |           |
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>| neptune  | 22° ♐ 29&#39; ℞ |    4    |           |
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>| pluto    | 20° ♎ 06&#39; ℞ |    2    |           |
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>| asc_node | 26° ♌ 03&#39; ℞ |   12    |           |
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>| asc      | 09° ♍ 42&#39;   |    1    |           |
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>| mc       | 09° ♊ 13&#39;   |   10    |           |
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a><span class="gh"># Houses (MiMi)</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>| house   |    cusp    | ruler   |  ruler sign  |  ruler house  |
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>|---------|------------|---------|--------------|---------------|
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>| 1       | 09° ♍ 41&#39; | mercury |      ♈      |       8       |
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>| 2       | 07° ♎ 13&#39; | venus   |      ♊      |      10       |
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>| 3       | 07° ♏ 38&#39; | pluto   |      ♎      |       2       |
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>| 4       | 09° ♐ 13&#39; | jupiter |      ♍      |      12       |
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>| 5       | 10° ♑ 25&#39; | saturn  |      ♍      |       1       |
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>| 6       | 10° ♒ 44&#39; | uranus  |      ♏      |       3       |
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a>| 7       | 09° ♓ 41&#39; | neptune |      ♐      |       4       |
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>| 8       | 07° ♈ 13&#39; | mars    |      ♌      |      12       |
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>| 9       | 07° ♉ 38&#39; | venus   |      ♊      |      10       |
+<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>| 10      | 09° ♊ 13&#39; | mercury |      ♈      |       8       |
+<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a>| 11      | 10° ♋ 25&#39; | moon    |      ♋      |      10       |
+<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>| 12      | 10° ♌ 44&#39; | sun     |      ♉      |       8       |
+<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a>
+<a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a>
+<a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a><span class="gh"># Quadrants (MiMi)</span>
 <a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a>
-<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a><span class="gh"># Hemispheres (MiMi)</span>
-<a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a>
-<a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a>| hemisphere   |  sum  | bodies                                                      |
-<a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>|--------------|-------|-------------------------------------------------------------|
-<a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a>| ←            |   8   | saturn, uranus, pluto, moon, venus, mars, jupiter, asc_node |
-<a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a>| →            |   3   | neptune, sun, mercury                                       |
-<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a>| ↑            |   7   | sun, mercury, moon, venus, mars, jupiter, asc_node          |
-<a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a>| ↓            |   4   | saturn, uranus, pluto, neptune                              |
-<a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a>
+<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a>| quadrant   |  sum  | bodies                               |
+<a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a>|------------|-------|--------------------------------------|
+<a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a>| 1st ◵      |   3   | saturn, uranus, pluto                |
+<a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>| 2nd ◶      |   1   | neptune                              |
+<a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a>| 3rd ◷      |   2   | sun, mercury                         |
+<a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a>| 4th ◴      |   5   | moon, venus, mars, jupiter, asc_node |
+<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a>
+<a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a>
+<a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a><span class="gh"># Hemispheres (MiMi)</span>
 <a id="__codelineno-3-84" name="__codelineno-3-84" href="#__codelineno-3-84"></a>
-<a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a><span class="gh"># Celestial Bodies of Transit in MiMi&#39;s chart</span>
-<a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a>
-<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a>| Transit   | sign         |  house  | dignity   |
-<a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a>|-----------|--------------|---------|-----------|
-<a id="__codelineno-3-89" name="__codelineno-3-89" href="#__codelineno-3-89"></a>| sun       | 10° ♑ 16&#39;   |    4    |           |
-<a id="__codelineno-3-90" name="__codelineno-3-90" href="#__codelineno-3-90"></a>| moon      | 08° ♍ 42&#39;   |   12    |           |
-<a id="__codelineno-3-91" name="__codelineno-3-91" href="#__codelineno-3-91"></a>| mercury   | 22° ♐ 14&#39; ℞ |    4    | detriment |
-<a id="__codelineno-3-92" name="__codelineno-3-92" href="#__codelineno-3-92"></a>| venus     | 02° ♐ 53&#39;   |    3    |           |
-<a id="__codelineno-3-93" name="__codelineno-3-93" href="#__codelineno-3-93"></a>| mars      | 27° ♐ 28&#39;   |    4    |           |
-<a id="__codelineno-3-94" name="__codelineno-3-94" href="#__codelineno-3-94"></a>| jupiter   | 05° ♉ 34&#39;   |    8    |           |
-<a id="__codelineno-3-95" name="__codelineno-3-95" href="#__codelineno-3-95"></a>| saturn    | 03° ♓ 15&#39;   |    6    |           |
-<a id="__codelineno-3-96" name="__codelineno-3-96" href="#__codelineno-3-96"></a>| uranus    | 19° ♉ 22&#39; ℞ |    9    |           |
-<a id="__codelineno-3-97" name="__codelineno-3-97" href="#__codelineno-3-97"></a>| neptune   | 25° ♓ 04&#39;   |    7    |           |
-<a id="__codelineno-3-98" name="__codelineno-3-98" href="#__codelineno-3-98"></a>| pluto     | 29° ♑ 21&#39;   |    5    |           |
-<a id="__codelineno-3-99" name="__codelineno-3-99" href="#__codelineno-3-99"></a>| asc_node  | 20° ♈ 51&#39; ℞ |    8    |           |
-<a id="__codelineno-3-100" name="__codelineno-3-100" href="#__codelineno-3-100"></a>| asc       | 14° ♉ 41&#39;   |    9    |           |
-<a id="__codelineno-3-101" name="__codelineno-3-101" href="#__codelineno-3-101"></a>| mc        | 02° ♒ 08&#39;   |    5    |           |
-<a id="__codelineno-3-102" name="__codelineno-3-102" href="#__codelineno-3-102"></a>
-<a id="__codelineno-3-103" name="__codelineno-3-103" href="#__codelineno-3-103"></a>
-<a id="__codelineno-3-104" name="__codelineno-3-104" href="#__codelineno-3-104"></a><span class="gh"># Aspects of Transit vs MiMi</span>
-<a id="__codelineno-3-105" name="__codelineno-3-105" href="#__codelineno-3-105"></a>
-<a id="__codelineno-3-106" name="__codelineno-3-106" href="#__codelineno-3-106"></a>| Transit   |  aspect  | MiMi     |  phase  | orb    |
-<a id="__codelineno-3-107" name="__codelineno-3-107" href="#__codelineno-3-107"></a>|-----------|----------|----------|---------|--------|
-<a id="__codelineno-3-108" name="__codelineno-3-108" href="#__codelineno-3-108"></a>| sun       |    ☍     | moon     |   → ←   | 1° 47&#39; |
-<a id="__codelineno-3-109" name="__codelineno-3-109" href="#__codelineno-3-109"></a>| sun       |    □     | mercury  |   → ←   | 1° 48&#39; |
-<a id="__codelineno-3-110" name="__codelineno-3-110" href="#__codelineno-3-110"></a>| sun       |    △     | asc      |   ← →   | 0° 34&#39; |
-<a id="__codelineno-3-111" name="__codelineno-3-111" href="#__codelineno-3-111"></a>| moon      |    ⚹     | moon     |   → ←   | 0° 13&#39; |
-<a id="__codelineno-3-112" name="__codelineno-3-112" href="#__codelineno-3-112"></a>| moon      |    ☌     | asc      |   → ←   | 1° 00&#39; |
-<a id="__codelineno-3-113" name="__codelineno-3-113" href="#__codelineno-3-113"></a>| moon      |    □     | mc       |   → ←   | 0° 31&#39; |
-<a id="__codelineno-3-114" name="__codelineno-3-114" href="#__codelineno-3-114"></a>| mercury   |    □     | saturn   |   → ←   | 1° 11&#39; |
-<a id="__codelineno-3-115" name="__codelineno-3-115" href="#__codelineno-3-115"></a>| mercury   |    ☌     | neptune  |   ← →   | 0° 15&#39; |
-<a id="__codelineno-3-116" name="__codelineno-3-116" href="#__codelineno-3-116"></a>| mars      |    △     | mars     |   ← →   | 0° 29&#39; |
-<a id="__codelineno-3-117" name="__codelineno-3-117" href="#__codelineno-3-117"></a>| mars      |    △     | asc_node |   ← →   | 1° 25&#39; |
-<a id="__codelineno-3-118" name="__codelineno-3-118" href="#__codelineno-3-118"></a>| uranus    |    △     | saturn   |   → ←   | 1° 41&#39; |
-<a id="__codelineno-3-119" name="__codelineno-3-119" href="#__codelineno-3-119"></a>| neptune   |    △     | uranus   |   ← →   | 0° 33&#39; |
-<a id="__codelineno-3-120" name="__codelineno-3-120" href="#__codelineno-3-120"></a>| pluto     |    □     | sun      |   ← →   | 0° 58&#39; |
-<a id="__codelineno-3-121" name="__codelineno-3-121" href="#__codelineno-3-121"></a>| asc_node  |    △     | neptune  |   ← →   | 1° 37&#39; |
-<a id="__codelineno-3-122" name="__codelineno-3-122" href="#__codelineno-3-122"></a>| asc_node  |    ☍     | pluto    |   → ←   | 0° 45&#39; |
-<a id="__codelineno-3-123" name="__codelineno-3-123" href="#__codelineno-3-123"></a>| mc        |    □     | sun      |   → ←   | 1° 49&#39; |
-<a id="__codelineno-3-124" name="__codelineno-3-124" href="#__codelineno-3-124"></a>
-<a id="__codelineno-3-125" name="__codelineno-3-125" href="#__codelineno-3-125"></a>
-<a id="__codelineno-3-126" name="__codelineno-3-126" href="#__codelineno-3-126"></a><span class="gh"># Aspect Cross Reference of Transit(cols) vs MiMi(rows)</span>
-<a id="__codelineno-3-127" name="__codelineno-3-127" href="#__codelineno-3-127"></a>
-<a id="__codelineno-3-128" name="__codelineno-3-128" href="#__codelineno-3-128"></a>|     |  ☉  |  ☽  |  ☿  |  ♀  |  ♂  |  ♃  |  ♄  |  ♅  |  ♆  |  ♇  |  ☊  |  Asc  |  MC  |  sum  |
-<a id="__codelineno-3-129" name="__codelineno-3-129" href="#__codelineno-3-129"></a>|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|------|-------|
-<a id="__codelineno-3-130" name="__codelineno-3-130" href="#__codelineno-3-130"></a>|  ☉  |     |     |     |     |     |     |     |     |     |  □  |     |       |  □   |   2   |
-<a id="__codelineno-3-131" name="__codelineno-3-131" href="#__codelineno-3-131"></a>|  ☽  |  ☍  |  ⚹  |     |     |     |     |     |     |     |     |     |       |      |   2   |
-<a id="__codelineno-3-132" name="__codelineno-3-132" href="#__codelineno-3-132"></a>|  ☿  |  □  |     |     |     |     |     |     |     |     |     |     |       |      |   1   |
-<a id="__codelineno-3-133" name="__codelineno-3-133" href="#__codelineno-3-133"></a>|  ♀  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
-<a id="__codelineno-3-134" name="__codelineno-3-134" href="#__codelineno-3-134"></a>|  ♂  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
-<a id="__codelineno-3-135" name="__codelineno-3-135" href="#__codelineno-3-135"></a>|  ♃  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
-<a id="__codelineno-3-136" name="__codelineno-3-136" href="#__codelineno-3-136"></a>|  ♄  |     |     |  □  |     |     |     |     |  △  |     |     |     |       |      |   2   |
-<a id="__codelineno-3-137" name="__codelineno-3-137" href="#__codelineno-3-137"></a>|  ♅  |     |     |     |     |     |     |     |     |  △  |     |     |       |      |   1   |
-<a id="__codelineno-3-138" name="__codelineno-3-138" href="#__codelineno-3-138"></a>|  ♆  |     |     |  ☌  |     |     |     |     |     |     |     |  △  |       |      |   2   |
-<a id="__codelineno-3-139" name="__codelineno-3-139" href="#__codelineno-3-139"></a>|  ♇  |     |     |     |     |     |     |     |     |     |     |  ☍  |       |      |   1   |
-<a id="__codelineno-3-140" name="__codelineno-3-140" href="#__codelineno-3-140"></a>|  ☊  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
-<a id="__codelineno-3-141" name="__codelineno-3-141" href="#__codelineno-3-141"></a>| Asc |  △  |  ☌  |     |     |     |     |     |     |     |     |     |       |      |   2   |
-<a id="__codelineno-3-142" name="__codelineno-3-142" href="#__codelineno-3-142"></a>| MC  |     |  □  |     |     |     |     |     |     |     |     |     |       |      |   1   |
+<a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a>| hemisphere   |  sum  | bodies                                                      |
+<a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a>|--------------|-------|-------------------------------------------------------------|
+<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a>| ←            |   8   | saturn, uranus, pluto, moon, venus, mars, jupiter, asc_node |
+<a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a>| →            |   3   | neptune, sun, mercury                                       |
+<a id="__codelineno-3-89" name="__codelineno-3-89" href="#__codelineno-3-89"></a>| ↑            |   7   | sun, mercury, moon, venus, mars, jupiter, asc_node          |
+<a id="__codelineno-3-90" name="__codelineno-3-90" href="#__codelineno-3-90"></a>| ↓            |   4   | saturn, uranus, pluto, neptune                              |
+<a id="__codelineno-3-91" name="__codelineno-3-91" href="#__codelineno-3-91"></a>
+<a id="__codelineno-3-92" name="__codelineno-3-92" href="#__codelineno-3-92"></a>
+<a id="__codelineno-3-93" name="__codelineno-3-93" href="#__codelineno-3-93"></a><span class="gh"># Celestial Bodies of Transit in MiMi&#39;s chart</span>
+<a id="__codelineno-3-94" name="__codelineno-3-94" href="#__codelineno-3-94"></a>
+<a id="__codelineno-3-95" name="__codelineno-3-95" href="#__codelineno-3-95"></a>| Transit   | sign         |  house  | dignity   |
+<a id="__codelineno-3-96" name="__codelineno-3-96" href="#__codelineno-3-96"></a>|-----------|--------------|---------|-----------|
+<a id="__codelineno-3-97" name="__codelineno-3-97" href="#__codelineno-3-97"></a>| sun       | 10° ♑ 16&#39;   |    4    |           |
+<a id="__codelineno-3-98" name="__codelineno-3-98" href="#__codelineno-3-98"></a>| moon      | 08° ♍ 42&#39;   |   12    |           |
+<a id="__codelineno-3-99" name="__codelineno-3-99" href="#__codelineno-3-99"></a>| mercury   | 22° ♐ 14&#39; ℞ |    4    | detriment |
+<a id="__codelineno-3-100" name="__codelineno-3-100" href="#__codelineno-3-100"></a>| venus     | 02° ♐ 53&#39;   |    3    |           |
+<a id="__codelineno-3-101" name="__codelineno-3-101" href="#__codelineno-3-101"></a>| mars      | 27° ♐ 28&#39;   |    4    |           |
+<a id="__codelineno-3-102" name="__codelineno-3-102" href="#__codelineno-3-102"></a>| jupiter   | 05° ♉ 34&#39;   |    8    |           |
+<a id="__codelineno-3-103" name="__codelineno-3-103" href="#__codelineno-3-103"></a>| saturn    | 03° ♓ 15&#39;   |    6    |           |
+<a id="__codelineno-3-104" name="__codelineno-3-104" href="#__codelineno-3-104"></a>| uranus    | 19° ♉ 22&#39; ℞ |    9    |           |
+<a id="__codelineno-3-105" name="__codelineno-3-105" href="#__codelineno-3-105"></a>| neptune   | 25° ♓ 04&#39;   |    7    |           |
+<a id="__codelineno-3-106" name="__codelineno-3-106" href="#__codelineno-3-106"></a>| pluto     | 29° ♑ 21&#39;   |    5    |           |
+<a id="__codelineno-3-107" name="__codelineno-3-107" href="#__codelineno-3-107"></a>| asc_node  | 20° ♈ 51&#39; ℞ |    8    |           |
+<a id="__codelineno-3-108" name="__codelineno-3-108" href="#__codelineno-3-108"></a>| asc       | 14° ♉ 41&#39;   |    9    |           |
+<a id="__codelineno-3-109" name="__codelineno-3-109" href="#__codelineno-3-109"></a>| mc        | 02° ♒ 08&#39;   |    5    |           |
+<a id="__codelineno-3-110" name="__codelineno-3-110" href="#__codelineno-3-110"></a>
+<a id="__codelineno-3-111" name="__codelineno-3-111" href="#__codelineno-3-111"></a>
+<a id="__codelineno-3-112" name="__codelineno-3-112" href="#__codelineno-3-112"></a><span class="gh"># Aspects of Transit vs MiMi</span>
+<a id="__codelineno-3-113" name="__codelineno-3-113" href="#__codelineno-3-113"></a>
+<a id="__codelineno-3-114" name="__codelineno-3-114" href="#__codelineno-3-114"></a>| Transit   |  aspect  | MiMi     |  phase  | orb    |
+<a id="__codelineno-3-115" name="__codelineno-3-115" href="#__codelineno-3-115"></a>|-----------|----------|----------|---------|--------|
+<a id="__codelineno-3-116" name="__codelineno-3-116" href="#__codelineno-3-116"></a>| sun       |    ☍     | moon     |   → ←   | 1° 47&#39; |
+<a id="__codelineno-3-117" name="__codelineno-3-117" href="#__codelineno-3-117"></a>| sun       |    □     | mercury  |   → ←   | 1° 48&#39; |
+<a id="__codelineno-3-118" name="__codelineno-3-118" href="#__codelineno-3-118"></a>| sun       |    △     | asc      |   ← →   | 0° 34&#39; |
+<a id="__codelineno-3-119" name="__codelineno-3-119" href="#__codelineno-3-119"></a>| moon      |    ⚹     | moon     |   → ←   | 0° 13&#39; |
+<a id="__codelineno-3-120" name="__codelineno-3-120" href="#__codelineno-3-120"></a>| moon      |    ☌     | asc      |   → ←   | 1° 00&#39; |
+<a id="__codelineno-3-121" name="__codelineno-3-121" href="#__codelineno-3-121"></a>| moon      |    □     | mc       |   → ←   | 0° 31&#39; |
+<a id="__codelineno-3-122" name="__codelineno-3-122" href="#__codelineno-3-122"></a>| mercury   |    □     | saturn   |   → ←   | 1° 11&#39; |
+<a id="__codelineno-3-123" name="__codelineno-3-123" href="#__codelineno-3-123"></a>| mercury   |    ☌     | neptune  |   ← →   | 0° 15&#39; |
+<a id="__codelineno-3-124" name="__codelineno-3-124" href="#__codelineno-3-124"></a>| mars      |    △     | mars     |   ← →   | 0° 29&#39; |
+<a id="__codelineno-3-125" name="__codelineno-3-125" href="#__codelineno-3-125"></a>| mars      |    △     | asc_node |   ← →   | 1° 25&#39; |
+<a id="__codelineno-3-126" name="__codelineno-3-126" href="#__codelineno-3-126"></a>| uranus    |    △     | saturn   |   → ←   | 1° 41&#39; |
+<a id="__codelineno-3-127" name="__codelineno-3-127" href="#__codelineno-3-127"></a>| neptune   |    △     | uranus   |   ← →   | 0° 33&#39; |
+<a id="__codelineno-3-128" name="__codelineno-3-128" href="#__codelineno-3-128"></a>| pluto     |    □     | sun      |   ← →   | 0° 58&#39; |
+<a id="__codelineno-3-129" name="__codelineno-3-129" href="#__codelineno-3-129"></a>| asc_node  |    △     | neptune  |   ← →   | 1° 37&#39; |
+<a id="__codelineno-3-130" name="__codelineno-3-130" href="#__codelineno-3-130"></a>| asc_node  |    ☍     | pluto    |   → ←   | 0° 45&#39; |
+<a id="__codelineno-3-131" name="__codelineno-3-131" href="#__codelineno-3-131"></a>| mc        |    □     | sun      |   → ←   | 1° 49&#39; |
+<a id="__codelineno-3-132" name="__codelineno-3-132" href="#__codelineno-3-132"></a>
+<a id="__codelineno-3-133" name="__codelineno-3-133" href="#__codelineno-3-133"></a>
+<a id="__codelineno-3-134" name="__codelineno-3-134" href="#__codelineno-3-134"></a><span class="gh"># Aspect Cross Reference of Transit(cols) vs MiMi(rows)</span>
+<a id="__codelineno-3-135" name="__codelineno-3-135" href="#__codelineno-3-135"></a>
+<a id="__codelineno-3-136" name="__codelineno-3-136" href="#__codelineno-3-136"></a>|     |  ☉  |  ☽  |  ☿  |  ♀  |  ♂  |  ♃  |  ♄  |  ♅  |  ♆  |  ♇  |  ☊  |  Asc  |  MC  |  sum  |
+<a id="__codelineno-3-137" name="__codelineno-3-137" href="#__codelineno-3-137"></a>|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|------|-------|
+<a id="__codelineno-3-138" name="__codelineno-3-138" href="#__codelineno-3-138"></a>|  ☉  |     |     |     |     |     |     |     |     |     |  □  |     |       |  □   |   2   |
+<a id="__codelineno-3-139" name="__codelineno-3-139" href="#__codelineno-3-139"></a>|  ☽  |  ☍  |  ⚹  |     |     |     |     |     |     |     |     |     |       |      |   2   |
+<a id="__codelineno-3-140" name="__codelineno-3-140" href="#__codelineno-3-140"></a>|  ☿  |  □  |     |     |     |     |     |     |     |     |     |     |       |      |   1   |
+<a id="__codelineno-3-141" name="__codelineno-3-141" href="#__codelineno-3-141"></a>|  ♀  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
+<a id="__codelineno-3-142" name="__codelineno-3-142" href="#__codelineno-3-142"></a>|  ♂  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
+<a id="__codelineno-3-143" name="__codelineno-3-143" href="#__codelineno-3-143"></a>|  ♃  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
+<a id="__codelineno-3-144" name="__codelineno-3-144" href="#__codelineno-3-144"></a>|  ♄  |     |     |  □  |     |     |     |     |  △  |     |     |     |       |      |   2   |
+<a id="__codelineno-3-145" name="__codelineno-3-145" href="#__codelineno-3-145"></a>|  ♅  |     |     |     |     |     |     |     |     |  △  |     |     |       |      |   1   |
+<a id="__codelineno-3-146" name="__codelineno-3-146" href="#__codelineno-3-146"></a>|  ♆  |     |     |  ☌  |     |     |     |     |     |     |     |  △  |       |      |   2   |
+<a id="__codelineno-3-147" name="__codelineno-3-147" href="#__codelineno-3-147"></a>|  ♇  |     |     |     |     |     |     |     |     |     |     |  ☍  |       |      |   1   |
+<a id="__codelineno-3-148" name="__codelineno-3-148" href="#__codelineno-3-148"></a>|  ☊  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
+<a id="__codelineno-3-149" name="__codelineno-3-149" href="#__codelineno-3-149"></a>| Asc |  △  |  ☌  |     |     |     |     |     |     |     |     |     |       |      |   2   |
+<a id="__codelineno-3-150" name="__codelineno-3-150" href="#__codelineno-3-150"></a>| MC  |     |  □  |     |     |     |     |     |     |     |     |     |       |      |   1   |
 </code></pre></div>
 <ul>
 <li>see <a href="https://github.com/hoishing/natal/blob/main/demo.ipynb">demo.ipynb</a> for the HTML output</li>
@@ -1048,8 +1056,8 @@
 <li>optional dependencies for PDF report generation</li>
 <li>install with <code>pip install "natal[report]"</code></li>
 <li>see <a href="https://github.com/hoishing/natal-report">natal-report</a> package for details</li>
-<li><a href="https://github.com/hoishing/natal_report/blob/main/demo_report_light.pdf">demo_report_light.pdf</a>: light theme report with Birth Chart</li>
-<li><a href="https://github.com/hoishing/natal_report/blob/main/demo_report_mono.pdf">demo_report_mono.pdf</a>: mono theme report with Transit Chart</li>
+<li><a href="https://github.com/hoishing/natal-report/blob/main/demo_report_light.pdf">light theme PDF sample</a></li>
+<li><a href="https://github.com/hoishing/natal-report/blob/main/demo_report_mono.pdf">mono theme PDF sample</a></li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <ul>
@@ -1085,10 +1093,11 @@
 <a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># create data object with the config</span>
 <a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
 <a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MiMi&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;Taipei&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>    <span class="n">dt</span> <span class="o">=</span> <span class="s2">&quot;1980-04-20 14:30&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="p">,</span>
-<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="p">)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    <span class="n">utc_dt</span> <span class="o">=</span> <span class="s2">&quot;1980-04-20 06:30&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>    <span class="n">lat</span> <span class="o">=</span> <span class="mf">25.0531</span><span class="p">,</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    <span class="n">lon</span> <span class="o">=</span> <span class="mf">121.526</span><span class="p">,</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="p">,</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="p">)</span>
 </code></pre></div>
 <p>read the <a href="https://hoishing.github.io/natal">docs</a> for complete references</p>
 <h2 id="tech-stack">Tech Stack</h2>
