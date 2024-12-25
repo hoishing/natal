@@ -9,8 +9,8 @@ from collections import defaultdict
 from math import floor
 from natal.classes import Aspect, Aspectable
 from natal.data import Data
-from tagit import div, h4
 from tabulate import tabulate
+from tagit import div, h4
 from typing import Iterable, Literal, NamedTuple
 
 DistKind = Literal["element", "modality", "polarity"]
@@ -62,17 +62,36 @@ class Stats:
 
     # data grids =================================================================
 
+    @property
+    def basic_info(self) -> StatData:
+        """
+        Generate basic information about the provided data.
+
+        Returns:
+            The title and grid of basic information data, where the grid includes name, location coordinates, and UTC time.
+        """
+        title = "Basic Information"
+        time_fmt = "%Y-%m-%d %H:%M"
+        dt1 = self.data1.utc_dt.strftime(time_fmt)
+        coordinates1 = f"{self.data1.lat}°N, {self.data1.lon}°E"
+        grid = [("name", "location", "UTC time")]
+        grid.append((self.data1.name, coordinates1, dt1))
+        if self.data2:
+            dt2 = self.data2.utc_dt.strftime(time_fmt)
+            coordinates2 = f"{self.data2.lat}°N, {self.data2.lon}°E"
+            grid.append((self.data2.name, coordinates2, dt2))
+        return StatData(title, grid)
+
     def distribution(self, kind: DistKind) -> StatData:
         """
         Generate distribution statistics for elements, modalities, or polarities.
 
         Args:
-            kind (DistKind): The type of distribution to calculate.
-                Must be one of "element", "modality", or "polarity".
+            kind: The type of distribution to calculate. Must be one of "element", "modality", or "polarity".
 
         Returns:
-            StatData: A named tuple containing the title and grid of distribution data,
-                      where the grid includes the distribution type, count, and bodies.
+            The title and grid of distribution data, where the grid includes the distribution type,
+            count, and bodies.
         """
         title = f"{kind.capitalize()} Distribution ({self.data1.name})"
         bodies = defaultdict(lambda: [0, []])
@@ -294,6 +313,7 @@ class Stats:
             str: A formatted string containing the full statistical report with various tables.
         """
         output = "\n"
+        output += self.table_of("basic_info", kind)
         for dist in DistKind.__args__:
             output += self.table_of("distribution", kind, dist)
         output += self.table_of("celestial_body", kind)
@@ -400,15 +420,3 @@ def dignity_of(body: Aspectable) -> str:
     if body.name == body.sign.fall:
         return "fall"
     return ""
-
-
-# for quick testing
-if __name__ == "__main__":
-    from natal.config import Orb
-
-    mimi = Data(name="MiMi", city="Taipei", dt="1980-04-20 14:30")
-    mimi.config.orb = Orb(conjunction=2, opposition=2, square=2, trine=2, sextile=1)
-    transit = Data(name="Transit", city="Taipei", dt="2024-01-01 13:30")
-
-    stats = Stats(data1=mimi, data2=transit)
-    print(stats.full_report(kind="markdown"))

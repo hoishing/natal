@@ -53,7 +53,7 @@ from natal import Data, Chart
 # create chart data object
 mimi = Data(
     name="MiMi",
-    utc_dt="1980-04-20 06:30:00",
+    utc_dt="1980-04-20 06:30",
     lat=25.0531,
     lon=121.526,
 )
@@ -64,7 +64,7 @@ Chart(mimi, width=600).svg
 # create transit data object
 transit = Data(
     name="Transit",
-    utc_dt="2024-01-01 05:30:00",
+    utc_dt="2024-01-01 05:30",
     lat=25.0531,
     lon=121.526,
 )
@@ -145,6 +145,14 @@ print(stats.full_report(kind="markdown"))
 - following markdown report will be produced:
 
 ```markdown
+# Basic Information
+
+| name    | location             | UTC time         |
+|---------|----------------------|------------------|
+| MiMi    | 25.0531°N, 121.526°E | 1980-04-20 06:30 |
+| Transit | 25.0531°N, 121.526°E | 2024-01-01 05:30 |
+
+
 # Element Distribution (MiMi)
 
 | element   |  sum  | bodies                                          |
@@ -296,8 +304,8 @@ print(stats.full_report(kind="markdown"))
 - optional dependencies for PDF report generation
 - install with `pip install "natal[report]"`
 - see [natal-report] package for details
-- [demo_report_light.pdf]: light theme report with Birth Chart
-- [demo_report_mono.pdf]: mono theme report with Transit Chart
+- [light theme PDF sample]
+- [mono theme PDF sample]
 
 ## Configuration
 
@@ -334,8 +342,9 @@ config = Config(
 # create data object with the config
 data = Data(
     name = "MiMi",
-    city = "Taipei",
-    dt = "1980-04-20 14:30",
+    utc_dt = "1980-04-20 06:30",
+    lat = 25.0531,
+    lon = 121.526,
     config = config,
 )
 ```
@@ -352,8 +361,8 @@ read the [docs] for complete references
 [black-url]: https://github.com/psf/black
 [ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
-[demo_report_light.pdf]: https://github.com/hoishing/natal_report/blob/main/demo_report_light.pdf
-[demo_report_mono.pdf]: https://github.com/hoishing/natal_report/blob/main/demo_report_mono.pdf
+[light theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_light.pdf
+[mono theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [docs]: https://hoishing.github.io/natal
 [MIT-badge]: https://img.shields.io/github/license/hoishing/natal

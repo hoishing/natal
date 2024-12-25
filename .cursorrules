@@ -1,7 +1,3 @@
-# Project Dependencies
-
-- Natal: https://pypi.org/project/natal/
-
 # Python Style
 
 - use python 3.12 or above
@@ -13,16 +9,16 @@
   - `A | B` instead of `Union[A, B]`
   - use `typing.Self` instead of forward reference string "ClassName"
 
-# Docstrings
+# Docstrings Style
 
 - use Google style docstrings
 - don't write type hints in docstrings
-- write short description in the first line
 - refer to the following example:
 
 ```python
-def function_with_pep484_type_annotations(param1: int, param2: str) -> bool:
-"""Example function with PEP 484 type annotations.
+def sample_function(param1: int, param2: str) -> bool:
+"""
+Example function with PEP 484 type annotations.
 
 Args:
     param1: The first parameter.
@@ -33,7 +29,7 @@ Returns:
 """
 ```
 
-# CSS
+# CSS Style
 
 - use nested selectors to style components
 - try to use variables for colors, sizes, etc.

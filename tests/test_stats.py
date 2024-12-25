@@ -1,7 +1,7 @@
-from natal.stats import Stats, Data
-from natal.config import Display, Config
-from pytest import fixture
 from . import data1, data2, person1, person2
+from natal.config import Config, Display
+from natal.stats import Data, Stats
+from pytest import fixture
 
 
 @fixture(scope="module")
@@ -15,6 +15,22 @@ def composite_stats(data1, data2):
 
 
 # fmt: off
+@fixture
+def info_grid():
+    return [
+        ("name", "location", "UTC time"),
+        ("shing", "22.2783°N, 114.175°E", "1976-04-20 09:58"),
+    ]
+
+
+@fixture
+def composite_info_grid():
+    return [
+        ("name", "location", "UTC time"),
+        ("shing", "22.2783°N, 114.175°E", "1976-04-20 09:58"),
+        ("belle", "22.2783°N, 114.175°E", "2011-01-23 00:44"),
+    ]
+
 
 @fixture
 def element_grid():
@@ -254,6 +270,14 @@ def inner_planets_cross_ref_grid():
 # fmt: on
 
 
+def test_info_grid(stats, info_grid):
+    assert stats.basic_info.grid == info_grid
+
+
+def test_composite_info_grid(composite_stats, composite_info_grid):
+    assert composite_stats.basic_info.grid == composite_info_grid
+
+
 def test_distribution_grid(stats, element_grid, modality_grid, polarity_grid):
     assert stats.distribution("element").grid == element_grid
     assert stats.distribution("modality").grid == modality_grid
@@ -295,6 +319,7 @@ def test_data1_cross_ref_grid(stats, data1_cross_ref_grid):
 def test_composite_cross_ref_grid(composite_stats, composite_cross_ref_grid):
     assert composite_stats.cross_ref.grid == composite_cross_ref_grid
 
+
 def test_inner_planets_cross_ref_grid(inner_planets_cross_ref_grid):
     inner = dict(sun=True, moon=True, mercury=True, venus=True, mars=True)
     inner_only = dict.fromkeys(Display(), False) | inner
@@ -303,6 +328,7 @@ def test_inner_planets_cross_ref_grid(inner_planets_cross_ref_grid):
     d2 = Data(**person2)
     stats = Stats(data1=d1, data2=d2)
     assert stats.cross_ref.grid == inner_planets_cross_ref_grid
+
 
 def test_display_no_entities():
     display = Display(**dict.fromkeys(Display(), False))
