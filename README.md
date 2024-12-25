@@ -294,7 +294,7 @@ print(stats.full_report(kind="markdown"))
 ## PDF Report
 
 - optional dependencies for PDF report generation
-- install with `pip install natal[report]`
+- install with `pip install "natal[report]"`
 - see [natal-report] package for details
 - [demo_report_light.pdf]: light theme report with Birth Chart
 - [demo_report_mono.pdf]: mono theme report with Transit Chart
