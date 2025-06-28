@@ -1,37 +1,22 @@
-[tool.poetry]
+[project]
 name = "natal"
-version = "0.9.3"
+version = "0.9.4"
 description = "create Natal Chart with ease"
-license = "MIT"
-repository = "https://github.com/hoishing/natal"
-documentation = "https://hoishing.github.io/natal"
-authors = ["Kelvin Ng <hoishing@gmail.com>"]
+license = { text = "MIT" }
+authors = [{ name = "Kelvin Ng", email = "hoishing@gmail.com" }]
 readme = "README.md"
-packages = [{ include = "natal", from = "." }]
-
-[tool.poetry.dependencies]
-natal-report = { version = "^0.1.5", optional = true }
-pydantic = "^2.8.2"
-pyswisseph = "^2.10.3.2"
-python = "^3.12"
-tabulate = "^0.9.0"
-tagit = "^0.6.1"
-
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.5"
-pytest = "^8.3.2"
-toml = "^0.10.2"
-mkdocs-material = { extras = ["imaging"], version = "^9.5.44" }
-mkdocstrings = { extras = ["python"], version = "^0.27.0" }
-watchdog = "^6.0.0"
-scour = "^0.38.2"
-
-[tool.poetry.extras]
-report = ["natal-report"]
+requires-python = ">=3.12"
+urls = { "Repository" = "https://github.com/hoishing/natal", "Documentation" = "https://hoishing.github.io/natal" }
+dependencies = [
+    "pydantic>=2.8.2",
+    "pyswisseph>=2.10.3.2",
+    "tabulate>=0.9.0",
+    "tagit>=0.6.1",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pytest>=8.4.1"]
