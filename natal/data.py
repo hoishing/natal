@@ -2,28 +2,24 @@ import itertools
 import swisseph as swe
 from datetime import datetime
 from math import floor
-from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
+from natal.classes import Aspect, Aspectable, Body, House, Planet, Sign, Vertex
 from natal.config import Config, DotDict
 from natal.const import (
     ASPECT_MEMBERS,
-    EXTRA_MEMBERS,
     HOUSE_MEMBERS,
     PLANET_MEMBERS,
     SIGN_MEMBERS,
     VERTEX_MEMBERS,
 )
 from natal.utils import pairs, str_to_dt
-from pathlib import Path
 from typing import Iterable, Self
-from zoneinfo import ZoneInfo
 
+swe.set_ephe_path(None)
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
 
 class Data(DotDict):
     """Data object for a natal chart."""
-
-    data_folder = Path(__file__).parent.absolute()
 
     def __init__(
         self,
@@ -32,7 +28,6 @@ class Data(DotDict):
         lon: float,
         utc_dt: datetime | str,
         config: Config = Config(),
-        moshier: bool = False,
     ) -> None:
         """Initialize a natal chart data object.
 
@@ -47,17 +42,14 @@ class Data(DotDict):
         Returns:
             None
         """
-        swe.set_ephe_path(None if moshier else str(Path(__file__).parent.absolute()))
         self.name = name
         self.lat = lat
         self.lon = lon
         self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else utc_dt
         self.config = config
-        self.moshier = moshier
         self.house_sys = config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
-        self.extras: list[Extra] = []
         self.vertices: list[Vertex] = []
         self.signs: list[Sign] = []
         self.aspects: list[Aspect] = []
@@ -74,8 +66,6 @@ class Data(DotDict):
     def set_movable_bodies(self) -> None:
         """Set the positions of the planets and other celestial bodies."""
         self.planets = self.set_positions(PLANET_MEMBERS)
-        if not self.moshier:
-            self.extras = self.set_positions(EXTRA_MEMBERS)
 
     def set_houses_vertices(self) -> None:
         """Calculate the cusps of the houses and set the vertices."""
@@ -107,7 +97,7 @@ class Data(DotDict):
         """Set the aspectable celestial bodies based on the display configuration."""
         self.aspectables = [
             body
-            for body in (self.planets + self.extras + self.vertices)
+            for body in (self.planets + self.vertices)
             if self.config.display[body.name]
         ]
 
@@ -127,7 +117,7 @@ class Data(DotDict):
 
     def set_normalized_degrees(self) -> None:
         """Normalize the positions of celestial bodies relative to the first house."""
-        bodies = self.signs + self.planets + self.extras + self.vertices + self.houses
+        bodies = self.signs + self.planets + self.vertices + self.houses
         for body in bodies:
             body.normalized_degree = self.normalize(body.degree)
 
@@ -140,9 +130,7 @@ class Data(DotDict):
             house.ruler_sign = f"{ruler.sign.symbol}"
             house.ruler_house = self.house_of(ruler)
             house.classic_ruler = classic_ruler.name
-            house.classic_ruler_sign = (
-                f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
-            )
+            house.classic_ruler_sign = f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
             house.classic_ruler_house = self.house_of(classic_ruler)
 
     def set_quadrants(self) -> None:

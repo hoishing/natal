@@ -93,12 +93,6 @@ class Planet(MovableBody):
     ...
 
 
-class Extra(MovableBody):
-    """Represents an extra celestial body (e.g. Moon's Node and Asteroids)"""
-
-    ...
-
-
 class Vertex(MovableBody):
     """Represents a vertex (Asc, Dsc, MC, IC)"""
 

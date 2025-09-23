@@ -1,8 +1,8 @@
-from natal.data import Data
-from natal.config import Orb, Config
-from datetime import datetime
-from pytest import fixture
 from . import data1, data2
+from datetime import datetime
+from natal.config import Config, Orb
+from natal.data import Data
+from pytest import fixture
 
 
 @fixture(scope="module")
@@ -18,7 +18,7 @@ def planets() -> dict[str, str]:
         uranus="05° ♏ 19' ℞",
         neptune="13° ♐ 38' ℞",
         pluto="09° ♎ 47' ℞",
-        asc_node="13° ♏ 25' ℞",
+        north_node="13° ♏ 25' ℞",
     )
 
 
@@ -44,7 +44,7 @@ def houses() -> dict[str, str]:
 def others() -> dict[str, str]:
     return dict(
         chiron="27° ♈ 49'",
-        asc_node="13° ♏ 25' ℞",
+        north_node="13° ♏ 25' ℞",
         asc="20° ♎ 32'",
         mc="20° ♋ 36'",
         house_sys="P",
@@ -84,7 +84,7 @@ def aspects_pair_names_sample():
         "saturn mercury",
         "uranus pluto",
         "pluto venus",
-        "asc_node asc_node",
+        "north_node north_node",
         "mc mars",
     ]
 
@@ -116,8 +116,7 @@ def test_houses(data1: Data, houses: dict[str, str]) -> None:
 def test_asc_mc(data1: Data, others: dict[str, str]) -> None:
     assert data1.asc.signed_dms == others["asc"]
     assert data1.mc.signed_dms == others["mc"]
-    assert data1.chiron.signed_dms == others["chiron"]
-    assert data1.asc_node.signed_dms == others["asc_node"]
+    assert data1.north_node.signed_dms == others["north_node"]
     assert data1.house_sys == others["house_sys"]
 
 
@@ -163,14 +162,6 @@ def test_fix_orb_eq_0(data1: Data) -> None:
 
 
 def test_house_sys(data1: Data) -> None:
-    data = Data(
-        data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W")
-    )
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W"))
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
-
-
-def test_moshier(data1: Data) -> None:
-    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, moshier=True)
-    assert data.moshier
-    assert data.extras == []

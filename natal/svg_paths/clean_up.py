@@ -1,6 +1,6 @@
 """SVG cleanup script
 
-- optimize SVGs using scour
+- optimize SVGs using scour, install with `uv add scour`
 - clean up unnecessary tags and attributes
 
 Usage:
@@ -17,7 +17,7 @@ folder = Path(__file__).parent
 
 def clean_svg(svg: Path) -> str:
     # use scour to optimize the svg
-    cmd = f"scour -i {svg} --enable-id-stripping --enable-comment-stripping --indent=none --strip-xml-prolog --quiet"
+    cmd = f"uv run scour -i {svg} --enable-id-stripping --enable-comment-stripping --indent=none --strip-xml-prolog --quiet"
     content = subprocess.run(cmd.split(), capture_output=True, text=True).stdout
 
     # Remove svg tag
@@ -57,4 +57,4 @@ def fix_svg(name: str):
 
 if __name__ == "__main__":
     # fix_all_svgs()
-    fix_svg("quincunx")
+    fix_svg("south_node")

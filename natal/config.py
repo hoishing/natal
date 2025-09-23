@@ -1,8 +1,9 @@
-from enum import StrEnum
 from pydantic import BaseModel
 from types import SimpleNamespace
 from typing import Any, Iterator, Literal, Mapping
 
+# Placidus, Koch, Equal, Campanus, Regiomontanus, Porphyry, Whole_Sign,
+HouseSys = Literal["P", "K", "E", "C", "R", "P", "W"]
 ThemeType = Literal["light", "dark", "mono"]
 
 
@@ -56,16 +57,6 @@ class ModelDict(BaseModel, Dictable):
         return iter(self.__dict__)
 
 
-class HouseSys(StrEnum):
-    Placidus = "P"
-    Koch = "K"
-    Equal = "E"
-    Campanus = "C"
-    Regiomontanus = "R"
-    Porphyry = "P"
-    Whole_Sign = "W"
-
-
 class Orb(ModelDict):
     """default orb for natal chart"""
 
@@ -74,7 +65,6 @@ class Orb(ModelDict):
     trine: int = 6
     square: int = 6
     sextile: int = 5
-    quincunx: int = 0
 
 
 class Theme(ModelDict):
@@ -87,7 +77,7 @@ class Theme(ModelDict):
     air: str = "#06d6a0"  # air, trine
     water: str = "#81bce7"  # water, opposition
     points: str = "#118ab2"  # lunar nodes, sextile
-    asteroids: str = "#AA96DA"  # asteroids, quincunx
+    asteroids: str = "#AA96DA"  # asteroids
     positive: str = "#FFC0CB"  # positive
     negative: str = "#AD8B73"  # negative
     others: str = "#FFA500"  # conjunction
@@ -118,9 +108,7 @@ class DarkTheme(Theme):
 
 
 class Display(ModelDict):
-    """
-    Display settings for celestial bodies.
-    """
+    """Display settings for celestial bodies."""
 
     sun: bool = True
     moon: bool = True
@@ -132,19 +120,14 @@ class Display(ModelDict):
     uranus: bool = True
     neptune: bool = True
     pluto: bool = True
-    asc_node: bool = True
-    chiron: bool = False
-    ceres: bool = False
-    pallas: bool = False
-    juno: bool = False
-    vesta: bool = False
+    north_node: bool = True
     asc: bool = True
     ic: bool = False
     dsc: bool = False
     mc: bool = True
 
 
-class Chart(ModelDict):
+class ChartConfig(ModelDict):
     """
     Chart configuration settings.
     """
@@ -168,12 +151,12 @@ class Config(ModelDict):
     """
 
     theme_type: ThemeType = "dark"
-    house_sys: HouseSys = HouseSys.Placidus
+    house_sys: HouseSys = "P"
     orb: Orb = Orb()
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
     display: Display = Display()
-    chart: Chart = Chart()
+    chart: ChartConfig = ChartConfig()
 
     @property
     def theme(self) -> Theme:
@@ -189,7 +172,7 @@ class Config(ModelDict):
             case "dark":
                 return self.dark_theme
             case "mono":
-                kwargs = {key: "#888888" for key in self.light_theme.model_dump()}
+                kwargs = {key: "#888888" for key in self.light_theme}
                 kwargs["background"] = "#FFFFFF"
                 kwargs["transparency"] = 0
                 return Theme(**kwargs)

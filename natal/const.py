@@ -69,15 +69,6 @@ class HouseMember(Body):
     ...
 
 
-class ExtraMember(Body):
-    """
-    Represents an extra celestial body in raw data.
-    (e.g. asteroids, nodes)
-    """
-
-    ...
-
-
 class VertexMember(Body):
     """
     Represents a vertex in raw data (asc, ic, dsc, mc).
@@ -137,14 +128,13 @@ def get_members(raw_data: dict) -> list[DotDict]:
 # Raw Data ===============================
 
 # fmt: off
-PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto", "asc_node"]
-EXTRA_NAMES = ["chiron", "ceres", "pallas", "juno", "vesta"]
+PLANET_NAMES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto", "north_node"]
 ELEMENT_NAMES = ["fire", "earth", "air", "water"]
 MODALITY_NAMES = ["cardinal", "fixed", "mutable"]
 POLARITY_NAMES = ["positive", "negative"]
 SIGN_NAMES = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"]
 HOUSE_NAMES = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"]
-ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile", "quincunx"]
+ASPECT_NAMES = ["conjunction", "opposition", "trine", "square", "sextile"]
 VERTEX_NAMES = ["asc", "ic", "dsc", "mc"]
 # fmt: on
 
@@ -232,13 +222,6 @@ HOUSES = dict(
     color=["fire", "earth", "air", "water"] * 3,
 )
 
-EXTRAS = dict(
-    name=EXTRA_NAMES,
-    symbol="⚷⚳⚴⚵⚶",
-    value=[15, 17, 18, 19, 20],
-    color=["asteroids"] * 5,
-)
-
 VERTICES = dict(
     name=VERTEX_NAMES,
     symbol=["Asc", "IC", "Dsc", "MC"],
@@ -255,5 +238,4 @@ MODALITY_MEMBERS = get_members(MODALITY)
 POLARITY_MEMBERS = get_members(POLARITY)
 SIGN_MEMBERS = get_members(SIGNS)
 HOUSE_MEMBERS = get_members(HOUSES)
-EXTRA_MEMBERS = get_members(EXTRAS)
 VERTEX_MEMBERS = get_members(VERTICES)
