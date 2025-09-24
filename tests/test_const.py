@@ -12,7 +12,7 @@ from natal.const import (
 
 def test_const():
     assert len(PLANET_MEMBERS) == 11
-    assert len(ASPECT_MEMBERS) == 5
+    assert len(ASPECT_MEMBERS) == 6
     assert len(ELEMENT_MEMBERS) == 4
     assert len(MODALITY_MEMBERS) == 3
     assert len(POLARITY_MEMBERS) == 2

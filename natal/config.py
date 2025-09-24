@@ -65,6 +65,7 @@ class Orb(ModelDict):
     trine: int = 6
     square: int = 6
     sextile: int = 5
+    quincunx: int = 0
 
 
 class Theme(ModelDict):
