@@ -93,7 +93,7 @@ class Stats:
             The title and grid of distribution data, where the grid includes the distribution type,
             count, and bodies.
         """
-        title = f"{kind.capitalize()} Distribution ({self.data1.name})"
+        title = f"{kind.capitalize()} Distribution"
         bodies = defaultdict(lambda: [0, []])
         for body in self.data1.aspectables:
             key = body.sign[kind]
@@ -113,7 +113,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of celestial body data,
                       where the grid includes body name, sign, house, and dignity.
         """
-        title = f"Celestial Bodies ({self.data1.name})"
+        title = "Celestial Bodies"
         grid = [("body", "sign", "house", "dignity")]
         for body in self.data1.aspectables:
             grid.append(
@@ -164,7 +164,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of house data,
                       where the grid includes house number, cusp, ruler, ruler sign, and ruler house.
         """
-        title = f"Houses ({self.data1.name})"
+        title = "Houses"
         grid = [("house", "cusp", "ruler", "ruler sign", "ruler house")]
         for house in self.data1.houses:
             grid.append(
@@ -187,8 +187,8 @@ class Stats:
             StatData: A named tuple containing the title and grid of quadrant distribution data,
                       where the grid includes quadrant name, body count, and body names.
         """
-        title = f"Quadrants ({self.data1.name})"
-        quad_names = ["1st ◵", "2nd ◶", "3rd ◷", "4th ◴"]
+        title = "Quadrants"
+        quad_names = ["1st", "2nd", "3rd", "4th"]
         quadrants = defaultdict(lambda: [0, []])
         for i, quad in enumerate(self.data1.quadrants):
             if quad:
@@ -200,8 +200,7 @@ class Stats:
                 quadrants[i][0] = 0
         grid = [("quadrant", "sum", "bodies")]
         data = [
-            (quad_names[quad_no], val[0], ", ".join(val[1]))
-            for quad_no, val in quadrants.items()
+            (quad_names[quad_no], val[0], ", ".join(val[1])) for quad_no, val in quadrants.items()
         ]
         return StatData(title, grid + data)
 
@@ -214,17 +213,17 @@ class Stats:
             StatData: A named tuple containing the title and grid of hemisphere distribution data,
                       where the grid includes hemisphere direction, body count, and body names.
         """
-        title = f"Hemispheres ({self.data1.name})"
+        title = "Hemispheres"
         grid = [("hemisphere", "sum", "bodies")]
         data = self.quadrant.grid[1:]
 
         def formatter(a: int, b: int) -> str:
             return (data[a][2] + ", " + data[b][2]).strip(" ,")
 
-        left = ("←", data[0][1] + data[3][1], formatter(0, 3))
-        right = ("→", data[1][1] + data[2][1], formatter(1, 2))
-        top = ("↑", data[2][1] + data[3][1], formatter(2, 3))
-        bottom = ("↓", data[0][1] + data[1][1], formatter(0, 1))
+        left = ("Eastern", data[0][1] + data[3][1], formatter(0, 3))
+        right = ("Western", data[1][1] + data[2][1], formatter(1, 2))
+        top = ("Northern", data[2][1] + data[3][1], formatter(2, 3))
+        bottom = ("Southern", data[0][1] + data[1][1], formatter(0, 1))
         return StatData(title, grid + [left, right, top, bottom])
 
     @property
@@ -236,7 +235,7 @@ class Stats:
             StatData: A named tuple containing the title and grid of aspect data,
                       where the grid includes body 1, aspect type, body 2, phase, and orb.
         """
-        title = f"Aspects ({self.data1.name})"
+        title = "Aspects"
         headers = ["body 1", "aspect", "body 2", "phase", "orb"]
         return StatData(title, _aspect_grid(self.data1.aspects, headers))
 
@@ -269,9 +268,7 @@ class Stats:
                       where the grid shows aspect connections between bodies, with a sum column.
         """
         name = (
-            f"{self.data2.name}(cols) vs {self.data1.name}(rows)"
-            if self.data2
-            else self.data1.name
+            f"{self.data2.name}(cols) vs {self.data1.name}(rows)" if self.data2 else self.data1.name
         )
         title = f"Aspect Cross Reference of {name}"
         aspectable1 = self.data1.aspectables
@@ -317,9 +314,7 @@ class Stats:
         for dist in DistKind.__args__:
             output += self.table_of("distribution", kind, dist)
         output += self.table_of("celestial_body", kind)
-        output += self.table_of(
-            "house", kind, colalign=("left", "center", "left", "center")
-        )
+        output += self.table_of("house", kind, colalign=("left", "center", "left", "center"))
         output += self.table_of("quadrant", kind)
         output += self.table_of("hemisphere", kind)
         if self.data2:
@@ -353,6 +348,7 @@ class Stats:
         """
         stat = getattr(self, fn_name)
         if fn_args:
+            # stat is property when no args, no need to call it
             stat = stat(*fn_args)
         base_option = dict(headers="firstrow", numalign="center")
 
@@ -367,6 +363,30 @@ class Stats:
             tb = tabulate(stat.grid, **options)
             output = div([h4(stat.title), tb], class_=f"tabulate {fn_name}")
             return str(output)
+
+    def ai_md(
+        self,
+        fn_name: str,
+        cols: int,  # number of columns used in data table
+    ) -> str:
+        """markdown data for AI context"""
+        stat = getattr(self, fn_name)
+        rows = stat.grid
+        output = f"# {stat.title}\n\n"
+        header = rows.pop(0)
+        output += "|"
+        for item in header[:cols]:
+            output += f"{item} | "
+        output += "\n"
+        output += "|" + "--- | " * cols
+        output += "\n"
+        for row in rows:
+            output += "|"
+            for item in row[:cols]:
+                output += f"{item} | "
+            output += "\n"
+        output += "\n\n"
+        return output
 
 
 # utils ======================================================================
