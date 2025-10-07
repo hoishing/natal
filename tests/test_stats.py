@@ -104,20 +104,20 @@ def data2_celestial_body_grid():
 def quadrant_grid():
     return [
         ("quadrant", "sum", "bodies"),
-        ("1st ◵", 4, "moon, uranus, neptune, asc_node"),
-        ("2nd ◶", 1, "venus"),
-        ("3rd ◷", 4, "sun, mercury, mars, jupiter"),
-        ("4th ◴", 2, "saturn, pluto"),
+        ("1st", 4, "moon, uranus, neptune, asc_node"),
+        ("2nd", 1, "venus"),
+        ("3rd", 4, "sun, mercury, mars, jupiter"),
+        ("4th", 2, "saturn, pluto"),
     ]
 
 @fixture
 def hemisphere_grid():
     return [
         ("hemisphere", "sum", "bodies"),
-        ("←", 6, "moon, uranus, neptune, asc_node, saturn, pluto"),
-        ("→", 5, "venus, sun, mercury, mars, jupiter"),
-        ("↑", 6, "sun, mercury, mars, jupiter, saturn, pluto"),
-        ("↓", 5, "moon, uranus, neptune, asc_node, venus"),
+        ("Eastern", 6, "moon, uranus, neptune, asc_node, saturn, pluto"),
+        ("Western", 5, "venus, sun, mercury, mars, jupiter"),
+        ("Northern", 6, "sun, mercury, mars, jupiter, saturn, pluto"),
+        ("Southern", 5, "moon, uranus, neptune, asc_node, venus"),
     ]
 
 @fixture

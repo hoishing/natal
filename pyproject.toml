@@ -1,6 +1,6 @@
 [project]
 name = "natal"
-version = "0.9.4"
+version = "0.9.5"
 description = "create Natal Chart with ease"
 license = { text = "MIT" }
 authors = [{ name = "Kelvin Ng", email = "hoishing@gmail.com" }]
@@ -20,3 +20,8 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = ["pytest>=8.4.1"]
+
+[tool.ruff]
+isort.no-sections = true
+line-length = 100
+extend-ignore = ["E203", "E402", "E501", "E712", "F401", "F811"]

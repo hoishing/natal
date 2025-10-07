@@ -188,7 +188,7 @@ class Stats:
                       where the grid includes quadrant name, body count, and body names.
         """
         title = f"Quadrants ({self.data1.name})"
-        quad_names = ["1st ◵", "2nd ◶", "3rd ◷", "4th ◴"]
+        quad_names = ["1st", "2nd", "3rd", "4th"]
         quadrants = defaultdict(lambda: [0, []])
         for i, quad in enumerate(self.data1.quadrants):
             if quad:
@@ -200,8 +200,7 @@ class Stats:
                 quadrants[i][0] = 0
         grid = [("quadrant", "sum", "bodies")]
         data = [
-            (quad_names[quad_no], val[0], ", ".join(val[1]))
-            for quad_no, val in quadrants.items()
+            (quad_names[quad_no], val[0], ", ".join(val[1])) for quad_no, val in quadrants.items()
         ]
         return StatData(title, grid + data)
 
@@ -221,10 +220,10 @@ class Stats:
         def formatter(a: int, b: int) -> str:
             return (data[a][2] + ", " + data[b][2]).strip(" ,")
 
-        left = ("←", data[0][1] + data[3][1], formatter(0, 3))
-        right = ("→", data[1][1] + data[2][1], formatter(1, 2))
-        top = ("↑", data[2][1] + data[3][1], formatter(2, 3))
-        bottom = ("↓", data[0][1] + data[1][1], formatter(0, 1))
+        left = ("Eastern", data[0][1] + data[3][1], formatter(0, 3))
+        right = ("Western", data[1][1] + data[2][1], formatter(1, 2))
+        top = ("Northern", data[2][1] + data[3][1], formatter(2, 3))
+        bottom = ("Southern", data[0][1] + data[1][1], formatter(0, 1))
         return StatData(title, grid + [left, right, top, bottom])
 
     @property
@@ -269,9 +268,7 @@ class Stats:
                       where the grid shows aspect connections between bodies, with a sum column.
         """
         name = (
-            f"{self.data2.name}(cols) vs {self.data1.name}(rows)"
-            if self.data2
-            else self.data1.name
+            f"{self.data2.name}(cols) vs {self.data1.name}(rows)" if self.data2 else self.data1.name
         )
         title = f"Aspect Cross Reference of {name}"
         aspectable1 = self.data1.aspectables
@@ -317,9 +314,7 @@ class Stats:
         for dist in DistKind.__args__:
             output += self.table_of("distribution", kind, dist)
         output += self.table_of("celestial_body", kind)
-        output += self.table_of(
-            "house", kind, colalign=("left", "center", "left", "center")
-        )
+        output += self.table_of("house", kind, colalign=("left", "center", "left", "center"))
         output += self.table_of("quadrant", kind)
         output += self.table_of("hemisphere", kind)
         if self.data2:
@@ -353,6 +348,7 @@ class Stats:
         """
         stat = getattr(self, fn_name)
         if fn_args:
+            # stat is property when no args, no need to call it
             stat = stat(*fn_args)
         base_option = dict(headers="firstrow", numalign="center")
 
@@ -367,6 +363,30 @@ class Stats:
             tb = tabulate(stat.grid, **options)
             output = div([h4(stat.title), tb], class_=f"tabulate {fn_name}")
             return str(output)
+
+    def ai_md(
+        self,
+        fn_name: str,
+        cols: int,  # number of columns used in data table
+    ) -> str:
+        """markdown data for AI context"""
+        stat = getattr(self, fn_name)
+        rows = stat.grid
+        output = f"# {stat.title}\n\n"
+        header = rows.pop(0)
+        output += "|"
+        for item in header[:cols]:
+            output += f"{item} | "
+        output += "\n"
+        output += "|" + "--- | " * cols
+        output += "\n"
+        for row in rows:
+            output += "|"
+            for item in row[:cols]:
+                output += f"{item} | "
+            output += "\n"
+        output += "\n\n"
+        return output
 
 
 # utils ======================================================================
