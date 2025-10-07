@@ -1,7 +1,5 @@
 # Natal
 
-[![ci-badge]][ci-url] [![pypi-badge]][pypi-url] [![MIT-badge]][MIT-url] [![black-badge]][black-url]
-
 > create Natal Chart with ease
 
 ## Features
@@ -356,20 +354,12 @@ read the [docs] for complete references
 - [pyswisseph]: astrological data - Swiss Ephemeris
 - [mkdocs-material]: docs site generation
 
-[black-badge]: https://img.shields.io/badge/formatter-Black-black
-[black-url]: https://github.com/psf/black
-[ci-badge]: https://github.com/hoishing/natal/actions/workflows/ci.yml/badge.svg
-[ci-url]: https://github.com/hoishing/natal/actions/workflows/ci.yml
 [light theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_light.pdf
 [mono theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [docs]: https://hoishing.github.io/natal
-[MIT-badge]: https://img.shields.io/github/license/hoishing/natal
-[MIT-url]: https://opensource.org/licenses/MIT
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
 [natal-report]: https://github.com/hoishing/natal-report
-[pypi-badge]: https://img.shields.io/pypi/v/natal
-[pypi-url]: https://pypi.org/project/natal
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [tagit]: https://github.com/hoishing/tagit
