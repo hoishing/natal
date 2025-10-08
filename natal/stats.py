@@ -1,276 +1,197 @@
-"""
-This module provides statistical analysis for natal charts.
+"""statistics and pdf report for natal charts"""
 
-It contains the Stats class, which calculates and presents various astrological statistics
-for a single natal chart or a comparison between two charts.
-"""
-
+import logging
 from collections import defaultdict
-from math import floor
+from dataclasses import dataclass
+from io import BytesIO
+from natal import Chart
 from natal.classes import Aspect, Aspectable
-from natal.data import Data
-from tabulate import tabulate
-from tagit import div, h4
-from typing import Iterable, Literal, NamedTuple
+from natal.const import (
+    ASPECT_MEMBERS,
+    ELEMENT_MEMBERS,
+    EXTRA_MEMBERS,
+    MODALITY_MEMBERS,
+    PLANET_MEMBERS,
+    SIGN_MEMBERS,
+    VERTEX_MEMBERS,
+)
+from natal.data import BodyPairs, Data
+from pathlib import Path
+from tagit import div, main, style, svg, table, td, tr
+from typing import Iterable, Literal
+from weasyprint import HTML
+from zoneinfo import ZoneInfo
+
+# suppress fontTools warnings
+logging.getLogger("fontTools").setLevel(logging.ERROR)
 
 DistKind = Literal["element", "modality", "polarity"]
 ReportKind = Literal["markdown", "html"]
-Grid = list[Iterable[str | int]]
+ELEMENTS = [ELEMENT_MEMBERS[i] for i in (0, 2, 3, 1)]
+TEXT_COLOR = "#595959"
+symbol_name_map = {
+    asp.symbol: asp.name
+    for asp in (PLANET_MEMBERS + EXTRA_MEMBERS + VERTEX_MEMBERS + ASPECT_MEMBERS)
+}
 
 
-class StatData(NamedTuple):
-    """
-    A named tuple representing statistical data with a title and grid.
-
-    Attributes:
-        title (str): The title of the statistical data.
-        grid (Grid): A grid containing the statistical information.
-    """
-
-    title: str
-    grid: Grid
-
-
+@dataclass
 class Stats:
-    """
-    Statistics for a natal chart data.
-
-    This class calculates and presents various astrological statistics for a single natal chart
-    or a comparison between two charts.
-
-    Attributes:
-        data1 (Data): The primary natal chart data.
-        data2 (Data | None): The secondary natal chart data for comparisons (optional).
-    """
+    """statistics for a natal chart data"""
 
     data1: Data
+    city1: str | None = None
+    tz1: str | None = None
     data2: Data | None = None
+    city2: str | None = None
+    tz2: str | None = None
 
-    def __init__(self, data1: Data, data2: Data | None = None) -> None:
-        """
-        Initialize the Stats object with one or two natal chart data sets.
+    composite_pairs: BodyPairs | None = None
+    composite_aspects: list[Aspect] | None = None
 
-        Args:
-            data1 (Data): The primary natal chart data.
-            data2 (Data, optional): The secondary natal chart data for comparisons. Defaults to None.
-        """
-        self.data1 = data1
-        self.data2 = data2
+    def __post_init__(self):
+        """setup composite pairs and aspects"""
         if self.data2:
-            self.composite_pairs = data2.composite_aspects_pairs(self.data1)
-            self.composite_aspects = data1.calculate_aspects(self.composite_pairs)
+            self.composite_pairs = self.data2.composite_aspects_pairs(self.data1)
+            self.composite_aspects = self.data1.calculate_aspects(self.composite_pairs)
 
     # data grids =================================================================
 
     @property
-    def basic_info(self) -> StatData:
-        """
-        Generate basic information about the provided data.
-
-        Returns:
-            The title and grid of basic information data, where the grid includes name, location coordinates, and UTC time.
-        """
-        title = "Basic Information"
+    def basic_info(self) -> list[Iterable]:
+        """table containing name, city, coordinates, and local birth datetime"""
         time_fmt = "%Y-%m-%d %H:%M"
-        dt1 = self.data1.utc_dt.strftime(time_fmt)
-        coordinates1 = f"{self.data1.lat}°N, {self.data1.lon}°E"
-        grid = [("name", "location", "UTC time")]
-        grid.append((self.data1.name, coordinates1, dt1))
+        dt1 = self.data1.utc_dt.astimezone(ZoneInfo(self.tz1)).strftime(time_fmt)
+        coordinates1 = f"{self.data1.lat}°N {self.data1.lon}°E"
+        output = [["name", "city", "coordinates", "local time"]]
+        output.append([self.data1.name, self.city1, coordinates1, dt1])
         if self.data2:
-            dt2 = self.data2.utc_dt.strftime(time_fmt)
-            coordinates2 = f"{self.data2.lat}°N, {self.data2.lon}°E"
-            grid.append((self.data2.name, coordinates2, dt2))
-        return StatData(title, grid)
-
-    def distribution(self, kind: DistKind) -> StatData:
-        """
-        Generate distribution statistics for elements, modalities, or polarities.
-
-        Args:
-            kind: The type of distribution to calculate. Must be one of "element", "modality", or "polarity".
-
-        Returns:
-            The title and grid of distribution data, where the grid includes the distribution type,
-            count, and bodies.
-        """
-        title = f"{kind.capitalize()} Distribution ({self.data1.name})"
-        bodies = defaultdict(lambda: [0, []])
-        for body in self.data1.aspectables:
-            key = body.sign[kind]
-            bodies[key][0] += 1  # act as a counter
-            bodies[key][1].append(f"{body.name} {body.sign.symbol} ")
-        grid = [(kind, "sum", "bodies")]
-        data = [(key, val[0], ", ".join(val[1])) for key, val in bodies.items()]
-        grid.extend(data)
-        return StatData(title, grid)
+            dt2 = self.data2.utc_dt.astimezone(ZoneInfo(self.tz2)).strftime(time_fmt)
+            coordinates2 = f"{self.data2.lat}°N {self.data2.lon}°E"
+            output.append([self.data2.name, self.city2, coordinates2, dt2])
+        return list(zip(*output))
 
     @property
-    def celestial_body(self) -> StatData:
-        """
-        Generate a grid of celestial body positions for the primary chart.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of celestial body data,
-                      where the grid includes body name, sign, house, and dignity.
-        """
-        title = f"Celestial Bodies ({self.data1.name})"
-        grid = [("body", "sign", "house", "dignity")]
-        for body in self.data1.aspectables:
-            grid.append(
-                (
-                    body.name,
-                    body.signed_dms,
-                    self.data1.house_of(body),
-                    dignity_of(body),
-                )
-            )
-        return StatData(title, grid)
-
-    @property
-    def data2_celestial_body(self) -> StatData:
-        """
-        Generate a grid of celestial body positions for the secondary chart.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of celestial body data
-                      for the secondary chart, showing its bodies in the primary chart's context.
-                      The grid includes body name, sign, house, and dignity.
-
-        Raises:
-            AttributeError: If no secondary chart (data2) is available.
-        """
-        if not self.data2:
-            raise AttributeError("No secondary chart available")
-
-        title = f"Celestial Bodies of {self.data2.name} in {self.data1.name}'s chart"
-        grid = [(self.data2.name, "sign", "house", "dignity")]
-        for body in self.data2.aspectables:
-            grid.append(
-                (
-                    body.name,
-                    body.signed_dms,
-                    self.data1.house_of(body),
-                    dignity_of(body),
-                )
-            )
-        return StatData(title, grid)
-
-    @property
-    def house(self) -> StatData:
-        """
-        Generate a grid of house data for the primary chart.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of house data,
-                      where the grid includes house number, cusp, ruler, ruler sign, and ruler house.
-        """
-        title = f"Houses ({self.data1.name})"
-        grid = [("house", "cusp", "ruler", "ruler sign", "ruler house")]
-        for house in self.data1.houses:
-            grid.append(
-                (
-                    house.value,
-                    house.signed_dms,
-                    house.ruler,
-                    house.ruler_sign,
-                    house.ruler_house,
-                )
-            )
-        return StatData(title, grid)
-
-    @property
-    def quadrant(self) -> StatData:
-        """
-        Generate a grid of celestial body distribution in quadrants.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of quadrant distribution data,
-                      where the grid includes quadrant name, body count, and body names.
-        """
-        title = f"Quadrants ({self.data1.name})"
-        quad_names = ["1st", "2nd", "3rd", "4th"]
-        quadrants = defaultdict(lambda: [0, []])
-        for i, quad in enumerate(self.data1.quadrants):
-            if quad:
-                for body in quad:
-                    quadrants[i][0] += 1  # act as a counter
-                    quadrants[i][1].append(f"{body.name}")
-            else:
-                # no celestial body in this quadrant
-                quadrants[i][0] = 0
-        grid = [("quadrant", "sum", "bodies")]
-        data = [
-            (quad_names[quad_no], val[0], ", ".join(val[1])) for quad_no, val in quadrants.items()
-        ]
-        return StatData(title, grid + data)
-
-    @property
-    def hemisphere(self) -> StatData:
-        """
-        Generate a grid of celestial body distribution in hemispheres.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of hemisphere distribution data,
-                      where the grid includes hemisphere direction, body count, and body names.
-        """
-        title = f"Hemispheres ({self.data1.name})"
-        grid = [("hemisphere", "sum", "bodies")]
-        data = self.quadrant.grid[1:]
-
-        def formatter(a: int, b: int) -> str:
-            return (data[a][2] + ", " + data[b][2]).strip(" ,")
-
-        left = ("Eastern", data[0][1] + data[3][1], formatter(0, 3))
-        right = ("Western", data[1][1] + data[2][1], formatter(1, 2))
-        top = ("Northern", data[2][1] + data[3][1], formatter(2, 3))
-        bottom = ("Southern", data[0][1] + data[1][1], formatter(0, 1))
-        return StatData(title, grid + [left, right, top, bottom])
-
-    @property
-    def aspect(self) -> StatData:
-        """
-        Generate a grid of aspects for the primary chart.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of aspect data,
-                      where the grid includes body 1, aspect type, body 2, phase, and orb.
-        """
-        title = f"Aspects ({self.data1.name})"
-        headers = ["body 1", "aspect", "body 2", "phase", "orb"]
-        return StatData(title, _aspect_grid(self.data1.aspects, headers))
-
-    @property
-    def composite_aspect(self) -> StatData:
-        """
-        Generate a grid of composite aspects between two charts.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of composite aspect data,
-                      where the grid includes body names from both charts, aspect type, phase, and orb.
-
-        Raises:
-            AttributeError: If no secondary chart (data2) is available.
-        """
-        if not self.data2:
-            raise AttributeError("No secondary chart available for composite aspects")
-
-        title = f"Aspects of {self.data2.name} vs {self.data1.name}"
-        headers = [self.data2.name, "aspect", self.data1.name, "phase", "orb"]
-        return StatData(title, _aspect_grid(self.composite_aspects, headers))
-
-    @property
-    def cross_ref(self) -> StatData:
-        """
-        Generate a grid for aspect cross-reference between charts or within a single chart.
-
-        Returns:
-            StatData: A named tuple containing the title and grid of aspect cross-reference data,
-                      where the grid shows aspect connections between bodies, with a sum column.
-        """
-        name = (
-            f"{self.data2.name}(cols) vs {self.data1.name}(rows)" if self.data2 else self.data1.name
+    def element_vs_modality(self) -> list[Iterable]:
+        """table of celestial bodies' elements and modalities"""
+        aspectable1 = self.data1.aspectables
+        element_symbols = [svg_symbol(ele.name) for ele in ELEMENTS]
+        grid = [[""] + element_symbols + ["sum"]]
+        element_count = defaultdict(int)
+        for modality in MODALITY_MEMBERS:
+            row = [svg_symbol(modality.name)]
+            modality_count = 0
+            for element in ELEMENTS:
+                count = 0
+                symbols = ""
+                for body in aspectable1:
+                    if body.sign.element == element.name and body.sign.modality == modality.name:
+                        symbols += svg_symbol(body.name)
+                        count += 1
+                        element_count[element.name] += 1
+                row.append(symbols)
+                modality_count += count
+            row.append(modality_count)
+            grid.append(row)
+        grid.append(["sum"] + list(element_count.values()) + [sum(element_count.values())])
+        grid.append(
+            [
+                "◐",  # symbol of polarity
+                f"null:{element_count['fire'] + element_count['air']} pos",
+                f"null:{element_count['water'] + element_count['earth']} neg",
+                "",
+            ]
         )
-        title = f"Aspect Cross Reference of {name}"
+        return grid
+
+    @property
+    def quadrants_vs_hemisphere(self) -> list[Iterable]:
+        """table of celestial bodies' quadrants and hemispheres"""
+        q = self.data1.quadrants
+        first_q = [svg_symbol(body.name) for body in q[0]]
+        second_q = [svg_symbol(body.name) for body in q[1]]
+        third_q = [svg_symbol(body.name) for body in q[2]]
+        forth_q = [svg_symbol(body.name) for body in q[3]]
+        hemi_symbols = ["eastern", "western", "northern", "southern"]
+        grid = [[""] + hemi_symbols[:2] + ["sum"]]
+        grid += [["northern"] + [forth_q, third_q] + [len(q[3] + q[2])]]
+        grid += [["southern"] + [first_q, second_q] + [len(q[3] + q[2])]]
+        grid += [["sum"] + [len(q[3] + q[0]), len(q[1] + q[2])] + [len(q[0] + q[1] + q[2] + q[3])]]
+        return grid
+
+    @property
+    def celestial_body1(self) -> list[Iterable]:
+        return self.celestial_body(self.data1)
+
+    @property
+    def celestial_body2(self) -> list[Iterable]:
+        return self.celestial_body(self.data2)
+
+    def celestial_body(self, data: Data) -> list[Iterable]:
+        """table of celestial bodies for the given data"""
+
+        grid = [("body", "sign", "house", "dignity")]
+        for body in data.aspectables:
+            grid.append(
+                (
+                    svg_symbol(body.name),
+                    f"{body.signed_deg:02d}° {svg_symbol(body.sign.name)} {body.minute:02d}'",
+                    self.data1.house_of(body),
+                    svg_symbol(dignity_of(body)),
+                )
+            )
+        return grid
+
+    @property
+    def signs(self) -> list[Iterable]:
+        """table of celestial bodies' signs"""
+        grid = [["sign", "bodies", "sum"]]
+        for sign in SIGN_MEMBERS:
+            bodies = [
+                svg_symbol(b.name) for b in self.data1.aspectables if b.sign.name == sign.name
+            ]
+            grid.append([svg_symbol(sign.name), "".join(bodies), len(bodies) or ""])
+        return grid
+
+    @property
+    def houses(self) -> list[Iterable]:
+        """table of celestial bodies' houses"""
+        grid = [["house", "cusp", "bodies", "sum"]]
+        for hse in self.data1.houses:
+            bodies = [
+                svg_symbol(b.name)
+                for b in self.data1.aspectables
+                if self.data1.house_of(b) == hse.value
+            ]
+            grid.append(
+                [
+                    hse.value,
+                    f"{hse.signed_deg:02d}° {svg_symbol(hse.sign.name)} {hse.minute:02d}'",
+                    "".join(bodies),
+                    len(bodies) or "",
+                ]
+            )
+        return grid
+
+    @property
+    def aspect(self) -> list[Iterable]:
+        """table of aspects for the primary chart"""
+        grid = [["body 1", "aspect", "body 2"]]
+        for aspect in self.data1.aspects:
+            grid.append([aspect.body1.name, aspect.aspect_member.symbol, aspect.body2.name])
+        return grid
+
+    @property
+    def composite_aspect(self) -> list[Iterable]:
+        """table of composite aspects between two charts"""
+        grid = [[self.data2.name, "aspect", self.data1.name]]
+        for aspect in self.composite_aspects:
+            grid.append([aspect.body1.name, aspect.aspect_member.symbol, aspect.body2.name])
+        return grid
+
+    @property
+    def cross_ref(self) -> list[Iterable]:
+        """table of aspect cross-reference between charts or within a single chart"""
         aspectable1 = self.data1.aspectables
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         aspects = self.composite_aspects if self.data2 else self.data1.aspects
@@ -297,77 +218,79 @@ class Stats:
 
             row.append(str(aspect_count))  # Add sum to the end of the row
             grid.append(row)
-        return StatData(title, grid)
+        return grid
 
-    def full_report(self, kind: ReportKind) -> str:
-        """
-        Generate a full report containing all statistical tables.
+    @property
+    def orbs(self) -> list[Iterable]:
+        """table of orbs settings"""
+        orb = self.data1.config.orb
+        return [["aspect", "orb"]] + [[svg_symbol(aspect), orb[aspect]] for aspect in orb]
 
-        Args:
-            kind (ReportKind): The format of the report, either "markdown" or "html".
+    @property
+    def html_report(self) -> str:
+        """full HTML astrological report"""
+        output = html_section("Birth Info", self.basic_info)
+        output += html_section("Elements, Modality & Polarity", self.element_vs_modality)
+        output += html_section("Hemisphere & Quadrants", self.quadrants_vs_hemisphere)
+        output += html_section(f"{self.data1.name}'s Celestial Bodies", self.celestial_body1)
 
-        Returns:
-            str: A formatted string containing the full statistical report with various tables.
-        """
-        output = "\n"
-        output += self.table_of("basic_info", kind)
-        for dist in DistKind.__args__:
-            output += self.table_of("distribution", kind, dist)
-        output += self.table_of("celestial_body", kind)
-        output += self.table_of("house", kind, colalign=("left", "center", "left", "center"))
-        output += self.table_of("quadrant", kind)
-        output += self.table_of("hemisphere", kind)
         if self.data2:
-            output += self.table_of("data2_celestial_body", kind)
-            output += self.table_of(
-                "composite_aspect", kind, colalign=("left", "center", "left", "center")
+            output += html_section(f"{self.data2.name}'s Celestial Bodies", self.celestial_body2)
+            output += html_section(
+                f"Aspects of {self.data2.name} vs {self.data1.name}", self.composite_aspect
             )
         else:
-            output += self.table_of("aspect", kind)
-        output += self.table_of("cross_ref", kind, stralign="center")
+            output += html_section(f"Aspects ({self.data1.name})", self.aspect)
+
+        ref_name = (
+            f"{self.data2.name}(cols) vs {self.data1.name}(rows)" if self.data2 else self.data1.name
+        )
+        ref_title = f"Aspect Cross Reference of {ref_name}"
+        output += html_section(ref_title, self.cross_ref)
+        output += html_section("Signs", self.signs)
+        output += html_section("Houses", self.houses)
         return output
 
-    def table_of(
-        self,
-        fn_name: str,
-        kind: ReportKind,
-        *fn_args: object,
-        **markdown_options: object,
-    ) -> str:
-        """
-        Format a table with a title.
+    @property
+    def pdf_report(self) -> str:
+        """html source for PDF report"""
+        chart = Chart(self.data1, width=400, data2=self.data2)
+        row1 = div(
+            html_section("Birth Info", self.basic_info)
+            + html_section("Elements, Modality & Polarity", self.element_vs_modality)
+            + html_section("Hemisphere & Quadrants", self.quadrants_vs_hemisphere),
+            class_="info_col",
+        ) + div(chart.svg, class_="chart")
 
-        Args:
-            fn_name (str): The name of the method to call (e.g., "distribution", "celestial_body").
-            kind (ReportKind): The kind of report to generate ("markdown" or "html").
-            *fn_args: Variable positional arguments passed to the method.
-            **markdown_options: Additional keyword arguments for tabulate formatting.
+        row2 = html_section(f"{self.data1.name}'s Celestial Bodies", self.celestial_body1)
 
-        Returns:
-            str: A formatted string containing the titled table in the specified format.
-        """
-        stat = getattr(self, fn_name)
-        if fn_args:
-            # stat is property when no args, no need to call it
-            stat = stat(*fn_args)
-        base_option = dict(headers="firstrow", numalign="center")
+        if self.data2:
+            row2 += html_section(f"{self.data2.name}'s Celestial Bodies", self.celestial_body2)
+        ref_name = (
+            f"{self.data2.name}(cols) vs {self.data1.name}(rows)" if self.data2 else self.data1.name
+        )
+        ref_title = f"Aspect Cross Reference of {ref_name}"
+        row2 += html_section(ref_title, self.cross_ref)
+        row3 = (
+            html_section("Signs", self.signs)
+            + html_section("Houses", self.houses)
+            + html_section("Orbs", self.orbs)
+        )
+        css = Path(__file__).parent / "pdf.css"
+        html = style(css.read_text()) + main(
+            div(row1, class_="row1") + div(row2, class_="row2") + div(row3, class_="row3")
+        )
+        return html
 
-        if kind == "markdown":
-            options = base_option | {"tablefmt": "github"} | markdown_options
-            output = f"# {stat.title}\n\n"
-            output += tabulate(stat.grid, **options)
-            output += "\n\n\n"
-            return output
-        elif kind == "html":
-            options = base_option | {"tablefmt": "html"}
-            tb = tabulate(stat.grid, **options)
-            output = div([h4(stat.title), tb], class_=f"tabulate {fn_name}")
-            return str(output)
+    def create_pdf(self, html: str) -> BytesIO:
+        """Creates a PDF from the given HTML string"""
+        fp = BytesIO()
+        HTML(string=html).write_pdf(fp)
+        return fp
 
     def ai_md(
         self,
         fn_name: str,
-        cols: int,  # number of columns used in data table
     ) -> str:
         """markdown data for AI context"""
         stat = getattr(self, fn_name)
@@ -375,14 +298,14 @@ class Stats:
         output = f"# {stat.title}\n\n"
         header = rows.pop(0)
         output += "|"
-        for item in header[:cols]:
+        for item in header:
             output += f"{item} | "
         output += "\n"
-        output += "|" + "--- | " * cols
+        output += "|" + "--- | " * len(header)
         output += "\n"
         for row in rows:
             output += "|"
-            for item in row[:cols]:
+            for item in row:
                 output += f"{item} | "
             output += "\n"
         output += "\n\n"
@@ -392,45 +315,8 @@ class Stats:
 # utils ======================================================================
 
 
-def _aspect_grid(aspects: list[Aspect], headers: list[str]) -> Grid:
-    """
-    Generate a grid of aspect data.
-
-    Args:
-        aspects (list[Aspect]): A list of Aspect objects to be converted to a grid.
-        headers (list[str]): The headers for the aspect grid.
-
-    Returns:
-        Grid: A grid containing aspect data, with each row representing an aspect
-              and columns including body names, aspect symbol, phase, and orb.
-    """
-    grid = [headers]
-    for aspect in aspects:
-        degree = floor(aspect.orb)
-        minutes = round((aspect.orb - degree) * 60)
-        grid.append(
-            (
-                aspect.body1.name,
-                aspect.aspect_member.symbol,
-                aspect.body2.name,
-                "→ ←" if aspect.applying else "← →",
-                f"{degree}° {minutes:02d}'",
-            )
-        )
-    return grid
-
-
 def dignity_of(body: Aspectable) -> str:
-    """
-    Get the dignity of a celestial body.
-
-    Args:
-        body (Aspectable): The celestial body to check for dignity.
-
-    Returns:
-        str: The dignity of the celestial body.
-             Possible values are "domicile", "detriment", "exaltation", "fall", or an empty string.
-    """
+    """get the dignity of a celestial body"""
     if body.name == (body.sign.classic_ruler or body.sign.ruler):
         return "domicile"
     if body.name == (body.sign.classic_detriment or body.sign.detriment):
@@ -440,3 +326,48 @@ def dignity_of(body: Aspectable) -> str:
     if body.name == body.sign.fall:
         return "fall"
     return ""
+
+
+def html_table(grid: list[Iterable]) -> str:
+    """converts list of iterable into an HTML table"""
+    rows = []
+    for row in grid:
+        cells = []
+        for cell in row:
+            if isinstance(cell, str) and cell.startswith("null:"):
+                cells.append(td(cell.split(":")[1], colspan=2))
+            else:
+                cells.append(td(cell))
+        rows.append(tr(cells))
+    return table(rows)
+
+
+def svg_symbol(name: str, scale: float = 0.5) -> str:
+    """generates an SVG tag of a given symbol name"""
+    if not name:
+        return ""
+    stroke = TEXT_COLOR
+    fill = "none"
+    if name in ["mc", "asc", "dsc", "ic"]:
+        stroke = "none"
+        fill = TEXT_COLOR
+
+    return svg(
+        (Path(__file__).parent / "svg_paths" / f"{name}.svg").read_text(),
+        fill=fill,
+        stroke=stroke,
+        stroke_width=3 * scale,
+        version="1.1",
+        width=f"{20 * scale}px",
+        height=f"{20 * scale}px",
+        transform=f"scale({scale})",
+        xmlns="http://www.w3.org/2000/svg",
+    )
+
+
+def html_section(title: str, grid: list[Iterable]) -> str:
+    """creates an HTML section with a title and data table"""
+    return div(
+        div(title, class_="title") + html_table(grid),
+        class_="section",
+    )
