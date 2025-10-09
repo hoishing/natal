@@ -16,6 +16,10 @@ class Body(DotDict):
     value: int
     color: str
 
+    def __hash__(self):
+        # memory address
+        return id(self)
+
 
 class PlanetMember(Body):
     """

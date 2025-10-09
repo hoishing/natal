@@ -15,7 +15,6 @@ from natal.const import (
 from natal.utils import pairs, str_to_dt
 from pathlib import Path
 from typing import Iterable, Self
-from zoneinfo import ZoneInfo
 
 type BodyPairs = Iterable[tuple[Aspectable, Aspectable]]
 
@@ -140,9 +139,7 @@ class Data(DotDict):
             house.ruler_sign = f"{ruler.sign.symbol}"
             house.ruler_house = self.house_of(ruler)
             house.classic_ruler = classic_ruler.name
-            house.classic_ruler_sign = (
-                f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
-            )
+            house.classic_ruler_sign = f"{classic_ruler.sign.symbol} {classic_ruler.sign.name}"
             house.classic_ruler_house = self.house_of(classic_ruler)
 
     def set_quadrants(self) -> None:

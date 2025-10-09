@@ -204,7 +204,7 @@ wheels = [
 
 [[package]]
 name = "natal"
-version = "0.9.6.1"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },
