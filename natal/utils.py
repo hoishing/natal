@@ -1,7 +1,10 @@
 """utility functions for natal"""
 
 from datetime import datetime
+from natal.classes import Aspectable
 from natal.config import Config
+from pathlib import Path
+from tagit import div, svg, table, td, tr
 from typing import Iterable
 
 
@@ -58,3 +61,133 @@ def str_to_dt(dt_str: str) -> datetime:
         datetime: Parsed datetime object
     """
     return datetime.strptime(dt_str[:16], "%Y-%m-%d %H:%M")
+
+
+# stats and pdf report =========================================================
+
+symbol_to_svg_filename = {
+    "☉": "sun",
+    "☽": "moon",
+    "☿": "mercury",
+    "♀": "venus",
+    "♂": "mars",
+    "♃": "jupiter",
+    "♄": "saturn",
+    "♅": "uranus",
+    "♆": "neptune",
+    "♇": "pluto",
+    "☊": "asc_node",
+    "⚷": "chiron",
+    "⚳": "ceres",
+    "⚴": "pallas",
+    "⚵": "juno",
+    "⚶": "vesta",
+    "♈": "aries",
+    "♉": "taurus",
+    "♊": "gemini",
+    "♋": "cancer",
+    "♌": "leo",
+    "♍": "virgo",
+    "♎": "libra",
+    "♏": "scorpio",
+    "♐": "sagittarius",
+    "♑": "capricorn",
+    "♒": "aquarius",
+    "♓": "pisces",
+    "℞": "retrograde",
+    "☌": "conjunction",
+    "☍": "opposition",
+    "△": "trine",
+    "□": "square",
+    "⚹": "sextile",
+    "⚻": "quincunx",
+    "🜂": "fire",
+    "🜃": "earth",
+    "🜁": "air",
+    "🜄": "water",
+    "⟑": "cardinal",
+    "⊟": "fixed",
+    "𛰣": "mutable",
+    "⏫": "domicile",
+    "🔼": "exaltation",
+    "⏬": "detriment",
+    "🔽": "fall",
+}
+
+
+def dignity_of(
+    body: Aspectable,
+    labels: list[str] = ["domicile", "exaltation", "detriment", "fall"],
+) -> str:
+    """get the dignity of a celestial body"""
+    if body.name == (body.sign.classic_ruler or body.sign.ruler):
+        return labels[0]
+    if body.name == body.sign.exaltation:
+        return labels[1]
+    if body.name == (body.sign.classic_detriment or body.sign.detriment):
+        return labels[2]
+    if body.name == body.sign.fall:
+        return labels[3]
+    return ""
+
+
+def html_table(grid: list[Iterable]) -> str:
+    """converts list of iterable into an HTML table"""
+    rows = []
+    for row in grid:
+        cells = []
+        for cell in row:
+            if isinstance(cell, str) and cell.startswith("null:"):
+                cells.append(td(cell.split(":")[1], colspan=2))
+            else:
+                cells.append(td(cell))
+        rows.append(tr(cells))
+    return table(rows)
+
+
+def svg_tag(name: str, scale: float = 0.5, color: str = "#595959") -> str:
+    """generates an SVG tag of a given symbol name"""
+    if not name:
+        return ""
+    stroke = color
+    fill = "none"
+    if name in ["mc", "asc", "dsc", "ic"]:
+        stroke = "none"
+        fill = color
+
+    return svg(
+        (Path(__file__).parent / "svg_paths" / f"{name}.svg").read_text(),
+        fill=fill,
+        stroke=stroke,
+        stroke_width=3 * scale,
+        version="1.1",
+        width=f"{20 * scale}px",
+        height=f"{20 * scale}px",
+        transform=f"scale({scale})",
+        xmlns="http://www.w3.org/2000/svg",
+    )
+
+
+def html_section(title: str, grid: list[Iterable]) -> str:
+    """creates an HTML section with a title and data table"""
+    return div(
+        div(title, class_="title") + html_table(grid),
+        class_="section",
+    )
+
+
+def body_name_to_svg(grid: list[list]):
+    """convert grid to SVG"""
+    for row in grid:
+        for i, cell_txt in enumerate(row):
+            row[i] = string_to_svg(cell_txt)
+    return grid
+
+
+def string_to_svg(text: str) -> str:
+    """convert string to SVG"""
+    output = ""
+    for char in text:
+        filename = symbol_to_svg_filename.get(char)
+        output += svg_tag(filename) if filename else char
+    return output

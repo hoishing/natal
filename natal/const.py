@@ -95,10 +95,10 @@ class SignMember(Body):
     Represents a zodiac sign in raw data.
     """
 
-    ruler: str
-    detriment: str
-    exaltation: str
-    fall: str
+    ruler: str  # 廟
+    detriment: str  # 陷
+    exaltation: str  # 旺
+    fall: str  # 弱
     classic_ruler: str
     classic_detriment: str
     modality: str

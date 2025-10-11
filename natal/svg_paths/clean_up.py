@@ -4,8 +4,9 @@
 - clean up unnecessary tags and attributes
 
 Usage:
-- export all celestial body SVGs from the Figma file (astrology.fig) to this folder
+- export SVGs from the Figma file (astrology.fig) to this folder
 - run this script in current folder
+- fix all SVGs or specific SVGs by name in the last line of this script
 """
 
 import re
@@ -57,4 +58,4 @@ def fix_svg(name: str):
 
 if __name__ == "__main__":
     # fix_all_svgs()
-    fix_svg("quincunx")
+    fix_svg("retrograde")
