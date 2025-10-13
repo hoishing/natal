@@ -7,12 +7,7 @@ authors = [{ name = "Kelvin Ng", email = "hoishing@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.12"
 urls = { "Repository" = "https://github.com/hoishing/natal", "Documentation" = "https://hoishing.github.io/natal" }
-dependencies = [
-    "pydantic>=2.8.2",
-    "pyswisseph>=2.10.3.2",
-    "tagit>=0.6.1",
-    "weasyprint>=66.0",
-]
+dependencies = ["pydantic>=2.8.2", "pyswisseph>=2.10.3.2", "tagit>=0.6.1"]
 
 [build-system]
 requires = ["hatchling"]

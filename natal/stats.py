@@ -1,20 +1,10 @@
-"""statistics and pdf report data"""
-
-import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from io import BytesIO
-from natal import Chart, Data
+from natal import Data
 from natal.const import ASPECT_MEMBERS, SIGN_MEMBERS
-from natal.utils import body_name_to_svg, dignity_of, html_section
-from pathlib import Path
-from tagit import div, main, style
+from natal.utils import body_name_to_svg, dignity_of
 from typing import Literal
-from weasyprint import HTML
 from zoneinfo import ZoneInfo
-
-# suppress fontTools warnings
-logging.getLogger("fontTools").setLevel(logging.ERROR)
 
 
 @dataclass
@@ -27,6 +17,14 @@ class Stats:
     data2: Data | None = None
     city2: str | None = None
     tz2: str | None = None
+
+    def aspects(self):
+        """aspects between celestial bodies depending on whether data2 is present"""
+        if self.data2:
+            synastry_pairs = self.data2.composite_aspects_pairs(self.data1)
+            return self.data1.calculate_aspects(synastry_pairs)
+        else:
+            return self.data1.aspects
 
     # data grids =================================================================
 
@@ -96,8 +94,8 @@ class Stats:
         southern_sum = str(len(q[0] + q[1]))
         eastern_sum = str(len(q[3] + q[0]))
         western_sum = str(len(q[1] + q[2]))
-        grid.append([northern, forth_q, third_q, northern_sum])
-        grid.append([southern, first_q, second_q, southern_sum])
+        grid.append([southern, forth_q, third_q, northern_sum])
+        grid.append([northern, first_q, second_q, southern_sum])
         grid.append([total, eastern_sum, western_sum, ""])
         return body_name_to_svg(grid) if pdf else grid
 
@@ -108,7 +106,7 @@ class Stats:
         dignity_labels: list[str] = ["domicile", "exaltation", "detriment", "fall"],
         pdf: bool = False,
     ):
-        """grid of celestial bodies for the given data"""
+        """grid showing the sign, house and dignity of specific celestial body"""
         chart_data = self.data2 if data == 2 else self.data1
         grid = [headers]
         for body in chart_data.aspectables:
@@ -118,7 +116,7 @@ class Stats:
         return body_name_to_svg(grid) if pdf else grid
 
     def signs(self, headers: list[str] = ["sign", "bodies1", "bodies2", "sum"], pdf: bool = False):
-        """grid of celestial bodies in signs, headers length depends on data2"""
+        """distribution of celestial bodies in signs, headers length depends on data2"""
         data1, data2 = self.data1, self.data2
         grid = [headers]
         for sign in SIGN_MEMBERS:
@@ -140,7 +138,7 @@ class Stats:
         headers: list[str] = ["house", "cusp", "bodies1", "bodies2", "sum"],
         pdf: bool = False,
     ):
-        """grid of celestial bodies in houses, headers length depends on data2"""
+        """distribution of celestial bodies in houses, headers length depends on data2"""
         grid = [headers]
         data1, data2 = self.data1, self.data2
         for hse in data1.houses:
@@ -157,8 +155,8 @@ class Stats:
             grid.append(row)
         return body_name_to_svg(grid) if pdf else grid
 
-    def cross_ref(self, total_label: str = "sum", pdf: bool = False):
-        """grid of aspect cross-reference between charts or within a single chart"""
+    def aspect_grid(self, total_label: str = "sum", pdf: bool = False):
+        """aspects cross-reference between celestial bodies"""
         aspectable1 = self.data1.aspectables
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         asp_dict = {
@@ -182,89 +180,38 @@ class Stats:
         return body_name_to_svg(grid) if pdf else grid
 
     def orb_settings(self, headers: list[str] = ["aspect", "orb"]):
-        """grid of orbs settings"""
+        """orbs settings of each aspect"""
         grid = [headers]
         for aspect in ASPECT_MEMBERS:
             grid.append([aspect.symbol, str(self.data1.config.orb[aspect.name])])
         return body_name_to_svg(grid)
 
-    def pdf_html(
-        self,
-        basic_info_title: str = "Birth Info",
-        ele_vs_mod_title: str = "Element vs Modality",
-        ele_vs_mod_headers=["🜂", "🜁", "🜄", "🜃", "∑"],
-        ele_vs_mod_row_label=["⟑", "⊟", "𛰣", "∑"],
-        ele_vs_mod_polarity_label=["◐", "+", "-"],
-        quad_vs_hemi_title: str = "Quadrants vs Hemisphere",
-        quad_vs_hemi_headers: list[str] = ["eastern", "western", "northern", "southern", "∑"],
-        body_title1: str = "Celestial Bodies 1",
-        body_title2: str | None = None,
-        body_headers: list[str] = ["body", "sign", "house", "dignity"],
-        dignity_labels: list[str] = ["⏫", "🔼", "⏬", "🔽"],
-        cross_ref_title: str = "Cross Reference",
-        signs_title: str = "Signs",
-        signs_headers: list[str] = ["sign", "bodies1", "sum"],
-        houses_title: str = "Houses",
-        houses_headers: list[str] = ["house", "cusp", "bodies1", "sum"],
-        orb_title: str = "Orbs",
-        orb_headers: list[str] = ["Aspect", "Orb"],
-    ):
-        """html source for PDF report"""
-        chart = Chart(self.data1, width=400, data2=self.data2)
-        row1 = div(
-            html_section(basic_info_title, self.basic_info())
-            + html_section(
-                ele_vs_mod_title,
-                self.element_vs_modality(
-                    headers=ele_vs_mod_headers,
-                    row_label=ele_vs_mod_row_label,
-                    polarity_label=ele_vs_mod_polarity_label,
-                    pdf=True,
-                ),
-            )
-            + html_section(
-                quad_vs_hemi_title,
-                self.quadrants_vs_hemisphere(headers=quad_vs_hemi_headers, pdf=True),
-            ),
-            class_="info_col",
-        ) + div(chart.svg, class_="chart")
-
-        body_params = {"headers": body_headers, "dignity_labels": dignity_labels, "pdf": True}
-        row2 = html_section(body_title1, self.celestial_body(1, **body_params))
-
-        if body_title2:
-            row2 += html_section(body_title2, self.celestial_body(2, **body_params))
-
-        row2 += html_section(cross_ref_title, self.cross_ref(total_label="∑", pdf=True))
-        row3 = (
-            html_section(signs_title, self.signs(headers=signs_headers, pdf=True))
-            + html_section(houses_title, self.houses(headers=houses_headers, pdf=True))
-            + html_section(orb_title, self.orb_settings(headers=orb_headers))
-        )
-        css = Path(__file__).parent.joinpath("pdf.css").read_text()
-        rows = div(row1, class_="row1") + div(row2, class_="row2") + div(row3, class_="row3")
-        return style(css) + main(rows)
-
-    def create_pdf(self, html: str) -> BytesIO:
-        """Creates a PDF from the given HTML string"""
-        fp = BytesIO()
-        HTML(string=html).write_pdf(fp)
-        return fp
-
-    def aspects(self):
-        """return aspects depending on whether data2 is present"""
-        if self.data2:
-            synastry_pairs = self.data2.composite_aspects_pairs(self.data1)
-            return self.data1.calculate_aspects(synastry_pairs)
-        else:
-            return self.data1.aspects
-
 
 class AIContext(Stats):
-    """context for AI to generate stats"""
+    """statistics data in markdown format for AI context"""
+
+    def elements_grid(self):
+        """distribution of celestial bodies in the 4 elements"""
+        ...
+
+    def modality_grid(self):
+        """distribution of celestial bodies in the 3 modalities"""
+        ...
+
+    def polarity_grid(self):
+        """distribution of celestial bodies in the 2 polarities"""
+        ...
+
+    def quadrants_grid(self):
+        """distribution of celestial bodies in the 4 quadrants"""
+        ...
+
+    def hemispheres_grid(self):
+        """distribution of celestial bodies in the 4 hemispheres"""
+        ...
 
     def aspect_grid(self, headers: list[str] = ["birth", "synastry", "aspect"]):
-        """context for AI to generate aspects"""
+        """override aspect_grid to show aspects in long form instead of cross-reference"""
         grid = [headers]
         for asp in self.aspects():
             grid.append([asp.body1.name, asp.body2.name, asp.aspect_member.name])

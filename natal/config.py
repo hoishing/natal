@@ -147,6 +147,13 @@ class Display(ModelDict):
 class Chart(ModelDict):
     """
     Chart configuration settings.
+
+    font_size_fraction: the size of the symbols, compared to the radius
+    inner_min_degree / outer_min_degree: the minimum degree separation between celestial bodies, to prevent overlap
+    margin_factor: the length of stroke compared to the radius, outside the outer circle of the 4 vertex lines
+    ring_thickness_fraction: the thickness of the sign and house rings, compared to the radius
+    scale_adj_factor: the number divide the chart width, to create scale adjustment for symbols
+    pos_adj_factor: the number divide the font size, to create position adjustment for symbols
     """
 
     stroke_width: int = 1

@@ -4,7 +4,7 @@ from datetime import datetime
 from natal.classes import Aspectable
 from natal.config import Config
 from pathlib import Path
-from tagit import div, svg, table, td, tr
+from tagit import svg
 from typing import Iterable
 
 
@@ -115,36 +115,6 @@ symbol_to_svg_filename = {
 }
 
 
-def dignity_of(
-    body: Aspectable,
-    labels: list[str] = ["domicile", "exaltation", "detriment", "fall"],
-) -> str:
-    """get the dignity of a celestial body"""
-    if body.name == (body.sign.classic_ruler or body.sign.ruler):
-        return labels[0]
-    if body.name == body.sign.exaltation:
-        return labels[1]
-    if body.name == (body.sign.classic_detriment or body.sign.detriment):
-        return labels[2]
-    if body.name == body.sign.fall:
-        return labels[3]
-    return ""
-
-
-def html_table(grid: list[Iterable]) -> str:
-    """converts list of iterable into an HTML table"""
-    rows = []
-    for row in grid:
-        cells = []
-        for cell in row:
-            if isinstance(cell, str) and cell.startswith("null:"):
-                cells.append(td(cell.split(":")[1], colspan=2))
-            else:
-                cells.append(td(cell))
-        rows.append(tr(cells))
-    return table(rows)
-
-
 def svg_tag(name: str, scale: float = 0.5, color: str = "#595959") -> str:
     """generates an SVG tag of a given symbol name"""
     if not name:
@@ -168,15 +138,23 @@ def svg_tag(name: str, scale: float = 0.5, color: str = "#595959") -> str:
     )
 
 
-def html_section(title: str, grid: list[Iterable]) -> str:
-    """creates an HTML section with a title and data table"""
-    return div(
-        div(title, class_="title") + html_table(grid),
-        class_="section",
-    )
+def dignity_of(
+    body: Aspectable,
+    labels: list[str] = ["domicile", "exaltation", "detriment", "fall"],
+) -> str:
+    """get the dignity of a celestial body"""
+    if body.name == (body.sign.classic_ruler or body.sign.ruler):
+        return labels[0]
+    if body.name == body.sign.exaltation:
+        return labels[1]
+    if body.name == (body.sign.classic_detriment or body.sign.detriment):
+        return labels[2]
+    if body.name == body.sign.fall:
+        return labels[3]
+    return ""
 
 
-def body_name_to_svg(grid: list[list]):
+def body_name_to_svg(grid: list[list[str]]):
     """convert grid to SVG"""
     for row in grid:
         for i, cell_txt in enumerate(row):

@@ -7,20 +7,20 @@
 - SVG natal chart generation in pure python
 - composite chart (transit/synastry/sun return ... etc) generation
 - highly configurable
-    - all planets, asteroids, vertices can be enabled / disabled
-    - orbs for each aspect
-    - light, dark, or mono theme
-    - light / dark theme color definitions
-    - chart stroke, opacity, font, spacing between planets ...etc
+  - all planets, asteroids, vertices can be enabled / disabled
+  - orbs for each aspect
+  - light, dark, or mono theme
+  - light / dark theme color definitions
+  - chart stroke, opacity, font, spacing between planets ...etc
 - high precision astrological data with [Swiss Ephemeris]
 - natal chart data statistics
-    - element, modality, and polarity counts
-    - planets in each houses
-    - quadrant and hemisphere distribution
-    - aspect pair counts
-    - composite chart aspects
-    - aspects cross reference table
-    - generate report in markdown or html
+  - element, modality, and polarity counts
+  - planets in each houses
+  - quadrant and hemisphere distribution
+  - aspect pair counts
+  - composite chart aspects
+  - aspects cross reference table
+  - generate report in markdown or html
 - thoroughly tested with `pytest`
 
 ## Sample Charts
@@ -130,177 +130,11 @@ aspect.orb # 3.3424
 
 ## Stats
 
-- statistics of Data object in tabular form
-
-```python
-from natal import Stats
-
-stats = Stats(data1=mimi, data2=transit)
-
-print(stats.full_report(kind="markdown"))
-```
-
-- following markdown report will be produced:
-
-```markdown
-# Basic Information
-
-| name    | location             | UTC time         |
-|---------|----------------------|------------------|
-| MiMi    | 25.0531°N, 121.526°E | 1980-04-20 06:30 |
-| Transit | 25.0531°N, 121.526°E | 2024-01-01 05:30 |
-
-
-# Element Distribution (MiMi)
-
-| element   |  sum  | bodies                                          |
-|-----------|-------|-------------------------------------------------|
-| earth     |   4   | sun ♉ , jupiter ♍ , saturn ♍ , asc ♍        |
-| water     |   2   | moon ♋ , uranus ♏                             |
-| fire      |   4   | mercury ♈ , mars ♌ , neptune ♐ , asc_node ♌ |
-| air       |   3   | venus ♊ , pluto ♎ , mc ♊                     |
-
-
-# Modality Distribution (MiMi)
-
-| modality   |  sum  | bodies                                                          |
-|------------|-------|-----------------------------------------------------------------|
-| fixed      |   4   | sun ♉ , mars ♌ , uranus ♏ , asc_node ♌                      |
-| cardinal   |   3   | moon ♋ , mercury ♈ , pluto ♎                                 |
-| mutable    |   6   | venus ♊ , jupiter ♍ , saturn ♍ , neptune ♐ , asc ♍ , mc ♊ |
-
-
-# Polarity Distribution (MiMi)
-
-| polarity   |  sum  | bodies                                                                        |
-|------------|-------|-------------------------------------------------------------------------------|
-| negative   |   6   | sun ♉ , moon ♋ , jupiter ♍ , saturn ♍ , uranus ♏ , asc ♍                |
-| positive   |   7   | mercury ♈ , venus ♊ , mars ♌ , neptune ♐ , pluto ♎ , asc_node ♌ , mc ♊ |
-
-
-# Celestial Bodies (MiMi)
-
-| body     | sign         |  house  | dignity   |
-|----------|--------------|---------|-----------|
-| sun      | 00° ♉ 19'   |    8    |           |
-| moon     | 08° ♋ 29'   |   10    | domicile  |
-| mercury  | 08° ♈ 28'   |    8    |           |
-| venus    | 15° ♊ 12'   |   10    |           |
-| mars     | 26° ♌ 59'   |   12    |           |
-| jupiter  | 00° ♍ 17' ℞ |   12    | detriment |
-| saturn   | 21° ♍ 03' ℞ |    1    |           |
-| uranus   | 24° ♏ 31' ℞ |    3    |           |
-| neptune  | 22° ♐ 29' ℞ |    4    |           |
-| pluto    | 20° ♎ 06' ℞ |    2    |           |
-| asc_node | 26° ♌ 03' ℞ |   12    |           |
-| asc      | 09° ♍ 42'   |    1    |           |
-| mc       | 09° ♊ 13'   |   10    |           |
-
-
-# Houses (MiMi)
-
-| house   |    cusp    | ruler   |  ruler sign  |  ruler house  |
-|---------|------------|---------|--------------|---------------|
-| 1       | 09° ♍ 41' | mercury |      ♈      |       8       |
-| 2       | 07° ♎ 13' | venus   |      ♊      |      10       |
-| 3       | 07° ♏ 38' | pluto   |      ♎      |       2       |
-| 4       | 09° ♐ 13' | jupiter |      ♍      |      12       |
-| 5       | 10° ♑ 25' | saturn  |      ♍      |       1       |
-| 6       | 10° ♒ 44' | uranus  |      ♏      |       3       |
-| 7       | 09° ♓ 41' | neptune |      ♐      |       4       |
-| 8       | 07° ♈ 13' | mars    |      ♌      |      12       |
-| 9       | 07° ♉ 38' | venus   |      ♊      |      10       |
-| 10      | 09° ♊ 13' | mercury |      ♈      |       8       |
-| 11      | 10° ♋ 25' | moon    |      ♋      |      10       |
-| 12      | 10° ♌ 44' | sun     |      ♉      |       8       |
-
-
-# Quadrants (MiMi)
-
-| quadrant   |  sum  | bodies                               |
-|------------|-------|--------------------------------------|
-| 1st ◵      |   3   | saturn, uranus, pluto                |
-| 2nd ◶      |   1   | neptune                              |
-| 3rd ◷      |   2   | sun, mercury                         |
-| 4th ◴      |   5   | moon, venus, mars, jupiter, asc_node |
-
-
-# Hemispheres (MiMi)
-
-| hemisphere   |  sum  | bodies                                                      |
-|--------------|-------|-------------------------------------------------------------|
-| ←            |   8   | saturn, uranus, pluto, moon, venus, mars, jupiter, asc_node |
-| →            |   3   | neptune, sun, mercury                                       |
-| ↑            |   7   | sun, mercury, moon, venus, mars, jupiter, asc_node          |
-| ↓            |   4   | saturn, uranus, pluto, neptune                              |
-
-
-# Celestial Bodies of Transit in MiMi's chart
-
-| Transit   | sign         |  house  | dignity   |
-|-----------|--------------|---------|-----------|
-| sun       | 10° ♑ 16'   |    4    |           |
-| moon      | 08° ♍ 42'   |   12    |           |
-| mercury   | 22° ♐ 14' ℞ |    4    | detriment |
-| venus     | 02° ♐ 53'   |    3    |           |
-| mars      | 27° ♐ 28'   |    4    |           |
-| jupiter   | 05° ♉ 34'   |    8    |           |
-| saturn    | 03° ♓ 15'   |    6    |           |
-| uranus    | 19° ♉ 22' ℞ |    9    |           |
-| neptune   | 25° ♓ 04'   |    7    |           |
-| pluto     | 29° ♑ 21'   |    5    |           |
-| asc_node  | 20° ♈ 51' ℞ |    8    |           |
-| asc       | 14° ♉ 41'   |    9    |           |
-| mc        | 02° ♒ 08'   |    5    |           |
-
-
-# Aspects of Transit vs MiMi
-
-| Transit   |  aspect  | MiMi     |  phase  | orb    |
-|-----------|----------|----------|---------|--------|
-| sun       |    ☍     | moon     |   → ←   | 1° 47' |
-| sun       |    □     | mercury  |   → ←   | 1° 48' |
-| sun       |    △     | asc      |   ← →   | 0° 34' |
-| moon      |    ⚹     | moon     |   → ←   | 0° 13' |
-| moon      |    ☌     | asc      |   → ←   | 1° 00' |
-| moon      |    □     | mc       |   → ←   | 0° 31' |
-| mercury   |    □     | saturn   |   → ←   | 1° 11' |
-| mercury   |    ☌     | neptune  |   ← →   | 0° 15' |
-| mars      |    △     | mars     |   ← →   | 0° 29' |
-| mars      |    △     | asc_node |   ← →   | 1° 25' |
-| uranus    |    △     | saturn   |   → ←   | 1° 41' |
-| neptune   |    △     | uranus   |   ← →   | 0° 33' |
-| pluto     |    □     | sun      |   ← →   | 0° 58' |
-| asc_node  |    △     | neptune  |   ← →   | 1° 37' |
-| asc_node  |    ☍     | pluto    |   → ←   | 0° 45' |
-| mc        |    □     | sun      |   → ←   | 1° 49' |
-
-
-# Aspect Cross Reference of Transit(cols) vs MiMi(rows)
-
-|     |  ☉  |  ☽  |  ☿  |  ♀  |  ♂  |  ♃  |  ♄  |  ♅  |  ♆  |  ♇  |  ☊  |  Asc  |  MC  |  sum  |
-|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-------|------|-------|
-|  ☉  |     |     |     |     |     |     |     |     |     |  □  |     |       |  □   |   2   |
-|  ☽  |  ☍  |  ⚹  |     |     |     |     |     |     |     |     |     |       |      |   2   |
-|  ☿  |  □  |     |     |     |     |     |     |     |     |     |     |       |      |   1   |
-|  ♀  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
-|  ♂  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
-|  ♃  |     |     |     |     |     |     |     |     |     |     |     |       |      |   0   |
-|  ♄  |     |     |  □  |     |     |     |     |  △  |     |     |     |       |      |   2   |
-|  ♅  |     |     |     |     |     |     |     |     |  △  |     |     |       |      |   1   |
-|  ♆  |     |     |  ☌  |     |     |     |     |     |     |     |  △  |       |      |   2   |
-|  ♇  |     |     |     |     |     |     |     |     |     |     |  ☍  |       |      |   1   |
-|  ☊  |     |     |     |     |  △  |     |     |     |     |     |     |       |      |   1   |
-| Asc |  △  |  ☌  |     |     |     |     |     |     |     |     |     |       |      |   2   |
-| MC  |     |  □  |     |     |     |     |     |     |     |     |     |       |      |   1   |
-```
-
+- statistics of Data object in 2D list
 - see [demo.ipynb] for the HTML output
 
 ## PDF Report
 
-- install with `uv add natal-report`
-- see [natal-report] package for details
 - [light theme PDF sample]
 - [mono theme PDF sample]
 
@@ -359,7 +193,6 @@ read the [docs] for complete references
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
 [docs]: https://hoishing.github.io/natal
 [mkdocs-material]: https://github.com/squidfunk/mkdocs-material
-[natal-report]: https://github.com/hoishing/natal-report
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [tagit]: https://github.com/hoishing/tagit
