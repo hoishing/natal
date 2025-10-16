@@ -62,7 +62,7 @@ class HouseSys(StrEnum):
     Equal = "E"
     Campanus = "C"
     Regiomontanus = "R"
-    Porphyry = "P"
+    Porphyry = "O"
     Whole_Sign = "W"
 
 

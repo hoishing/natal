@@ -6,31 +6,43 @@ from pytest import fixture
 
 @fixture(scope="module")
 def stats(data1):
-    return Stats(data1=data1)
+    return Stats(data1=data1, city1=("Hong Kong", "HK"), tz1="Asia/Hong_Kong")
 
 
 @fixture(scope="module")
 def composite_stats(data1, data2):
-    return Stats(data1, data2)
+    return Stats(
+        data1=data1,
+        data2=data2,
+        city1=("Hong Kong", "HK"),
+        tz1="Asia/Hong_Kong",
+        city2=("Hong Kong", "HK"),
+        tz2="Asia/Taipei",
+    )
 
 
-# fmt: off
 @fixture
 def info_grid():
-    return [
-        ("name", "location", "UTC time"),
-        ("shing", "22.2783°N, 114.175°E", "1976-04-20 09:58"),
-    ]
+    return list(
+        zip(
+            ["name", "city", "coordinates", "local time"],
+            ("shing", "Hong Kong - HK", "22.2783°N 114.175°E", "1976-04-20 18:58"),
+        )
+    )
 
 
 @fixture
 def composite_info_grid():
-    return [
-        ("name", "location", "UTC time"),
-        ("shing", "22.2783°N, 114.175°E", "1976-04-20 09:58"),
-        ("belle", "22.2783°N, 114.175°E", "2011-01-23 00:44"),
-    ]
+    return list(
+        zip(
+            ["name", "city", "coordinates", "local time"],
+            ("shing", "Hong Kong - HK", "22.2783°N, 114.175°E1976-04-20 18:58"),
+            ("belle", "Hong Kong - HK", "22.2783°N, 114.175°E2011-01-23 08:44"),
+        )
+    )
 
+
+# fmt: off
 
 @fixture
 def element_grid():
@@ -271,7 +283,7 @@ def inner_planets_cross_ref_grid():
 
 
 def test_info_grid(stats, info_grid):
-    assert stats.basic_info.grid == info_grid
+    assert stats.basic_info() == info_grid
 
 
 def test_composite_info_grid(composite_stats, composite_info_grid):

@@ -12,10 +12,10 @@ class Stats:
     """statistics for a natal chart data"""
 
     data1: Data
-    city1: str | None = None
+    city1: tuple[str, str] | None = None
     tz1: str | None = None
     data2: Data | None = None
-    city2: str | None = None
+    city2: tuple[str, str] | None = None
     tz2: str | None = None
 
     def aspects(self):
@@ -28,17 +28,19 @@ class Stats:
 
     # data grids =================================================================
 
-    def basic_info(self, headers: list[str] = ["name", "city", "coordinates", "local time"]):
+    def basic_info(
+        self, headers: list[str] = ["name", "city", "coordinates", "local time"]
+    ):
         """grid containing name, city, coordinates, and local birth datetime"""
         time_fmt = "%Y-%m-%d %H:%M"
         dt1 = self.data1.utc_dt.astimezone(ZoneInfo(self.tz1)).strftime(time_fmt)
         coordinates1 = f"{self.data1.lat}°N {self.data1.lon}°E"
         output = [headers]
-        city1 = " - ".join(self.city1) if self.city1 else "-"
+        city1 = self.city1 if self.city1 else "-"
         output.append([self.data1.name, city1, coordinates1, dt1])
         if self.data2:
             dt2 = self.data2.utc_dt.astimezone(ZoneInfo(self.tz2)).strftime(time_fmt)
-            city2 = " - ".join(self.city2) if self.city2 else "-"
+            city2 = self.city2 if self.city2 else "-"
             coordinates2 = f"{self.data2.lat}°N {self.data2.lon}°E"
             output.append([self.data2.name, city2, coordinates2, dt2])
         return list(zip(*output))
@@ -63,7 +65,10 @@ class Stats:
                 count = 0
                 symbols = []
                 for body in aspectable1:
-                    if body.sign.element == ele_keys[j] and body.sign.modality == mod_keys[i]:
+                    if (
+                        body.sign.element == ele_keys[j]
+                        and body.sign.modality == mod_keys[i]
+                    ):
                         symbols.append(body.symbol)
                         count += 1
                         element_count[ele_keys[j]] += 1
@@ -72,7 +77,9 @@ class Stats:
             row.append(str(modality_count))
             grid.append(row)
         grid.append([row_label[3], *[str(v) for v in element_count.values()], ""])
-        pos_sum = f"null:{element_count['fire'] + element_count['air']} {polarity_label[1]}"
+        pos_sum = (
+            f"null:{element_count['fire'] + element_count['air']} {polarity_label[1]}"
+        )
         neg_sum = f"null:{element_count['water'] + element_count['earth']} {polarity_label[2]}"
         grid.append([polarity_label[0], pos_sum, neg_sum, ""])
         return body_name_to_svg(grid) if pdf else grid
@@ -115,7 +122,11 @@ class Stats:
             grid.append([body.symbol, body.signed_dms, house, dignity])
         return body_name_to_svg(grid) if pdf else grid
 
-    def signs(self, headers: list[str] = ["sign", "bodies1", "bodies2", "sum"], pdf: bool = False):
+    def signs(
+        self,
+        headers: list[str] = ["sign", "bodies1", "bodies2", "sum"],
+        pdf: bool = False,
+    ):
         """distribution of celestial bodies in signs, headers length depends on data2"""
         data1, data2 = self.data1, self.data2
         grid = [headers]
@@ -124,7 +135,9 @@ class Stats:
             bodies1_str = ", ".join(bodies1)
             row = [sign.symbol, bodies1_str]
             if data2:
-                bodies2 = [b.symbol for b in data2.aspectables if b.sign.name == sign.name]
+                bodies2 = [
+                    b.symbol for b in data2.aspectables if b.sign.name == sign.name
+                ]
                 bodies2_str = ", ".join(bodies2)
                 sum = str(len(bodies1) + len(bodies2) or "")
                 row += [bodies2_str, sum]
@@ -142,11 +155,17 @@ class Stats:
         grid = [headers]
         data1, data2 = self.data1, self.data2
         for hse in data1.houses:
-            bodies1 = [b.symbol for b in data1.aspectables if data1.house_of(b) == hse.value]
+            bodies1 = [
+                b.symbol for b in data1.aspectables if data1.house_of(b) == hse.value
+            ]
             bodies1_str = ", ".join(bodies1)
             row = [str(hse.value), hse.signed_dms, bodies1_str]
             if data2:
-                bodies2 = [b.symbol for b in data2.aspectables if data1.house_of(b) == hse.value]
+                bodies2 = [
+                    b.symbol
+                    for b in data2.aspectables
+                    if data1.house_of(b) == hse.value
+                ]
                 bodies2_str = ", ".join(bodies2)
                 sum = str(len(bodies1) + len(bodies2) or "")
                 row += [bodies2_str, sum]
@@ -160,7 +179,8 @@ class Stats:
         aspectable1 = self.data1.aspectables
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         asp_dict = {
-            frozenset((asp.body1, asp.body2)): asp.aspect_member.symbol for asp in self.aspects()
+            frozenset((asp.body1, asp.body2)): asp.aspect_member.symbol
+            for asp in self.aspects()
         }
         asp_sets = frozenset(asp_dict.keys())
         body_symbols = [body.symbol for body in aspectable2]
