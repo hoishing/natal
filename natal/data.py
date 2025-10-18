@@ -3,7 +3,7 @@ import swisseph as swe
 from datetime import datetime
 from math import floor
 from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
-from natal.config import Config, DotDict
+from natal.config import Config, DotDict, HouseSys
 from natal.const import (
     ASPECT_MEMBERS,
     EXTRA_MEMBERS,
@@ -48,6 +48,10 @@ class Data(DotDict):
         """
         swe.set_ephe_path(None if moshier else str(Path(__file__).parent.absolute()))
         self.name = name
+        if (lat > 66.5 or lat < -66.5) and config.house_sys in ["P", "K"]:
+            raise ValueError(
+                f"{HouseSys(config.house_sys).name} is only valid for latitude between -66.5 and 66.5"
+            )
         self.lat = lat
         self.lon = lon
         self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else utc_dt
