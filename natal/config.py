@@ -23,6 +23,14 @@ class Dictable(Mapping):
     def __len__(self) -> int:
         return len(self.__dict__)
 
+    def __delitem__(self, key: Any, /) -> None:
+        return super().__delattr__(key)
+
+    def __contains__(self, key: Any) -> bool:
+        if not isinstance(key, str):
+            raise TypeError("only string keys are supported in the Mapping super class")
+        return hasattr(self, key)
+
     def update(self, other: Mapping[str, Any] | None = None, **kwargs) -> None:
         """
         Update the attributes with elements from another mapping or from key/value pairs.
@@ -35,6 +43,13 @@ class Dictable(Mapping):
             for key, value in other.items():
                 setattr(self, key, value)
         for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def setdefault(self, key: str, value: Any) -> None:
+        """
+        Set a default value for a key if it is not already set.
+        """
+        if not hasattr(self, key):
             setattr(self, key, value)
 
 
