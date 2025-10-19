@@ -73,12 +73,12 @@ class ModelDict(BaseModel, Dictable):
 
 class HouseSys(StrEnum):
     Placidus = "P"
-    Koch = "K"
-    Equal = "E"
-    Campanus = "C"
-    Regiomontanus = "R"
-    Porphyry = "O"
     Whole_Sign = "W"
+    Equal = "E"
+    Koch = "K"
+    Porphyry = "O"
+    Regiomontanus = "R"
+    Campanus = "C"
 
 
 class Orb(ModelDict):
