@@ -1,8 +1,8 @@
-from natal.data import Data
-from natal.config import Orb, Config
-from datetime import datetime
-from pytest import fixture
 from . import data1, data2
+from datetime import datetime
+from natal.config import Config, Orb
+from natal.data import Data
+from pytest import fixture
 
 
 @fixture(scope="module")
@@ -163,9 +163,7 @@ def test_fix_orb_eq_0(data1: Data) -> None:
 
 
 def test_house_sys(data1: Data) -> None:
-    data = Data(
-        data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W")
-    )
+    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W"))
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
 
@@ -174,3 +172,12 @@ def test_moshier(data1: Data) -> None:
     data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, moshier=True)
     assert data.moshier
     assert data.extras == []
+
+
+def test_solar_return(data1: Data) -> None:
+    solar_return = data1.solar_return(2025)
+    utc = solar_return.utc_dt
+    assert utc.year == 2025
+    assert utc.hour == 6
+    assert utc.minute == 50
+    assert round(solar_return.sun.degree, 2) == round(data1.sun.degree, 2)

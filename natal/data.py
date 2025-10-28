@@ -1,6 +1,6 @@
 import itertools
 import swisseph as swe
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import floor
 from natal.classes import Aspect, Aspectable, Body, Extra, House, Planet, Sign, Vertex
 from natal.config import Config, DotDict, HouseSys
@@ -83,7 +83,7 @@ class Data(DotDict):
     def set_houses_vertices(self) -> None:
         """Calculate the cusps of the houses and set the vertices."""
         cusps, (asc_deg, mc_deg, *_) = swe.houses(
-            self.julian_day,
+            self.julian_day(),
             self.lat,
             self.lon,
             self.house_sys.encode(),
@@ -157,21 +157,34 @@ class Data(DotDict):
         fourth = [b for b in bodies if mc <= b.normalized_degree]
         self.quadrants = [first, second, third, fourth]
 
+    def solar_return(self, target_yr: int) -> Self:
+        """Calculate the solar return for a given year."""
+        utc = self.utc_dt.replace(year=target_yr) - timedelta(days=1)
+        start_search_day = self.julian_day(utc)
+        target_julian_day = swe.solcross_ut(self.sun.degree, start_search_day)
+        target_utc_dt = self.julian_day_to_utc(target_julian_day)
+        return Data(
+            name=self.name,
+            lat=self.lat,
+            lon=self.lon,
+            utc_dt=target_utc_dt,
+            config=self.config,
+            moshier=self.moshier,
+        )
+
     # utils ===============================
 
-    @property
-    def julian_day(self) -> float:
-        """Convert dt to UTC and return Julian day.
+    def julian_day(self, utc: datetime | None = None) -> float:
+        """convert UTC datetime to Julian day"""
+        utc = utc or self.utc_dt
+        return swe.julday(utc.year, utc.month, utc.day, utc.hour + utc.minute / 60)
 
-        Returns:
-            float: The Julian day number
-        """
-        return swe.date_conversion(
-            self.utc_dt.year,
-            self.utc_dt.month,
-            self.utc_dt.day,
-            self.utc_dt.hour + self.utc_dt.minute / 60,
-        )[1]
+    def julian_day_to_utc(self, jd: float) -> datetime:
+        """convert Julian day to UTC datetime"""
+        jd_at_epoch = 2440587.5
+        days_since_epoch = jd - jd_at_epoch
+        epoch = datetime(1970, 1, 1)
+        return epoch + timedelta(days=days_since_epoch)
 
     def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
         """Set the positions of celestial bodies.
@@ -184,7 +197,7 @@ class Data(DotDict):
         """
         output = []
         for body in bodies:
-            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day, body.value)
+            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day(), body.value)
             pos = Aspectable(
                 **body,
                 degree=lon,
