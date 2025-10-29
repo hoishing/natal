@@ -12,7 +12,7 @@ from natal.const import (
     SIGN_MEMBERS,
     VERTEX_MEMBERS,
 )
-from natal.utils import pairs, str_to_dt
+from natal.utils import apply_utc, pairs, str_to_dt
 from pathlib import Path
 from typing import Iterable, Self
 
@@ -54,7 +54,7 @@ class Data(DotDict):
             )
         self.lat = lat
         self.lon = lon
-        self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else utc_dt
+        self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else apply_utc(utc_dt)
         self.config = config
         self.moshier = moshier
         self.house_sys = config.house_sys

@@ -26,7 +26,7 @@ def info_grid():
     return list(
         zip(
             ["name", "city", "coordinates", "local time"],
-            ("shing", "Hong Kong - HK", "22.2783°N 114.175°E", "1976-04-20 18:58"),
+            ("shing", ("Hong Kong", "HK"), "22.2783°N 114.175°E", "1976-04-20 18:58"),
         )
     )
 
@@ -36,8 +36,8 @@ def composite_info_grid():
     return list(
         zip(
             ["name", "city", "coordinates", "local time"],
-            ("shing", "Hong Kong - HK", "22.2783°N, 114.175°E1976-04-20 18:58"),
-            ("belle", "Hong Kong - HK", "22.2783°N, 114.175°E2011-01-23 08:44"),
+            ("shing", ("Hong Kong", "HK"), "22.2783°N 114.175°E", "1976-04-20 18:58"),
+            ("belle", ("Hong Kong", "HK"), "22.2783°N 114.175°E", "2011-01-23 08:44"),
         )
     )
 
@@ -287,7 +287,7 @@ def test_info_grid(stats, info_grid):
 
 
 def test_composite_info_grid(composite_stats, composite_info_grid):
-    assert composite_stats.basic_info.grid == composite_info_grid
+    assert composite_stats.basic_info() == composite_info_grid
 
 
 def test_distribution_grid(stats, element_grid, modality_grid, polarity_grid):

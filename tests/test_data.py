@@ -1,5 +1,5 @@
 from . import data1, data2
-from datetime import datetime
+from datetime import datetime, timezone
 from natal.config import Config, Orb
 from natal.data import Data
 from pytest import fixture
@@ -98,7 +98,7 @@ def test_data_input(data1: Data) -> None:
     assert data1.name == "shing"
     assert data1.lat == 22.2783
     assert data1.lon == 114.175
-    assert data1.utc_dt == datetime(1976, 4, 20, 9, 58, 0)
+    assert data1.utc_dt == datetime(1976, 4, 20, 9, 58, 0, tzinfo=timezone.utc)
 
 
 def test_planet(data1: Data, planets: dict[str, str]) -> None:

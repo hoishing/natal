@@ -1,6 +1,6 @@
 """utility functions for natal"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from natal.classes import Aspectable
 from natal.config import Config
 from pathlib import Path
@@ -60,7 +60,17 @@ def str_to_dt(dt_str: str) -> datetime:
     Returns:
         datetime: Parsed datetime object
     """
-    return datetime.strptime(dt_str[:16], "%Y-%m-%d %H:%M")
+    return datetime.strptime(dt_str[:16], "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+
+
+def apply_utc(dt: datetime) -> datetime:
+    """apply UTC timezone to datetime object"""
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    elif dt.tzinfo == timezone.utc:
+        return dt
+    else:
+        return dt.astimezone(timezone.utc)
 
 
 # stats and pdf report =========================================================
