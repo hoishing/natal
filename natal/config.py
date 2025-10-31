@@ -11,8 +11,8 @@ class Dictable(Mapping):
     Protocols for subclasses to behave like a dict.
     """
 
-    def __getitem__(self, key: str):
-        return getattr(self, key)
+    def __getitem__(self, key: str, default: Any = None):
+        return getattr(self, key, default)
 
     def __setitem__(self, key: str, value: Any) -> None:
         setattr(self, key, value)
