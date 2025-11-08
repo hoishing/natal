@@ -31,7 +31,6 @@ class Data(DotDict):
         lon: float,
         utc_dt: datetime | str,
         config: Config = Config(),
-        moshier: bool = False,
     ) -> None:
         """Initialize a natal chart data object.
 
@@ -41,12 +40,11 @@ class Data(DotDict):
             lon: Longitude of the city
             utc_dt: datetime object or string in format "YYYY-MM-DD HH:MM" in UTC timezone
             config: Configuration settings with defaults
-            moshier: Use Moshier ephemeris, no asteroids support, but more performant
 
         Returns:
             None
         """
-        swe.set_ephe_path(None if moshier else str(Path(__file__).parent.absolute()))
+        swe.set_ephe_path(str(Path(__file__).parent.absolute()))
         self.name = name
         if (lat > 66.5 or lat < -66.5) and config.house_sys in ["P", "K"]:
             raise ValueError(
@@ -56,7 +54,6 @@ class Data(DotDict):
         self.lon = lon
         self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else apply_utc(utc_dt)
         self.config = config
-        self.moshier = moshier
         self.house_sys = config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
@@ -76,9 +73,12 @@ class Data(DotDict):
 
     def set_movable_bodies(self) -> None:
         """Set the positions of the planets and other celestial bodies."""
+        # need all planets as they are rulers for houses
         self.planets = self.set_positions(PLANET_MEMBERS)
-        if not self.moshier:
-            self.extras = self.set_positions(EXTRA_MEMBERS)
+        # filter non-displayed extras
+        self.extras = self.set_positions(
+            body for body in EXTRA_MEMBERS if self.config.display[body.name]
+        )
 
     def set_houses_vertices(self) -> None:
         """Calculate the cusps of the houses and set the vertices."""
@@ -169,7 +169,6 @@ class Data(DotDict):
             lon=self.lon,
             utc_dt=target_utc_dt,
             config=self.config,
-            moshier=self.moshier,
         )
 
     # utils ===============================
@@ -186,21 +185,17 @@ class Data(DotDict):
         epoch = datetime(1970, 1, 1)
         return epoch + timedelta(days=days_since_epoch)
 
-    def set_positions(self, bodies: list[Body]) -> list[Aspectable]:
-        """Set the positions of celestial bodies.
-
-        Args:
-            bodies: List of celestial body definitions
-
-        Returns:
-            List of aspectable bodies with positions set
-        """
+    def set_positions(self, bodies: Iterable[Body]) -> list[Aspectable]:
+        """Set the positions of celestial bodies with swisseph"""
         output = []
         for body in bodies:
-            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day(), body.value)
+            is_south_node = body.value == -10
+            swe_body_value = body.value if not is_south_node else body.value * -1
+            ((lon, _, _, speed, *_), _) = swe.calc_ut(self.julian_day(), swe_body_value)
+            degree = lon if not is_south_node else (lon + 180) % 360
             pos = Aspectable(
                 **body,
-                degree=lon,
+                degree=degree,
                 speed=speed,
             )
             setattr(self, body.name, pos)
@@ -208,14 +203,7 @@ class Data(DotDict):
         return output
 
     def house_of(self, body: Body) -> int:
-        """Get the house number containing a celestial body.
-
-        Args:
-            body: The celestial body to locate
-
-        Returns:
-            House number (1-12) containing the body
-        """
+        """Get the house number containing a celestial body"""
         sorted_houses = sorted(self.houses, key=lambda x: x.degree, reverse=True)
         for house in sorted_houses:
             if body.degree >= house.degree:

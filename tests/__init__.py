@@ -1,5 +1,6 @@
-from pytest import fixture
+from natal.config import Config, Display
 from natal.data import Data
+from pytest import fixture
 
 person1 = {
     "name": "shing",
@@ -15,10 +16,12 @@ person2 = {
     "utc_dt": "2011-01-23 00:44",
 }
 
+config = Config(display=Display(south_node=True, north_node=False))
+
 
 @fixture(scope="package")
 def data1():
-    return Data(**person1)
+    return Data(**person1, config=config)
 
 
 @fixture(scope="package")

@@ -31,18 +31,16 @@ def house_vertices():
 
 @fixture
 def adj_outer_degs():
-    return [0, 14, 22, 53, 89, 174, 188, 196, 207, 262, 270, 278, 349]
+    return [0, 14, 53, 89, 174, 186, 194, 202, 211, 265, 275, 349]
 
 
 @fixture
 def adj_inner_degs():
-    return [3, 23, 32, 195, 226, 277, 286, 297, 306, 315, 329, 338, 353]
+    return [3, 23, 32, 195, 226, 285, 297, 306, 315, 329, 338, 353]
 
 
 def test_house_vertices(chart, house_vertices):
-    floor_vertices = [
-        tuple(floor(v) for v in vertices) for vertices in chart.house_vertices
-    ]
+    floor_vertices = [tuple(floor(v) for v in vertices) for vertices in chart.house_vertices]
     assert house_vertices == floor_vertices
 
 
@@ -65,19 +63,18 @@ def test_fix_wrong_bodies_position():
     d2 = Data("d2", 22.2783, 114.175, "2025-02-25 04:00")
 
     chart1 = Chart(data1=d1, data2=d2, width=600)
-    input_degs = sorted(
-        chart1.data1.normalize(asp.degree) for asp in chart1.data2.aspectables
-    )
-    org = [146, 150, 174, 184, 197, 197, 205, 206, 217, 260, 277, 279, 314]
+    input_degs = sorted(chart1.data1.normalize(asp.degree) for asp in chart1.data2.aspectables)
+    org = [146, 150, 184, 197, 197, 205, 206, 217, 260, 277, 279, 314]
     assert [int(d) for d in input_degs] == org
     adj_degs = chart1.adjusted_degrees(input_degs, chart1.config.chart.outer_min_degree)
     adj_degs_int = [int(d) for d in adj_degs]
-    avg = [144, 152, 170, 178, 189, 197, 205, 213, 223, 260, 274, 282, 314]
+    avg = [144, 152, 178, 189, 197, 205, 213, 223, 260, 274, 282, 314]
     assert adj_degs_int == avg
 
 
 def test_fix_crowded_bodies():
-    crowded = Data("Crowded", 22.2783, 114.175, "2025-03-26 04:00")
+    config = Config(display=Display(mc=True))
+    crowded = Data("Crowded", 22.2783, 114.175, "2025-03-26 04:00", config=config)
     chart = Chart(data1=crowded, width=600)
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 14, 205, 223, 256, 259, 260, 262, 263, 265, 268, 317, 337]
@@ -89,7 +86,8 @@ def test_fix_crowded_bodies():
 
 
 def test_fix_infinite_loop():
-    inf_loop = Data("Inf Loop", 22.2783, 114.175, "2000-01-12 04:00")
+    config = Config(display=Display(mc=True))
+    inf_loop = Data("Inf Loop", 22.2783, 114.175, "2000-01-12 04:00", config=config)
     chart = Chart(data1=inf_loop, width=600)
     input_degs = sorted(asp.normalized_degree for asp in chart.data1.aspectables)
     org = [0, 5, 20, 104, 231, 234, 264, 268, 271, 283, 295, 316, 332]
@@ -121,5 +119,5 @@ def test_fix_orb_eq_0(data1: Data) -> None:
     chart = Chart(data1=data, width=600)
     _ = org_chart.svg
     _ = chart.svg
-    assert chart.aspect_lines_len == 14
-    assert org_chart.aspect_lines_len == 24
+    assert chart.aspect_lines_len == 11
+    assert org_chart.aspect_lines_len == 18

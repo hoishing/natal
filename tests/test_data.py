@@ -18,7 +18,6 @@ def planets() -> dict[str, str]:
         uranus="05° ♏ 19' ℞",
         neptune="13° ♐ 38' ℞",
         pluto="09° ♎ 47' ℞",
-        asc_node="13° ♏ 25' ℞",
     )
 
 
@@ -44,7 +43,7 @@ def houses() -> dict[str, str]:
 def others() -> dict[str, str]:
     return dict(
         chiron="27° ♈ 49'",
-        asc_node="13° ♏ 25' ℞",
+        south_node="13° ♉ 25' ℞",
         asc="20° ♎ 32'",
         mc="20° ♋ 36'",
         house_sys="P",
@@ -78,14 +77,13 @@ def aspects_pairs(data1: Data, data2: Data):
 def aspects_pair_names_sample():
     return [
         "sun sun",
-        "moon uranus",
-        "venus moon",
-        "mars neptune",
-        "saturn mercury",
-        "uranus pluto",
-        "pluto venus",
-        "asc_node asc_node",
-        "mc mars",
+        "moon neptune",
+        "venus mars",
+        "jupiter sun",
+        "saturn neptune",
+        "neptune mars",
+        "south_node sun",
+        "asc neptune",
     ]
 
 
@@ -116,8 +114,7 @@ def test_houses(data1: Data, houses: dict[str, str]) -> None:
 def test_asc_mc(data1: Data, others: dict[str, str]) -> None:
     assert data1.asc.signed_dms == others["asc"]
     assert data1.mc.signed_dms == others["mc"]
-    assert data1.chiron.signed_dms == others["chiron"]
-    assert data1.asc_node.signed_dms == others["asc_node"]
+    assert data1.south_node.signed_dms == others["south_node"]
     assert data1.house_sys == others["house_sys"]
 
 
@@ -138,7 +135,7 @@ def test_normalized_bodies(data1: Data) -> None:
 
 
 def test_composite_aspects_pairs(aspects_pairs, aspects_pair_names_sample):
-    assert len(aspects_pairs) == 169
+    assert len(aspects_pairs) == 144
     name_pairs = [f"{a.name} {b.name}" for a, b in aspects_pairs]
     assert name_pairs[::20] == aspects_pair_names_sample
 
@@ -158,20 +155,14 @@ def test_normalize(data1: Data) -> None:
 def test_fix_orb_eq_0(data1: Data) -> None:
     orb = Orb(conjunction=0, opposition=0)
     data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(orb=orb))
-    assert len(data1.aspects) == 24
-    assert len(data.aspects) == 14
+    assert len(data1.aspects) == 18
+    assert len(data.aspects) == 11
 
 
 def test_house_sys(data1: Data) -> None:
     data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, config=Config(house_sys="W"))
     assert data.house_sys == "W"
     assert data.house_of(data.sun) == 8
-
-
-def test_moshier(data1: Data) -> None:
-    data = Data(data1.name, data1.lat, data1.lon, data1.utc_dt, moshier=True)
-    assert data.moshier
-    assert data.extras == []
 
 
 def test_solar_return(data1: Data) -> None:

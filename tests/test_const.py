@@ -1,25 +1,25 @@
 from natal.const import (
-    PLANET_MEMBERS,
     ASPECT_MEMBERS,
     ELEMENT_MEMBERS,
+    EXTRA_MEMBERS,
+    HOUSE_MEMBERS,
     MODALITY_MEMBERS,
+    PLANET_MEMBERS,
     POLARITY_MEMBERS,
     SIGN_MEMBERS,
-    HOUSE_MEMBERS,
-    EXTRA_MEMBERS,
     VERTEX_MEMBERS,
 )
 
 
 def test_const():
-    assert len(PLANET_MEMBERS) == 11
+    assert len(PLANET_MEMBERS) == 10
     assert len(ASPECT_MEMBERS) == 6
     assert len(ELEMENT_MEMBERS) == 4
     assert len(MODALITY_MEMBERS) == 3
     assert len(POLARITY_MEMBERS) == 2
     assert len(SIGN_MEMBERS) == 12
     assert len(HOUSE_MEMBERS) == 12
-    assert len(EXTRA_MEMBERS) == 5
+    assert len(EXTRA_MEMBERS) == 7
     assert len(VERTEX_MEMBERS) == 4
 
 
@@ -43,11 +43,19 @@ def test_house_member():
 
 
 def test_extra_member():
-    chiron = EXTRA_MEMBERS[0]
+    north_node = EXTRA_MEMBERS[0]
+    assert north_node.name == "north_node"
+    assert north_node["color"] == "points"
+    assert north_node["symbol"] == "☊"
+    south_node = EXTRA_MEMBERS[1]
+    assert south_node.name == "south_node"
+    assert south_node["color"] == "points"
+    assert south_node["symbol"] == "☋"
+    chiron = EXTRA_MEMBERS[2]
     assert chiron.name == "chiron"
     assert chiron["color"] == "asteroids"
     assert chiron["symbol"] == "⚷"
-    ceres = EXTRA_MEMBERS[1]
+    ceres = EXTRA_MEMBERS[3]
     assert ceres.name == "ceres"
     assert ceres["color"] == "asteroids"
     assert ceres["symbol"] == "⚳"
