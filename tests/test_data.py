@@ -71,7 +71,7 @@ def signs() -> dict:
 
 @fixture(scope="module")
 def aspects_pairs(data1: Data, data2: Data):
-    return list(data1.composite_aspects_pairs(data2))
+    return list(data1.composite_aspect_pairs(data2))
 
 
 @fixture(scope="module")

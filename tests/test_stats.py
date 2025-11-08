@@ -297,7 +297,7 @@ def test_distribution_grid(stats, element_grid, modality_grid, polarity_grid):
 
 
 def test_celestial_body_grid(stats, celestial_body_grid):
-    assert stats.celestial_body.grid == celestial_body_grid
+    assert stats.celestial_body == celestial_body_grid
 
 
 def test_data2_celestial_body_grid(composite_stats, data2_celestial_body_grid):

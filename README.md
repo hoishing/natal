@@ -7,20 +7,20 @@
 - SVG natal chart generation in pure python
 - composite chart (transit/synastry/sun return ... etc) generation
 - highly configurable
-  - all planets, asteroids, vertices can be enabled / disabled
-  - orbs for each aspect
-  - light, dark, or mono theme
-  - light / dark theme color definitions
-  - chart stroke, opacity, font, spacing between planets ...etc
+    - all planets, asteroids, vertices can be enabled / disabled
+    - orbs for each aspect
+    - light, dark, or mono theme
+    - light / dark theme color definitions
+    - chart stroke, opacity, font, spacing between planets ...etc
 - high precision astrological data with [Swiss Ephemeris]
 - natal chart data statistics
-  - element, modality, and polarity counts
-  - planets in each houses
-  - quadrant and hemisphere distribution
-  - aspect pair counts
-  - composite chart aspects
-  - aspects cross reference table
-  - generate report in markdown or html
+    - element, modality, and polarity counts
+    - planets in each houses
+    - quadrant and hemisphere distribution
+    - aspect pair counts
+    - composite chart aspects
+    - aspects cross reference table
+    - generate report in markdown or html
 - thoroughly tested with `pytest`
 
 ## Sample Charts

@@ -156,7 +156,7 @@ class Display(ModelDict):
     asc: bool = True
     ic: bool = False
     dsc: bool = False
-    mc: bool = True
+    mc: bool = False
 
 
 class Chart(ModelDict):

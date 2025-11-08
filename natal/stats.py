@@ -18,19 +18,17 @@ class Stats:
     city2: tuple[str, str] | None = None
     tz2: str | None = None
 
-    def aspects(self):
+    def aspect_pairs(self):
         """aspects between celestial bodies depending on whether data2 is present"""
         if self.data2:
-            synastry_pairs = self.data2.composite_aspects_pairs(self.data1)
+            synastry_pairs = self.data2.composite_aspect_pairs(self.data1)
             return self.data1.calculate_aspects(synastry_pairs)
         else:
             return self.data1.aspects
 
     # data grids =================================================================
 
-    def basic_info(
-        self, headers: list[str] = ["name", "city", "coordinates", "local time"]
-    ):
+    def basic_info(self, headers: list[str] = ["name", "city", "coordinates", "local time"]):
         """grid containing name, city, coordinates, and local birth datetime"""
         time_fmt = "%Y-%m-%d %H:%M"
         dt1 = self.data1.utc_dt.astimezone(ZoneInfo(self.tz1)).strftime(time_fmt)
@@ -45,7 +43,7 @@ class Stats:
             output.append([self.data2.name, city2, coordinates2, dt2])
         return list(zip(*output))
 
-    def element_vs_modality(
+    def elements_vs_modalities(
         self,
         headers: list[str] = ["fire", "air", "water", "earth", "sum"],
         row_label: list[str] = ["cardinal", "fixed", "mutable", "sum"],
@@ -65,10 +63,7 @@ class Stats:
                 count = 0
                 symbols = []
                 for body in aspectable1:
-                    if (
-                        body.sign.element == ele_keys[j]
-                        and body.sign.modality == mod_keys[i]
-                    ):
+                    if body.sign.element == ele_keys[j] and body.sign.modality == mod_keys[i]:
                         symbols.append(body.symbol)
                         count += 1
                         element_count[ele_keys[j]] += 1
@@ -77,14 +72,12 @@ class Stats:
             row.append(str(modality_count))
             grid.append(row)
         grid.append([row_label[3], *[str(v) for v in element_count.values()], ""])
-        pos_sum = (
-            f"null:{element_count['fire'] + element_count['air']} {polarity_label[1]}"
-        )
+        pos_sum = f"null:{element_count['fire'] + element_count['air']} {polarity_label[1]}"
         neg_sum = f"null:{element_count['water'] + element_count['earth']} {polarity_label[2]}"
         grid.append([polarity_label[0], pos_sum, neg_sum, ""])
         return body_name_to_svg(grid) if pdf else grid
 
-    def quadrants_vs_hemisphere(
+    def quadrants_vs_hemispheres(
         self,
         headers: list[str] = ["eastern", "western", "northern", "southern", "sum"],
         pdf: bool = False,
@@ -106,9 +99,9 @@ class Stats:
         grid.append([total, eastern_sum, western_sum, ""])
         return body_name_to_svg(grid) if pdf else grid
 
-    def celestial_body(
+    def celestial_bodies(
         self,
-        data: Literal[1, 2],
+        data: Literal[1, 2] = 1,
         headers: list[str] = ["body", "sign", "house", "dignity"],
         dignity_labels: list[str] = ["domicile", "exaltation", "detriment", "fall"],
         pdf: bool = False,
@@ -135,9 +128,7 @@ class Stats:
             bodies1_str = ", ".join(bodies1)
             row = [sign.symbol, bodies1_str]
             if data2:
-                bodies2 = [
-                    b.symbol for b in data2.aspectables if b.sign.name == sign.name
-                ]
+                bodies2 = [b.symbol for b in data2.aspectables if b.sign.name == sign.name]
                 bodies2_str = ", ".join(bodies2)
                 sum = str(len(bodies1) + len(bodies2) or "")
                 row += [bodies2_str, sum]
@@ -155,17 +146,11 @@ class Stats:
         grid = [headers]
         data1, data2 = self.data1, self.data2
         for hse in data1.houses:
-            bodies1 = [
-                b.symbol for b in data1.aspectables if data1.house_of(b) == hse.value
-            ]
+            bodies1 = [b.symbol for b in data1.aspectables if data1.house_of(b) == hse.value]
             bodies1_str = ", ".join(bodies1)
             row = [str(hse.value), hse.signed_dms, bodies1_str]
             if data2:
-                bodies2 = [
-                    b.symbol
-                    for b in data2.aspectables
-                    if data1.house_of(b) == hse.value
-                ]
+                bodies2 = [b.symbol for b in data2.aspectables if data1.house_of(b) == hse.value]
                 bodies2_str = ", ".join(bodies2)
                 sum = str(len(bodies1) + len(bodies2) or "")
                 row += [bodies2_str, sum]
@@ -180,7 +165,7 @@ class Stats:
         aspectable2 = self.data2.aspectables if self.data2 else self.data1.aspectables
         asp_dict = {
             frozenset((asp.body1, asp.body2)): asp.aspect_member.symbol
-            for asp in self.aspects()
+            for asp in self.aspect_pairs()
         }
         asp_sets = frozenset(asp_dict.keys())
         body_symbols = [body.symbol for body in aspectable2]
@@ -210,37 +195,38 @@ class Stats:
 class AIContext(Stats):
     """statistics data in markdown format for AI context"""
 
-    def elements_grid(self):
+    def elements(self):
         """distribution of celestial bodies in the 4 elements"""
         ...
 
-    def modality_grid(self):
+    def modalities(self):
         """distribution of celestial bodies in the 3 modalities"""
         ...
 
-    def polarity_grid(self):
+    def polarities(self):
         """distribution of celestial bodies in the 2 polarities"""
         ...
 
-    def quadrants_grid(self):
+    def quadrants(self):
         """distribution of celestial bodies in the 4 quadrants"""
         ...
 
-    def hemispheres_grid(self):
+    def hemispheres(self):
         """distribution of celestial bodies in the 4 hemispheres"""
         ...
 
-    def aspect_grid(self, headers: list[str] = ["birth", "synastry", "aspect"]):
-        """override aspect_grid to show aspects in long form instead of cross-reference"""
+    def aspects(self, headers: list[str] = ["celestial body 1", "celestial body 2", "aspect"]):
+        """aspects in long form"""
         grid = [headers]
-        for asp in self.aspects():
+        for asp in self.aspect_pairs():
             grid.append([asp.body1.name, asp.body2.name, asp.aspect_member.name])
         return grid
 
-    def ai_md(self, fn_name: str, title: str) -> str:
+    def ai_md(self, fn_name: str) -> str:
         """markdown data for AI context"""
         fn = getattr(self, fn_name)
         rows = fn()
+        title = fn_name.replace("_", " ").title()
         output = f"# {title}\n\n"
         header = rows.pop(0)
         output += "|"

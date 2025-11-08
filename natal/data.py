@@ -270,7 +270,7 @@ class Data(DotDict):
                     )
         return output
 
-    def composite_aspects_pairs(self, data2: Self) -> BodyPairs:
+    def composite_aspect_pairs(self, data2: Self) -> BodyPairs:
         """Generate pairs of aspectable bodies for composite chart.
 
         Args:

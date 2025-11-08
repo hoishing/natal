@@ -61,9 +61,7 @@ class Chart(DotDict):
         margin = min(self.width, self.height) * self.config.chart.margin_factor
         self.max_radius = min(self.width - margin, self.height - margin) // 2
         self.margin = margin
-        self.ring_thickness = (
-            self.max_radius * self.config.chart.ring_thickness_fraction
-        )
+        self.ring_thickness = self.max_radius * self.config.chart.ring_thickness_fraction
         self.font_size = self.ring_thickness * self.config.chart.font_size_fraction
         self.scale_adjustment = self.width / self.config.chart.scale_adj_factor
         self.pos_adjustment = self.font_size / self.config.chart.pos_adj_factor
@@ -117,9 +115,7 @@ class Chart(DotDict):
         end_x = self.cx - radius * cos(end_rad)
         end_y = self.cy + radius * sin(end_rad)
 
-        start_x, start_y, end_x, end_y = [
-            round(val, 2) for val in (start_x, start_y, end_x, end_y)
-        ]
+        start_x, start_y, end_x, end_y = [round(val, 2) for val in (start_x, start_y, end_x, end_y)]
 
         path_data = " ".join(
             (
@@ -346,9 +342,7 @@ class Chart(DotDict):
         if self.data2 is None:
             return []
         radius = self.max_radius - 4 * self.ring_thickness
-        aspects = self.data1.calculate_aspects(
-            self.data1.composite_aspects_pairs(self.data2)
-        )
+        aspects = self.data1.calculate_aspects(self.data1.composite_aspect_pairs(self.data2))
         return self.aspect_lines(radius, aspects)
 
     @property
@@ -428,9 +422,7 @@ class Chart(DotDict):
 
         return avg_adj
 
-    def body_wheel(
-        self, wheel_radius: float, data: Data, min_degree: float
-    ) -> list[str]:
+    def body_wheel(self, wheel_radius: float, data: Data, min_degree: float) -> list[str]:
         """Generate elements for both inner and outer body wheels.
 
         Args:
@@ -548,9 +540,7 @@ class Chart(DotDict):
             if not orb_config:
                 continue
             orb_fraction = 1 - aspect.orb / orb_config
-            opacity_factor = (
-                1 if aspect.aspect_member.name == "conjunction" else orb_fraction
-            )
+            opacity_factor = 1 if aspect.aspect_member.name == "conjunction" else orb_fraction
             aspect_lines.append(
                 line(
                     x1=self.cx - radius * cos(start_angle),
