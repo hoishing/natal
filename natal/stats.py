@@ -1,7 +1,6 @@
-from collections import defaultdict
 from dataclasses import dataclass
-from natal import Data
 from natal.const import ASPECT_MEMBERS, SIGN_MEMBERS
+from natal.data import Data
 from natal.utils import body_name_to_svg, dignity_of
 from typing import Literal
 from zoneinfo import ZoneInfo
@@ -55,7 +54,7 @@ class Stats:
         grid = [["", *headers]]
         ele_keys = ["fire", "air", "water", "earth"]
         mod_keys = ["cardinal", "fixed", "mutable"]
-        element_count = defaultdict(int)
+        element_count = {key: 0 for key in ele_keys}
         for i in range(3):
             row = [row_label[i]]
             modality_count = 0
@@ -117,12 +116,17 @@ class Stats:
 
     def signs(
         self,
-        headers: list[str] = ["sign", "bodies1", "bodies2", "sum"],
+        headers: list[str] | None = None,
         pdf: bool = False,
     ):
         """distribution of celestial bodies in signs, headers length depends on data2"""
         data1, data2 = self.data1, self.data2
-        grid = [headers]
+        default_headers = (
+            ["sign", "celestial bodies 1", "celestial bodies 2", "sum"]
+            if data2
+            else ["sign", "celestial bodies", "sum"]
+        )
+        grid = [headers or default_headers]
         for sign in SIGN_MEMBERS:
             bodies1 = [b.symbol for b in data1.aspectables if b.sign.name == sign.name]
             bodies1_str = ", ".join(bodies1)
@@ -139,12 +143,17 @@ class Stats:
 
     def houses(
         self,
-        headers: list[str] = ["house", "cusp", "bodies1", "bodies2", "sum"],
+        headers: list[str] | None = None,
         pdf: bool = False,
     ):
         """distribution of celestial bodies in houses, headers length depends on data2"""
-        grid = [headers]
         data1, data2 = self.data1, self.data2
+        default_headers = (
+            ["house", "cusp", "celestial bodies 1", "celestial bodies 2", "sum"]
+            if data2
+            else ["house", "cusp", "celestial bodies", "sum"]
+        )
+        grid = [headers or default_headers]
         for hse in data1.houses:
             bodies1 = [b.symbol for b in data1.aspectables if data1.house_of(b) == hse.value]
             bodies1_str = ", ".join(bodies1)
@@ -190,55 +199,3 @@ class Stats:
         for aspect in ASPECT_MEMBERS:
             grid.append([aspect.symbol, str(self.data1.config.orb[aspect.name])])
         return body_name_to_svg(grid)
-
-
-class AIContext(Stats):
-    """statistics data in markdown format for AI context"""
-
-    def elements(self):
-        """distribution of celestial bodies in the 4 elements"""
-        ...
-
-    def modalities(self):
-        """distribution of celestial bodies in the 3 modalities"""
-        ...
-
-    def polarities(self):
-        """distribution of celestial bodies in the 2 polarities"""
-        ...
-
-    def quadrants(self):
-        """distribution of celestial bodies in the 4 quadrants"""
-        ...
-
-    def hemispheres(self):
-        """distribution of celestial bodies in the 4 hemispheres"""
-        ...
-
-    def aspects(self, headers: list[str] = ["celestial body 1", "celestial body 2", "aspect"]):
-        """aspects in long form"""
-        grid = [headers]
-        for asp in self.aspect_pairs():
-            grid.append([asp.body1.name, asp.body2.name, asp.aspect_member.name])
-        return grid
-
-    def ai_md(self, fn_name: str) -> str:
-        """markdown data for AI context"""
-        fn = getattr(self, fn_name)
-        rows = fn()
-        title = fn_name.replace("_", " ").title()
-        output = f"# {title}\n\n"
-        header = rows.pop(0)
-        output += "|"
-        for item in header:
-            output += f"{item} | "
-        output += "\n"
-        output += "|" + "--- | " * len(header)
-        output += "\n"
-        for row in rows:
-            output += "|"
-            for item in row:
-                output += f"{item} | "
-            output += "\n"
-        output += "\n\n"
-        return output
