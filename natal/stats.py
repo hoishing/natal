@@ -90,12 +90,12 @@ class Stats:
         forth_q = ", ".join([body.symbol for body in q[3]])
         eastern, western, northern, southern, total = headers
         grid = [["", eastern, western, total]]
-        northern_sum = str(len(q[3] + q[2]))
-        southern_sum = str(len(q[0] + q[1]))
+        southern_sum = str(len(q[3] + q[2]))
+        northern_sum = str(len(q[0] + q[1]))
         eastern_sum = str(len(q[3] + q[0]))
         western_sum = str(len(q[1] + q[2]))
-        grid.append([southern, forth_q, third_q, northern_sum])
-        grid.append([northern, first_q, second_q, southern_sum])
+        grid.append([southern, forth_q, third_q, southern_sum])
+        grid.append([northern, first_q, second_q, northern_sum])
         grid.append([total, eastern_sum, western_sum, ""])
         return body_name_to_svg(grid) if pdf else grid
 

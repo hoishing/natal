@@ -58,4 +58,4 @@ def fix_svg(name: str):
 
 if __name__ == "__main__":
     # fix_all_svgs()
-    fix_svg("south_node")
+    fix_svg("pluto")
