@@ -53,8 +53,20 @@ class Data(DotDict):
         self.lat = lat
         self.lon = lon
         self.utc_dt = str_to_dt(utc_dt) if isinstance(utc_dt, str) else apply_utc(utc_dt)
-        self.config = config
-        self.house_sys = config.house_sys
+        self._config = config
+        self.update_data()
+
+    @property
+    def config(self) -> Config:
+        return self._config
+
+    @config.setter
+    def config(self, value: Config) -> None:
+        self._config = value
+        self.update_data()
+
+    def update_data(self) -> None:
+        self.house_sys = self.config.house_sys
         self.houses: list[House] = []
         self.planets: list[Planet] = []
         self.extras: list[Extra] = []

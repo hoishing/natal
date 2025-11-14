@@ -1,5 +1,5 @@
 from enum import StrEnum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from types import SimpleNamespace
 from typing import Any, Iterator, Literal, Mapping
 
@@ -160,7 +160,7 @@ class Display(ModelDict):
     mc: bool = False
 
 
-class Chart(ModelDict):
+class ChartConfig(ModelDict):
     """
     Chart configuration settings.
 
@@ -191,12 +191,12 @@ class Config(ModelDict):
     """
 
     theme_type: ThemeType = "dark"
-    house_sys: HouseSys = HouseSys.Placidus
-    orb: Orb = Orb()
+    house_sys: HouseSys = Field(default=HouseSys.Placidus, frozen=True)
+    orb: Orb = Field(default_factory=Orb, frozen=True)
     light_theme: LightTheme = LightTheme()
     dark_theme: DarkTheme = DarkTheme()
-    display: Display = Display()
-    chart: Chart = Chart()
+    display: Display = Field(default_factory=Display, frozen=True)
+    chart: ChartConfig = ChartConfig()
 
     @property
     def theme(self) -> Theme:
