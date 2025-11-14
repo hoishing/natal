@@ -27,15 +27,15 @@
 
 - default dark theme
 
-<img src="https://bit.ly/4eufbuW" width=600/>
+<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_dark.png" width=600/>
 
 - default light theme
 
-<img src="https://bit.ly/3MT86Zl" width=600/>
+<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_light.png" width=600/>
 
 - mono theme
 
-<img src="https://bit.ly/3ZygoNw" width=600/>
+<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_mono.png" width=600/>
 
 ## Quick Start
 
@@ -82,7 +82,9 @@ HTML(transit_chart.svg)
 
 following SVG chart will be produced:
 
-<img src="https://bit.ly/3MX7H8e" width=600/>
+<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/composite_dark.png" width=600/>
+
+- see [demo.ipynb] for the chart creation
 
 ## Data Object
 
@@ -128,16 +130,6 @@ aspect.applying # False
 aspect.orb # 3.3424
 ```
 
-## Stats
-
-- statistics of Data object in 2D list
-- see [demo.ipynb] for the HTML output
-
-## PDF Report
-
-- [light theme PDF sample]
-- [mono theme PDF sample]
-
 ## Configuration
 
 - create a `Config` object and assign it to `Data` object
@@ -180,19 +172,12 @@ data = Data(
 )
 ```
 
-read the [docs] for complete references
-
 ## Tech Stack
 
 - [tagit]: SVG / HTML generation and manipulation
 - [pyswisseph]: astrological data - Swiss Ephemeris
-- [mkdocs-material]: docs site generation
 
-[light theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_light.pdf
-[mono theme PDF sample]: https://github.com/hoishing/natal-report/blob/main/demo_report_mono.pdf
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
-[docs]: https://hoishing.github.io/natal
-[mkdocs-material]: https://github.com/squidfunk/mkdocs-material
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [tagit]: https://github.com/hoishing/tagit
