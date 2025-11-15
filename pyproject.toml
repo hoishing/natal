@@ -1,6 +1,6 @@
 [project]
 name = "natal"
-version = "1.0.0"
+version = "1.0.1"
 description = "create Natal Chart with ease"
 license = { text = "MIT" }
 authors = [{ name = "Kelvin Ng", email = "hoishing@gmail.com" }]

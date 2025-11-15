@@ -5,7 +5,11 @@
 ## Features
 
 - SVG natal chart generation in pure python
-- composite chart (transit/synastry/sun return ... etc) generation
+- supported chart types:
+    - birth chart
+    - transit chart
+    - synastry chart
+    - solar return chart
 - highly configurable
     - all planets, asteroids, vertices can be enabled / disabled
     - orbs for each aspect
@@ -13,29 +17,14 @@
     - light / dark theme color definitions
     - chart stroke, opacity, font, spacing between planets ...etc
 - high precision astrological data with [Swiss Ephemeris]
-- natal chart data statistics
+- chart data statistics
     - element, modality, and polarity counts
     - planets in each houses
     - quadrant and hemisphere distribution
     - aspect pair counts
     - composite chart aspects
     - aspects cross reference table
-    - generate report in markdown or html
 - thoroughly tested with `pytest`
-
-## Sample Charts
-
-- default dark theme
-
-<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_dark.png" width=600/>
-
-- default light theme
-
-<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_light.png" width=600/>
-
-- mono theme
-
-<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/chart_mono.png" width=600/>
 
 ## Quick Start
 
@@ -56,35 +45,24 @@ mimi = Data(
     lon=121.526,
 )
 
-# return natal chart in SVG string
-Chart(mimi, width=600).svg
+# create a Chart object
+chart = Chart(mimi, width=600)
 
-# create transit data object
-transit = Data(
-    name="Transit",
-    utc_dt="2024-01-01 05:30",
-    lat=25.0531,
-    lon=121.526,
-)
-
-# create a transit chart
-transit_chart = Chart(
-    data1=mimi, 
-    data2=transit, 
-    width=600
-)
-
-# view the composite chart in jupyter notebook
+# view the chart in jupyter notebook
 from IPython.display import HTML
 
-HTML(transit_chart.svg)
+HTML(chart.svg)
 ```
 
-following SVG chart will be produced:
+following SVG chart will be created:
 
-<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/docs/assets/composite_dark.png" width=600/>
+<img src="https://raw.githubusercontent.com/hoishing/natal/refs/heads/main/birth_chart_example.jpg" width=600/>
 
-- see [demo.ipynb] for the chart creation
+- see [demo.ipynb] for other examples:
+    - transit chart
+    - light theme
+    - mono theme
+    - Orb configuration
 
 ## Data Object
 
@@ -176,8 +154,10 @@ data = Data(
 
 - [tagit]: SVG / HTML generation and manipulation
 - [pyswisseph]: astrological data - Swiss Ephemeris
+- [pydantic]: data validation
 
 [demo.ipynb]: https://github.com/hoishing/natal/blob/main/demo.ipynb
+[pydantic]: https://github.com/pydantic/pydantic
 [pyswisseph]: https://github.com/astrorigin/pyswisseph
 [Swiss Ephemeris]: https://www.astro.com/swisseph/swephinfo_e.htm
 [tagit]: https://github.com/hoishing/tagit
